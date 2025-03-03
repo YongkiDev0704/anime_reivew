@@ -27,7 +27,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
 
   type GetUserByEmailResult {
     success: Boolean!
-    error: String 
+    error: String!
     data: User
   }
 

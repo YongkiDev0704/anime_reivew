@@ -1,5 +1,3 @@
-import { VocabModel } from "@ykvocab/core/src/models/Vocab";
-
 export type Resolver<Arguments, Returns, Parent = any> = {
   (
     parent: Parent,
