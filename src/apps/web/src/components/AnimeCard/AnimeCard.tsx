@@ -34,6 +34,7 @@ const AnimeCardWrapper = styled.div`
     position: relative;
     justify-content: center;
     align-item: center;
+    margin: 10px 5px;
 `
 
 const AnimePhoto = styled.img`
