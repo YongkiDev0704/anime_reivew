@@ -73,9 +73,7 @@ const RatingStar = styled.img`
 
 const ReviewButton = styled.button`
     position: absolute;
-    background-color: #00F5D4;
     font-size: 16px;
-    font-weight: bold;
     width: 140px;
     height: 40px;
     border-radius: 20px;
