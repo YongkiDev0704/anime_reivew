@@ -12,8 +12,11 @@ type AnimeCardProps = {
 export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardProps) => {
   return (
     <AnimeCardWrapper>
-        {/* !!!! Need to change testing src for photo image to AnimePhotoURL later */}
-        <AnimePhoto src={'https://i.pinimg.com/originals/4a/d3/89/4ad389052b4cf159fd601ae4dbd4ecbc.png'} alt={`Image poster of ${animeName}`}/>
+        {/* Wrapper to keep button insdie of photo area + action on hover control */}
+        <AnimePhotoWrapper>
+            <AnimePhoto src={animePhotoURL} alt={`Image poster of ${animeName}`}/>
+            <ReviewButton>See Review</ReviewButton>
+        </AnimePhotoWrapper>
         <AnimeName>{animeName}</AnimeName>
         <AnimeRatingWrapper>
             <RatingStar src={ratingStar} alt="Small star Icon for Review Score"/>
@@ -28,6 +31,9 @@ export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardPr
 const AnimeCardWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-item: center;
 `
 
 const AnimePhoto = styled.img`
@@ -36,17 +42,13 @@ const AnimePhoto = styled.img`
     border-radius: 10px;
     object-fit: cover;
     transition: all 0.3 ease;
-
-    &:hover {
-        filter: brightness(0.6);
-    }
 `
 
 const AnimeName = styled.h3`
     max-width: 215px;
     font-size: 16px;
     font-weight: bold;
-    color: lightblue;
+    color: #FFFFFF;
     margin: 0;
     margin-top: 8px;
 
@@ -59,8 +61,48 @@ const AnimeRatingWrapper = styled.p`
     font-size: 16px;
     margin: 0;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
 `
 const RatingStar = styled.img`
     width: 16px;
     height: 16px;
+    margin-right: 4px;
+`
+
+const ReviewButton = styled.button`
+    position: absolute;
+    background-color: #00F5D4;
+    font-size: 16px;
+    font-weight: bold;
+    width: 140px;
+    height: 40px;
+    border-radius: 20px;
+    top: 208px;
+    left: 32px;
+    transition: opacity 0.3 ease;
+    outline: none;
+    border: none;
+
+    // Hide button before hover
+    visibility: hidden;
+    opacity: 0;
+`
+
+const AnimePhotoWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-item: center;
+
+    &:hover ${AnimePhoto} {
+        filter: brightness(0.6);
+    }
+
+    &:hover ${ReviewButton} {
+        opacity: 1;
+        visibility: visible;
+    }
 `
