@@ -12,6 +12,7 @@ type AnimeCardProps = {
 export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardProps) => {
   return (
     <AnimeCardWrapper>
+        {/* !!!! Need to change testing src for photo image to AnimePhotoURL later */}
         <AnimePhoto src={'https://i.pinimg.com/originals/4a/d3/89/4ad389052b4cf159fd601ae4dbd4ecbc.png'} alt={`Image poster of ${animeName}`}/>
         <AnimeName>{animeName}</AnimeName>
         <AnimeRatingWrapper>
@@ -32,7 +33,7 @@ const AnimeCardWrapper = styled.div`
 const AnimePhoto = styled.img`
     width: 215px;
     height: 300px;
-    bolder-radius: 10px;
+    border-radius: 10px;
     object-fit: cover;
     transition: all 0.3 ease;
 
