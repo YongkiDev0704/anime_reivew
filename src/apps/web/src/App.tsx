@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-import { AnimationCardThird } from "./components/AnimationCard";
 import { GlobalStyle } from "./style/GlobalStyle";
+import { AnimeCard } from "./components/AnimeCard/animeCard";
 
 export const App = () => {
   
   return (
     <ProviderWrap>
       <GlobalStyle />
-      <AnimationCardThird name="hehe" rating={4.0}/>
+      <AnimeCard animeName="anime_name-test" animeRating= {7.51}/>
     </ProviderWrap>
   )
 };
