@@ -19,7 +19,10 @@ const testData = Array(6).fill({
 export const AnimeList = ({listType}: AnimeListProps) => {
     return (
             <AnimeListWrapper>
-                <AnimeListType>{listType}</AnimeListType>
+                <ListInteractContainer>
+                    <AnimeListType>{listType}</AnimeListType>
+                    <ViewAll>View All</ViewAll>
+                </ListInteractContainer>
                 <ListBorder/>
                 <ListWrapper>
                     {testData.map((aniData, i) => (
@@ -40,12 +43,26 @@ const AnimeListWrapper = styled.section`
     flex-direction: column;
     margin: 50px 50px;
 `
+const ListInteractContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
+
 const AnimeListType = styled.h2`
     font-size: 24px;
+    font-weight: bold;
     color: var(--main-text);
     margin: 0;
     margin-bottom: 13px;
 `
+const ViewAll = styled.h3`
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--main-text);
+    margin: 0;
+`
+
 const ListBorder = styled.div`
     width: 1340px;
     height: 2px;
