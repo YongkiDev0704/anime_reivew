@@ -42,14 +42,14 @@ const AnimeListWrapper = styled.section`
 `
 const AnimeListType = styled.h2`
     font-size: 24px;
-    color: #FFFFFF;
+    color: var(--main-text);
     margin: 0;
     margin-bottom: 13px;
 `
 const ListBorder = styled.div`
     width: 1340px;
     height: 2px;
-    background-color: #FFFFFF;
+    background-color: var(--main-text);
     margin: 0;
     margin-bottom: 40px;
 `
