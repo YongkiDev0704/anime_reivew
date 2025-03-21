@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ApolloWrapper from "./apollo";
 
 import { GlobalStyle } from "./style/GlobalStyle";
 import { AnimeList } from "./components/AnimeList/AnimeList";
@@ -6,10 +7,12 @@ import { AnimeList } from "./components/AnimeList/AnimeList";
 export const App = () => {
   
   return (
-    <ProviderWrap>
-      <GlobalStyle />
-      <AnimeList listType="Trending"/>
-    </ProviderWrap>
+    <ApolloWrapper>
+      <ProviderWrap>
+        <GlobalStyle />
+        <AnimeList listType="Trending"/>
+      </ProviderWrap>
+    </ApolloWrapper>
   )
 };
 
