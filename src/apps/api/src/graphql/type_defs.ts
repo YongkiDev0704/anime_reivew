@@ -13,6 +13,13 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     password: String!
     userRole: UserRole
   }
+  
+  type Review {
+    _id: ID!
+    username: String
+    rating: Float!
+    comment: String!
+  }
 
   input CreateUserInput {
     email: String!
