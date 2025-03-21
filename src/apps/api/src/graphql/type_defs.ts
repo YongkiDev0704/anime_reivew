@@ -32,6 +32,17 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     error: String
   }
 
+  input CreateReviewInput {
+    username: String
+    review_rating: Float!
+    review_comment: String!
+  }
+
+  type CreateReviewResult {
+    success: Boolean!
+    error: String
+  }
+
   type GetUserByEmailResult {
     success: Boolean!
     error: String!
@@ -40,6 +51,10 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
 
   type Mutation {
     createUser(data: CreateUserInput!): CreateUserResult!
+  }
+
+  type Mutation {
+    createReview(data: CreateReviewInput!): CreateReviewResult!
   }
 
   type Query {
