@@ -14,15 +14,13 @@ export const createReview: Resolver<
   }, {
     success: boolean;
     error?: string;
-    review?: AniReview
   }
 > = async (_, { data }) => {
   try {
     const review = await ReviewModel.create(data);
 
     return {
-      success: true,
-      review
+      success: true
     };
 
   } catch (e: any) {
