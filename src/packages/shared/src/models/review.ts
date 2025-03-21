@@ -1,9 +1,14 @@
 import { BaseEntity } from "./base";
 
-export class IReview extends BaseEntity {
+export class AniReview extends BaseEntity {
 
   /**
    * username of user posting review
+   */
+  public username?: string;
+
+  /**
+   * rating score given by user posting review
    */
   public review_rating!: number;
 
