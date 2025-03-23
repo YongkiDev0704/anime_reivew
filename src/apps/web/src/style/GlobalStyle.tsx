@@ -1,8 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
+export const MAX_WIDTH = 1440;
+
 export const GlobalStyle = createGlobalStyle`
   body {
-    margin: 0;     
+    margin: 0;
   }
 
   body {
@@ -14,4 +16,10 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  #root {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    background-color: black;
+  }
 `;
