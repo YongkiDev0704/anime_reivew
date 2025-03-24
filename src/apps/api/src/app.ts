@@ -7,6 +7,7 @@ import { getMongoDBConnection, PORT } from "@pnani/core";
 
 import { typeDefs, resolvers } from "./graphql";
 import { GraphqlContext } from "./graphql/types";
+import { tmdbRouter } from "./rest/tmdb";
 
 (async () => {
   await getMongoDBConnection();
@@ -33,7 +34,10 @@ import { GraphqlContext } from "./graphql/types";
     })
   );
 
+  app.use("/api", tmdbRouter);
+
   app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}/graphql`);
+    console.log(`🌐 REST API: http://localhost:${PORT}/api/landing-animes`);
   });
 })();
