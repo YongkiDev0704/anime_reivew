@@ -18,8 +18,6 @@ export const HeroSlide = ({ logo, image, active, positionX = "center", positionY
         <Overlay />
       </ImageContainer>
     </HeroSlideWrapper>
-
-    
   );
 };
 
@@ -56,7 +54,7 @@ const Content = styled.div<{ logoUrl: string; }>`
   background-position: center center;
   z-index: 3;
   width: 300px;
-  height: 300px;
+  height: 273px;
   color: white;
 `;
 
