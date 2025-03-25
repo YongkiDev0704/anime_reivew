@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import { GlobalStyle } from "./style/GlobalStyle";
 import { LandingPage } from "./pages/landingPage";
-import { AnimeList } from "./components/AnimeList/AnimeList";
 
 export const App = () => {
   
@@ -10,7 +9,6 @@ export const App = () => {
     <ProviderWrap>
       <GlobalStyle />
       <LandingPage />
-      <AnimeList listType="Trending"/>
     </ProviderWrap>
   )
 };

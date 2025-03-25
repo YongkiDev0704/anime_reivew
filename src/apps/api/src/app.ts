@@ -22,11 +22,12 @@ import { tmdbRouter } from "./rest/tmdb";
   const server = new ApolloServer<GraphqlContext>({ schema });
 
   await server.start();
-
+  
+  app.use(cors());
+  app.use(express.json());
+  
   app.use(
     "/graphql",
-    cors(),
-    express.json(),
     expressMiddleware(server, {
       context: async ({ req }): Promise<GraphqlContext> => {
         return { req };

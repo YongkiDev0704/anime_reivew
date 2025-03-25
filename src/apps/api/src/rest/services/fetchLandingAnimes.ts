@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { Anime } from "../../types";
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY!;
