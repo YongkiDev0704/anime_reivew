@@ -26,7 +26,7 @@ export const LandingPage = () => {
     };
   }, [animes.length]);
 
-  if (loading) return <p>로딩 중...</p>;
+  if (loading) return 
   if (error) return <p>{error}</p>;
 
   const slides = [
