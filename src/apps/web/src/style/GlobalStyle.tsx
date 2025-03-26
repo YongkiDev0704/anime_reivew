@@ -14,10 +14,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
-  }
-
-  body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.6;

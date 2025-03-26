@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { HeroSlide } from "../components/HeroSlide";
 import { useLandingAnimes } from "../hooks/useLandingAnime";
+import { GNB } from "../components/GNB";
 
 export const LandingPage = () => {
   const { animes, loading, error } = useLandingAnimes();
@@ -76,7 +77,7 @@ export const LandingPage = () => {
           positionY={anime.positionY}
         />
       ))}
-
+      <GNB />
       <ArrowButton left onClick={handlePrev}>
         <ChevronLeft size={40} color="white" />
       </ArrowButton>
@@ -130,7 +131,6 @@ const IndicatorWrapper = styled.div`
   gap: 8px;
   transform: translateX(-50%);
   z-index: 5;
-
 `;
 
 const Indicator = styled.div<{ active: boolean }>`
