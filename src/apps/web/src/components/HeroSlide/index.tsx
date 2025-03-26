@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { Button } from "../Button";
+
 type Props = {
   image: string; 
   logo: string;
@@ -14,6 +16,9 @@ export const HeroSlide = ({ logo, image, active, positionX = "center", positionY
       <LeftFill active={active}/>
       <Content logoUrl={logo}>
       </Content>
+      <ButtonWrapper>
+        <Button variant="primary" label="See Review" />
+      </ButtonWrapper>
       <ImageContainer imageUrl={image} active={active} positionX={positionX} positionY={positionY}>
         <Overlay />
       </ImageContainer>
@@ -57,6 +62,15 @@ const Content = styled.div<{ logoUrl: string; }>`
   height: 273px;
   color: white;
 `;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 500px;
+  left: 200px;
+  width: 240px;
+  z-index: 5;
+`;
+
 
 const ImageContainer = styled.div<{
   imageUrl: string;
