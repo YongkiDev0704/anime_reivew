@@ -3,7 +3,6 @@ import { createGlobalStyle } from "styled-components";
 export const MAX_WIDTH = 1440;
 
 export const GlobalStyle = createGlobalStyle`
-
   :root {
     --main-background: #1E1E1E;
     --main-text: #FFFFFF;
@@ -12,10 +11,10 @@ export const GlobalStyle = createGlobalStyle`
     --box-container: #585858;
   }
 
-  body {
+  html, body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #f9f9f9;
+    background-color: black;
     color: #333;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;

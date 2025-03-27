@@ -19,5 +19,5 @@ const ProviderWrap = styled.div`
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: white;
+  background-color: black;
 `;
