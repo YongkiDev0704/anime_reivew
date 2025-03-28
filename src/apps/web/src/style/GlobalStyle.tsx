@@ -19,21 +19,21 @@ export const GlobalStyle = createGlobalStyle`
 
   
   @font-face {
-    font-family: 'RobotoRegular';
+    font-family: 'Roboto';
     src: url(${RobotoRegular}) format('truetype');
     font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'RobotoBold';
+    font-family: 'Roboto';
     src: url(${RobotoBold}) format('truetype');
     font-weight: 700;
     font-style: normal;
   }
   
   @font-face {
-    font-family: 'Inter18Bold';
+    font-family: 'Inter';
     src: url(${Inter18Bold}) format('truetype');
     font-weight: 700;
     font-size: 18px;
@@ -41,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   @font-face {
-    font-family: 'Inter24Bold';
+    font-family: 'Inter';
     src: url(${Inter24Bold}) format('truetype');
     font-weight: 700;
     font-size: 24px;
@@ -49,7 +49,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   @font-face {
-    font-family: 'Inter24Regular';
+    font-family: 'Inter';
     src: url(${Inter24Regular}) format('truetype');
     font-weight: 400;
     font-size: 24px;
@@ -62,7 +62,7 @@ export const GlobalStyle = createGlobalStyle`
     max-width: 100%;
     background-color: black;
     margin: 0 auto;
-    font-family: 'RobotoRegular', sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
   
   body {
@@ -73,7 +73,9 @@ export const GlobalStyle = createGlobalStyle`
     display: none;
   }
 
-
+  p {
+    margin: 0;
+  }
 
   body::-webkit-scrollbar {
     display: none;   
