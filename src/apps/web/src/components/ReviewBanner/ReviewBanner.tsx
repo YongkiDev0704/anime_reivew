@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ratingSushi from "../../assets/icons/rating.svg"
 
 // Anime 객체를 받아와서 사용?
 // 일일이 정의 X?
@@ -20,7 +21,7 @@ export const ReviewBanner = ({animeBanner}: ReviewBannerInfoProps) => {
                     <ReviewAnimeTitle>
                         AnimeTitle Here
                     </ReviewAnimeTitle>
-                    <p>Star</p>
+                    <ReviewRating src={ratingSushi} />
                     <ReviewAnimeRating>
                         8.63
                     </ReviewAnimeRating>
@@ -62,7 +63,13 @@ const ReviewAnimeTitle = styled.h2`
     font-weight: bold;
     color: var(--main-text);
     margin: 0;
+    margin-right: 8px;
 `;
+
+const ReviewRating = styled.img`
+    width: 40px;
+    height: 40px;
+`
 
 const ReviewTitleWrapper = styled.div`
     display: flex;

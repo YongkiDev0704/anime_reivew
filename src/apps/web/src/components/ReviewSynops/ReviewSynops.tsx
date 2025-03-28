@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ratingSushi from "../../assets/icons/rating.svg"
 
 type ReviewSynopsProps = {
     // animePosterURL: string;
@@ -11,8 +12,16 @@ export const ReviewSynops = ({}: ReviewSynopsProps) => {
             <ReviewAnimeSynopsWrapper>
                 <ReviewAnimePoster src="https://i.pinimg.com/originals/4a/d3/89/4ad389052b4cf159fd601ae4dbd4ecbc.png" alt="anime_poster_test"/>
                 <ReviewAnimeStoryWrapper>
-                    <ReviewAnimeSynopHeader>Synopsis</ReviewAnimeSynopHeader>
-                    <ReviewAnimeSynopsis>Test Paragraph ahaskjdfajdslfkjalsdkjflaksdjflkasjdlfkjasd</ReviewAnimeSynopsis>
+                    <ReviewSynopTextWrapper>
+                        <ReviewAnimeSynopHeader>Synopsis</ReviewAnimeSynopHeader>
+                        <ReviewAnimeSynopsis>Test Paragraph ahaskjdfajdslfkjalsdkjflaksdjflkasjdlfkjasd</ReviewAnimeSynopsis>
+                    </ReviewSynopTextWrapper>
+                    <ReviewRatingWrapper>
+                        <ReviewRating src={ratingSushi} />
+                        <ReviewRatingScore>
+                            7.18
+                        </ReviewRatingScore>
+                    </ReviewRatingWrapper>
                 </ReviewAnimeStoryWrapper>
             </ReviewAnimeSynopsWrapper>
     );
@@ -32,6 +41,7 @@ const ReviewAnimePoster = styled.img`
 const ReviewAnimeStoryWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     margin: 0;
     margin-left: 40px;
 `;
@@ -48,3 +58,27 @@ const ReviewAnimeSynopsis = styled.p`
     color: var(--main-text);
     margin: 0;
 `;
+
+const ReviewRating = styled.img`
+    width: 40px;
+    height: 40px;
+`
+
+const ReviewSynopTextWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+`;
+
+const ReviewRatingWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    margin: 0;
+`
+
+const ReviewRatingScore = styled.p`
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--main-text);
+    margin: 0;
+`
