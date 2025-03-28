@@ -30,15 +30,16 @@ const HeroSlideWrapper = styled.div<{ active: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
-  width: 1440px;
+  width: 100%;
+  max-width: 100%;
   height: 700px;
   background-color: black;
   opacity: ${(props) => (props.active ? 1 : 0)};
   filter: ${(props) => (props.active ? "blur(0px)" : "blur(4px)")};
-
   transition: opacity 1s ease-in-out, filter 1s ease-in-out;
   pointer-events: none;
 `;
+
 
 const LeftFill = styled.div<{ active: boolean}>`
   position: absolute;
@@ -93,7 +94,7 @@ const ImageContainer = styled.div<{
 
 const Overlay = styled.div`
   position: absolute;
-  width: 120%;
+  width: 100%;
   height: 100%;
   background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.4), transparent);
 `;

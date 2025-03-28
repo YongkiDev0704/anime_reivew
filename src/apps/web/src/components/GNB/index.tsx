@@ -27,15 +27,15 @@ export const GNB = () => {
 };
 
 const GNBWrapper = styled.div`
-display: flex;
-align-items: center;
-color: white;
-z-index: 20;
-position: absolute;
-margin-top: 20px;
-padding-left: 30px;
-width: 100%;
-gap: 350px;
+  display: flex;
+  align-items: center;
+  color: white;
+  z-index: 20;
+  position: absolute;
+  margin-top: 20px;
+  padding-left: 30px;
+  max-width: 100%;
+  gap: 350px;
 `;
 
 const Branding = styled.div`

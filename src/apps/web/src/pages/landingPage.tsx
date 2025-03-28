@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { HeroSlide } from "../components/HeroSlide";
 import { useLandingAnimes } from "../hooks/useLandingAnime";
 import { GNB } from "../components/GNB";
+import { AnimeList } from "../components/AnimeList/AnimeList";
 
 export const LandingPage = () => {
   const { animes, loading, error } = useLandingAnimes();
@@ -66,49 +67,67 @@ export const LandingPage = () => {
 
 
   return (
-    <CarouselWrapper>
-      {slides.map((anime, i) => (
-        <HeroSlide
-          key={anime.title}
-          logo={anime.logo}
-          image={anime.image}
-          active={i === current}
-          positionX={anime.positionX}
-          positionY={anime.positionY}
-        />
-      ))}
-      <GNB />
-      <ArrowButton left onClick={handlePrev}>
-        <ChevronLeft size={40} color="white" />
-      </ArrowButton>
-      <ArrowButton right onClick={handleNext}>
-        <ChevronRight size={40} color="white" />
-      </ArrowButton>
+    <LandingPageWrapper>
+      <ContentContainer>
+        <CarouselWrapper>
+          {slides.map((anime, i) => (
+            <HeroSlide
+              key={anime.title}
+              logo={anime.logo}
+              image={anime.image}
+              active={i === current}
+              positionX={anime.positionX}
+              positionY={anime.positionY}
+            />
+          ))}
+          <GNB />
+          <ArrowButton left onClick={handlePrev}>
+            <ChevronLeft size={40} color="white" />
+          </ArrowButton>
+          <ArrowButton right onClick={handleNext}>
+            <ChevronRight size={40} color="white" />
+          </ArrowButton>
 
-      <IndicatorWrapper>
-        {slides.map((_, i) => (
-          <Indicator key={i} active={i === current} />
-        ))}
-        {/* {slides.map((_, i) => (
-          <IndicatorTwo key={i}>
-            <Fill active={i === current} />
-          </IndicatorTwo>
-        ))} */}
-        {/* {slides.map((_, i) => (
-          <IndicatorThree key={i} active={i === current} />
-        ))} */}
-      </IndicatorWrapper>
-    </CarouselWrapper>
+          <IndicatorWrapper>
+            {slides.map((_, i) => (
+              <Indicator key={i} active={i === current} />
+            ))}
+          </IndicatorWrapper>
+        </CarouselWrapper>
+        <AnimeSection>
+          <AnimeList listType="Trending"/>
+          <AnimeList listType="Latest update"/>
+          <AnimeList listType="For you"/>
+        </AnimeSection>
+      </ContentContainer>
+      <BottomFill />
+    </LandingPageWrapper>
   );
 };
+
+const LandingPageWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+`;
+
+const ContentContainer = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+`;
+
+
+const AnimeSection = styled.div`
+`;
 
 const CarouselWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 700px;
-  overflow: hidden;
-  background-color: black;
 `;
+
+
 
 const ArrowButton = styled.button<{ left?: boolean; right?: boolean }>`
   position: absolute;
@@ -141,36 +160,6 @@ const Indicator = styled.div<{ active: boolean }>`
   transition: background-color 0.3s;
 `;
 
-const IndicatorTwo = styled.div`
-  width: 60px;
-  height: 6px;
-  background-color: transparent;
-  border: 2px solid #00f5d4;
-  overflow: hidden;
-`;
-
-const Fill = styled.div<{ active: boolean }>`
-  height: 100%;
-  background-color: #00f5d4;
-  width: ${(props) => (props.active ? "100%" : "0%")};
-  animation: ${(props) =>
-    props.active ? "fillAnimation 1s linear forwards" : "none"};
-  transition: width 1s ease-in-out;
-
-  @keyframes fillAnimation {
-    from {
-      width: 0%;
-    }
-    to {
-      width: 100%;
-    }
-  }
-`;
-
-const IndicatorThree = styled.div<{ active: boolean }>`
-  width: 60px;
-  height: 12px;
-  background-color: ${(props) => (props.active ? "#00F5D4" : "transparent")};
-  border: 2px solid #00F5D4;
-  transition: background-color 1s;
+const BottomFill = styled.div`
+    height: 150px;
 `;

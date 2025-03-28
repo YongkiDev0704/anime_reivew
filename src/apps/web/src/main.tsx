@@ -8,8 +8,10 @@ import { MAX_WIDTH } from './style/GlobalStyle.tsx';
 import apolloClient from './apollo/apolloClient.ts'
 
 const Wrapper = styled.div`
-  width: ${MAX_WIDTH}px;
-  margin: 0 auth;
+  max-width: ${MAX_WIDTH}px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 createRoot(document.getElementById('root')!).render(

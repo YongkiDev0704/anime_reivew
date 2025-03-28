@@ -12,24 +12,33 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
     background-color: black;
-    color: #333;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    margin: 0 auto;
   }
-    
+  
+  body {
+    overflow-x: hidden;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+
+
+  body::-webkit-scrollbar {
+    display: none;   
+  }
+
   button {
     background-color: var(--accent-color);
     font-weight: bold;
   } 
 
   #root {
-    display: flex;
-    justify-content: center;
-    width: 100vw;
     background-color: black;
   }
 `;
