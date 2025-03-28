@@ -56,6 +56,7 @@ const ReviewAnimeBanner = styled.div<{bannerImage: string}>`
     background-image: url(${(props) => props.bannerImage});
     background-size: cover;
     background-position: center;
+    padding-bottom: 48px;
 `;
 
 const ReviewAnimeTitle = styled.h2`
