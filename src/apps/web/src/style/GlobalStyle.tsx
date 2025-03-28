@@ -17,37 +17,7 @@ export const GlobalStyle = createGlobalStyle`
     --box-container: #585858;
   }
 
-  html, body {
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    background-color: black;
-    margin: 0 auto;
-  }
   
-  body {
-    overflow-x: hidden;
-  }
-
-  body::-webkit-scrollbar {
-    display: none;
-  }
-
-
-
-  body::-webkit-scrollbar {
-    display: none;   
-  }
-
-  button {
-    background-color: var(--accent-color);
-    font-weight: bold;
-  } 
-
-  #root {
-    background-color: black;
-  }
-
   @font-face {
     font-family: 'RobotoRegular';
     src: url(${RobotoRegular}) format('truetype');
@@ -85,4 +55,37 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 24px;
     font-style: normal;
   }
+
+  html, body {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    background-color: black;
+    margin: 0 auto;
+    font-family: 'RobotoRegular', sans-serif;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+
+
+  body::-webkit-scrollbar {
+    display: none;   
+  }
+
+  button {
+    background-color: var(--accent-color);
+    font-weight: bold;
+  } 
+
+  #root {
+    background-color: black;
+  }
+
 `;
