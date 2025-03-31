@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     --accent-color: #00F5D4;
     --box-background: #333333;
     --box-container: #585858;
+    --footer-background: #111111;
   }
 
   
