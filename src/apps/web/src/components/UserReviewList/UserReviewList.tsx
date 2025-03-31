@@ -34,13 +34,14 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
 
     return (
         <UserReviewListWrapper>
-            <UserCardListWrapper>
+            <UserCardListWrapper $expanded={visibleReviewCard === 6}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
                 {testUserReviewCards.slice(0, visibleReviewCard).map((_, i) => (
                     <UserReviewCard key={i} />
                 ))} 
             </UserCardListWrapper>
             <ExtendButtonWrapper>
+                {/* Show either Up or Down button depends on the number of Review Shown */}
                 <ReviewExtendButton onClick={toggleVisibleReviews} src={(visibleReviewCard === 3 ? arrowUndder : arrowUpper)} />
             </ExtendButtonWrapper>
         </UserReviewListWrapper>
@@ -53,12 +54,15 @@ const UserReviewListWrapper = styled.section`
     flex-direction: column;
 `;
 
-const UserCardListWrapper = styled.div`
+const UserCardListWrapper = styled.div< {$expanded: boolean} >`
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     margin: 0 60px;
     gap: 15px;
+    overflow: hidden;
+    max-height: ${({ $expanded }) => ($expanded ? "500px" : "250px")};
+    transition: max-height 0.5s ease-in-out;
 `
 
 const ExtendButtonWrapper = styled.div`
