@@ -10,7 +10,7 @@ export const MAX_WIDTH = 1440;
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --main-background: #1E1E1E;
+    --main-background: #141414;
     --main-text: #FFFFFF;
     --accent-color: #00F5D4;
     --box-background: #333333;
