@@ -1,11 +1,22 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import { GlobalStyle } from "./style/GlobalStyle";
 import { LandingPage } from "./pages/landingPage";
+import { Layout } from "./components/Layout";
+import { Error } from "./pages/Error";
 
 export const App = () => {
   return (
     <>
       <GlobalStyle />
-      <LandingPage />
+      <BrowserRouter >
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<LandingPage />} />
+            <Route path="*" element={<Error />} />
+          </Route>
+         </Routes>
+      </BrowserRouter>
     </>
   );
 };

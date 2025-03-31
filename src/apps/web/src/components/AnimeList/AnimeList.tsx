@@ -83,8 +83,6 @@ export const AnimeList = ({ listType }: AnimeListProps) => {
   );
 };
 
-// ---------- styled-components ----------
-
 const SliderWrapper = styled.div`
   position: relative;
   max-width: 100%;
