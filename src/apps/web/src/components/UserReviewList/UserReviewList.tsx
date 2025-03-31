@@ -40,7 +40,9 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
                     <UserReviewCard key={i} />
                 ))} 
             </UserCardListWrapper>
-            <ReviewExtendButton onClick={toggleVisibleReviews} src={(visibleReviewCard === 3 ? arrowUndder : arrowUpper)} />
+            <ExtendButtonWrapper>
+                <ReviewExtendButton onClick={toggleVisibleReviews} src={(visibleReviewCard === 3 ? arrowUndder : arrowUpper)} />
+            </ExtendButtonWrapper>
         </UserReviewListWrapper>
     );
 };
@@ -49,12 +51,21 @@ const UserReviewListWrapper = styled.section`
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    justify-content: center;
 `;
 
 const UserCardListWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
+    margin: 0 60px;
+    gap: 15px;
+`
+
+const ExtendButtonWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 const ReviewExtendButton = styled.img`
