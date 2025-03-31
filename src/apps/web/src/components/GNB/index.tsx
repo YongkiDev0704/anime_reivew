@@ -1,3 +1,5 @@
+import { useLocation, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Icon from "../../assets/icons/logo.svg";
@@ -6,42 +8,62 @@ import Search from "../../assets/icons/search.svg";
 import User from "../../assets/icons/user.svg";
 
 export const GNB = () => {
+  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 100); 
+    };
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <GNBWrapper>
-      <Branding>
-        <img src={Icon} alt="Anigiri" width={80} />
-        <Name> Anigiri </Name>
-      </Branding>
-      <NavItemWrapper>
-        <NavItem> Home </NavItem>
-        <NavItem> Category </NavItem>
-        <NavItem> About </NavItem>
-      </NavItemWrapper>
-      <UserActionsWrapper>
-        <img src={Search} alt="Search" />
-        <img src={Notification} alt="Notification" />
-        <img src={User} alt="User" />
-      </UserActionsWrapper>
+    <GNBWrapper $scrolled={scrolled}>
+      <GNBInner>
+        <Branding to="/">
+          <img src={Icon} alt="Anigiri" width={80} />
+          <Name>Anigiri</Name>
+        </Branding>
+        <NavItemWrapper>
+          <NavItem to="/" $active={location.pathname === "/"}>Home</NavItem>
+          <NavItem to="/category" $active={location.pathname === "/category"}>Category</NavItem>
+          <NavItem to="/about" $active={location.pathname === "/about"}>About</NavItem>
+        </NavItemWrapper>
+        <UserActionsWrapper>
+          <img src={Search} alt="Search" />
+          <img src={Notification} alt="Notification" />
+          <img src={User} alt="User" />
+        </UserActionsWrapper>
+      </GNBInner>
     </GNBWrapper>
-  )
+  );
 };
 
-const GNBWrapper = styled.div`
+
+const GNBWrapper = styled.div<{ $scrolled: boolean }>`
+  position: fixed; 
+  z-index: 100;
+  color: white;
+  width: 1440px;
+  background-color: ${({ $scrolled }) => ($scrolled ? "rgba(0, 0, 0, 0.7)" : "transparent")};
+  transition: background-color 0.3s ease;
+`;
+
+const GNBInner = styled.div`
   display: flex;
   align-items: center;
-  color: white;
-  z-index: 20;
-  position: absolute;
-  margin-top: 20px;
-  padding-left: 30px;
-  max-width: 100%;
   gap: 350px;
 `;
 
-const Branding = styled.div`
+const Branding = styled(Link)`
   display: flex;
   align-items: center;
   justify-cotent: center;
+  color: white;
+  text-decoration: none;
   gap: 8px;
 `;
 
@@ -57,10 +79,18 @@ const NavItemWrapper = styled.div`
   gap: 84px;
 `;
 
-const NavItem = styled.p`
+const NavItem = styled(Link)<{ $active: boolean }>`
   font-size: 20px;
   font-weight: bold;
+  text-decoration: none;
+  color: ${({ $active }) => ($active ? "#00F5D4" : "white")};
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #00F5D4;
+  }
 `;
+
 
 const UserActionsWrapper = styled.div`
   display: flex;
