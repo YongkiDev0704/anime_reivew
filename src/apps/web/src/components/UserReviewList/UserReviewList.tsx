@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import arrowUndder from "../../assets/icons/arrowUnder.svg";
-import arrowUpper from "../../assets/icons/arrowUpper.svg";
 
 import { useState } from "react";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 type UserReviewListProps = {
     showAll?: boolean;
@@ -29,6 +28,7 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
         );
     };
 
+
     // testUserReviewCards 부분을 나중엔 reviews 로 대체
     const testUserReviewCards = new Array(6).fill(0);
 
@@ -42,7 +42,9 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
             </UserCardListWrapper>
             <ExtendButtonWrapper>
                 {/* Show either Up or Down button depends on the number of Review Shown */}
-                <ReviewExtendButton onClick={toggleVisibleReviews} src={(visibleReviewCard === 3 ? arrowUndder : arrowUpper)} />
+                {(visibleReviewCard === 3 ? 
+                    <ChevronDown onClick={toggleVisibleReviews} size={32} color="white"/> :
+                     <ChevronUp onClick={toggleVisibleReviews} size={32} color="white"/>)}
             </ExtendButtonWrapper>
         </UserReviewListWrapper>
     );
@@ -70,9 +72,4 @@ const ExtendButtonWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-`
-
-const ReviewExtendButton = styled.img`
-    width: 60px;
-    height: 60px;
 `
