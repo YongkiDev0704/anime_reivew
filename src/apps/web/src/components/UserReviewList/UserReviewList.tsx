@@ -61,7 +61,7 @@ const UserCardListWrapper = styled.div< {$expanded: boolean} >`
     margin: 0 60px;
     gap: 15px;
     overflow: hidden;
-    max-height: ${({ $expanded }) => ($expanded ? "500px" : "250px")};
+    max-height: ${({ $expanded }) => ($expanded ? "450px" : "225px")};
     transition: max-height 0.5s ease-in-out;
 `
 

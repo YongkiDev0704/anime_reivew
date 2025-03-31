@@ -14,7 +14,13 @@ export const ReviewSynops = ({}: ReviewSynopsProps) => {
                 <ReviewAnimeStoryWrapper>
                     <ReviewSynopTextWrapper>
                         <ReviewAnimeSynopHeader>Synopsis</ReviewAnimeSynopHeader>
-                        <ReviewAnimeSynopsis>Test Paragraph ahaskjdfajdslfkjalsdkjflaksdjflkasjdlfkjasd</ReviewAnimeSynopsis>
+                        <ReviewAnimeSynopsis>
+                            Nyan nyan nyaaaa~! Deep in the heart of Meowtopia, the legendary Catnipped Kingdom, an ancient prophecy meows of a chosen one destined to restore balance between the fluffy paws of destiny! 🐾
+
+                            Nyaaaan! Young adventurer Nyatto embarks on a perilous journey across the Whisker Woods, through the Purrfect Plains, and into the treacherous Litterbox Labyrinth! Along the way, Nyatto must gather the lost Meowgic Crystals, evade the sinister Canine Clan, and harness the power of the almighty Tuna Relic!
+
+                            Will Nyatto succeed, or will the kingdom fall into eternal woof-pression?! Only time will nyan-swer... Nyan nyan nyaaaaa! 🐱✨
+                        </ReviewAnimeSynopsis>
                     </ReviewSynopTextWrapper>
                     <ReviewRatingWrapper>
                         <ReviewRating src={ratingSushi} />
