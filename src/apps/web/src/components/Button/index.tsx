@@ -38,6 +38,7 @@ const BaseButton = styled.button<{ variant: "primary" | "secondary" | "third" }>
     props.variant === "third" &&
     css`
       font-size: 16px;
+      font-weight: normal;
       width: 134px;
       height: 40px;
     `}
