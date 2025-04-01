@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { GlobalStyle } from "./style/GlobalStyle";
 import { LandingPage } from "./pages/landingPage";
+import { AnimeReview } from "./pages/animeReview";
 import { Layout } from "./components/Layout";
 import { Error } from "./pages/Error";
 
@@ -14,6 +15,7 @@ export const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<LandingPage />} />
             <Route path="*" element={<Error />} />
+            <Route path="/review" element={<AnimeReview />}/>
           </Route>
          </Routes>
       </BrowserRouter>
