@@ -4,7 +4,30 @@ import ratingSushi from "../../assets/icons/rating.svg";
 
 import { Button } from "../Button";
 
-export const ReviewPopup = () => {
+// 3가지 mode 로 실행 Read / Write / Edit
+// 경우에 따라 다른식으로 component 구성을 살짝 바꾸는 형식으로 만들기 ㄱㄱ
+// 대충 Prop Input은 Mode, 이미 작성되어있는경우는 작성되어있는 글의 정보 (글,Rating 등등) 정도?
+
+type Review = {
+    username: String,
+    ratingScore: number,
+    reviewContext: String;
+}
+
+type ReviewPopupProps = {
+    mode: "Read" | "Write" | "Edit",
+    review?: Review;
+}
+
+export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
+
+    const isReadMode = mode === "Read";
+
+    // set attributes if It's Read Mode
+    const username = isReadMode ? review?.username ?? "Unknown User" : "Anonymous";
+    const ratingScore = isReadMode ? review?.ratingScore ?? "0" : "0";
+    const reviewText = isReadMode ? review?.reviewContext ?? "Unknown Review" : "";
+
     return(
         <ReviewPopupWrapper>
             {/* Icon / UserName /// Rating Score */}
@@ -14,15 +37,23 @@ export const ReviewPopup = () => {
                 <ReviewPopupUser>
                     <ReviewUserIcon src={defaultUserIcon}/>
                     <ReviewUserName>
-                        Username
+                        {username}
                     </ReviewUserName>
                 </ReviewPopupUser>
-                <ReviewPopupRating src={ratingSushi} />
-                {/* Rating Score */}
+                <ReviewPopupRatingWrapper>
+                    <ReviewPopupRatingScore>
+                        {ratingScore}
+                    </ReviewPopupRatingScore>
+                    <ReviewPopupRating src={ratingSushi} />
+                </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
-            <ReviewPopupTextBox placeholder="Write a review" />
+            <ReviewPopupTextBox placeholder="Write a review">
+                {reviewText}
+            </ReviewPopupTextBox>
             <ReviewPopupBottom>
-                <Button label="Submit" variant="third" />
+                {!isReadMode && (
+                    <Button label="Submit" variant="third" />
+                )}
             </ReviewPopupBottom>
         </ReviewPopupWrapper>
     );
@@ -57,6 +88,15 @@ const ReviewUserIcon = styled.img`
 const ReviewUserName = styled.p`
     color: var(--main-text);
     margin-left: 12px;
+`;
+
+const ReviewPopupRatingWrapper = styled.div`
+    display: flex;
+`;
+
+const ReviewPopupRatingScore = styled.p`
+    font-color: var(--main-text);
+    margin-right: 5px;
 `;
 
 const ReviewPopupRating = styled.img`
