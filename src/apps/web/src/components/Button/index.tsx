@@ -2,15 +2,24 @@ import styled, { css } from "styled-components";
 
 type ButtonProps = {
   label: string;
-  variant: "primary" | "secondary" | "third";
+  variant: "primary" | "secondary" | "third" | "custom";
   onClick?: () => void;
+  width?: string;
+  height?: string;
 };
 
-export const Button = ({ label, variant = "primary", onClick }: ButtonProps) => {
-  return <BaseButton variant={variant} onClick={onClick}> {label} </BaseButton>
+export const Button = ({ label, variant = "primary", width, height, onClick }: ButtonProps) => {
+  return <BaseButton 
+    variant={variant} 
+    onClick={onClick}
+    width={width}
+    height={height}
+  > 
+    {label} 
+  </BaseButton>
 };
 
-const BaseButton = styled.button<{ variant: "primary" | "secondary" | "third" }>`
+const BaseButton = styled.button<{ variant: "primary" | "secondary" | "third" | "custom"; width?: string, height?: string }>`
   border: none;
   border-radius: 20px;
   font-weight: bold;
@@ -40,5 +49,13 @@ const BaseButton = styled.button<{ variant: "primary" | "secondary" | "third" }>
       font-size: 16px;
       width: 134px;
       height: 40px;
+    `}
+
+  ${(props) =>
+    props.variant === "custom" &&
+    css`
+      font-size: 24px;
+      width: ${props.width};
+      height: ${props.height};
     `}
 `;
