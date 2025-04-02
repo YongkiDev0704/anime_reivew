@@ -1,20 +1,22 @@
 import styled from "styled-components";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+
 import { GNB } from "../GNB";
+import { Footer } from "../Footer";
 
 export const Layout = () => {
-  const location = useLocation();
 
   return (
     <PageWrapper>
       <GNB />
       <Outlet />
+      <Footer />
     </PageWrapper>
   );
 };
 
 const PageWrapper = styled.div`
-  position: relative; /* ✅ GNB absolute 기준 */
+  position: relative; 
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
