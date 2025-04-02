@@ -31,7 +31,6 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
         );
     };
 
-    
         const review = {
             username: "Username",
             ratingScore: 7.28,
@@ -99,9 +98,9 @@ const ExtendButtonWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 25px;
 `
-
-
+// Outer area of Modal
 const ReviewPopupOverlay = styled.div`
     position: fixed;
     top: 0;
