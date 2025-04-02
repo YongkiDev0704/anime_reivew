@@ -4,6 +4,7 @@ import userIconDefault from "../../assets/icons/user.svg";
 import { Review } from "../../types";
 
 // Receive Review Object and use data that's inside
+// OnClick event to open a modal
 type UserReviewCardProps = {
     review: Review;
     onClick?: () => void;
