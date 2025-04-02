@@ -74,6 +74,8 @@ export const LandingPage = () => {
               key={anime.title}
               logo={anime.logo}
               image={anime.image}
+              contentRating={anime.contentRating}
+              genres={anime.genres}
               active={i === current}
               positionX={anime.positionX}
               positionY={anime.positionY}

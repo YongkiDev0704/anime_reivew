@@ -3,19 +3,33 @@ import styled from "styled-components";
 import { Button } from "../Button";
 
 type Props = {
-  image: string; 
+  image: string;
   logo: string;
   active: boolean;
+  contentRating?: string | null;
+  genres?: string[];
   positionX?: string;
   positionY?: string;
 };
 
-export const HeroSlide = ({ logo, image, active, positionX = "center", positionY = "center" }: Props) => {
+
+export const HeroSlide = ({ logo, image, active, contentRating, genres, positionX = "center", positionY = "center" }: Props) => {
   return (
     <HeroSlideWrapper active={active}>
       <LeftFill active={active}/>
       <Content logoUrl={logo}>
       </Content>
+      {(contentRating || genres?.length) && (
+      <RatingGenreWrapper>
+        {genres && (
+          <Genres>
+            {contentRating} | {genres
+              .flatMap((g) => g.split("&").map((s) => s.trim()))
+              .join(", ")}
+           </Genres>
+          )}
+        </RatingGenreWrapper>
+      )}
       <ButtonWrapper>
         <Button variant="primary" label="See Review" />
       </ButtonWrapper>
@@ -37,7 +51,6 @@ const HeroSlideWrapper = styled.div<{ active: boolean }>`
   opacity: ${(props) => (props.active ? 1 : 0)};
   filter: ${(props) => (props.active ? "blur(0px)" : "blur(4px)")};
   transition: opacity 1s ease-in-out, filter 1s ease-in-out;
-  pointer-events: none;
 `;
 
 
@@ -57,11 +70,30 @@ const Content = styled.div<{ logoUrl: string; }>`
   background-image: url(${(props) => props.logoUrl});
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center 70%;
   z-index: 3;
   width: 300px;
   height: 273px;
   color: white;
+`;
+
+const RatingGenreWrapper = styled.div`
+  position: absolute;
+  width: 300px;
+  top: 440px;
+  left: 158px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 19px;
+  z-index: 4;
+`;
+
+const Genres = styled.p`
+  font-size: 14px;
+  color: white;
+  opacity: 0.8;
 `;
 
 const ButtonWrapper = styled.div`
@@ -69,9 +101,8 @@ const ButtonWrapper = styled.div`
   top: 500px;
   left: 200px;
   width: 240px;
-  z-index: 5;
+  z-index: 100;
 `;
-
 
 const ImageContainer = styled.div<{
   imageUrl: string;
