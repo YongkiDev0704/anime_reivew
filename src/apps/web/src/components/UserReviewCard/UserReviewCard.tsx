@@ -1,27 +1,21 @@
 import styled from "styled-components";
 import userIconDefault from "../../assets/icons/user.svg";
 
-// 나중엔 type.def에 넣어야함
-type Review = {
-    username: string,
-    ratingScore: number,
-    reviewComment: string,
-    userIcon?: string,
-    date: Date;
-}
+import { Review } from "../../types";
 
 // Receive Review Object and use data that's inside
 type UserReviewCardProps = {
     review: Review;
+    onClick?: () => void;
 } 
 
-export const UserReviewCard = ({review}: UserReviewCardProps) => {
+export const UserReviewCard = ({review, onClick}: UserReviewCardProps) => {
 
     const formattedDate = `${review.date.getFullYear()}.${(review.date.getMonth() + 1).toString().padStart(2, "0")}.${review.date.getDate().toString().padStart(2, "0")}`;
 
 
     return (
-        <UserReviewCardWrapper>
+        <UserReviewCardWrapper onClick={onClick}>
             <UserReviewInfoWrapper>
                 <UserReviewIdenWrapper>
                     <UserReviewIcon src={review.userIcon? review.userIcon : userIconDefault} alt="User Icon" />

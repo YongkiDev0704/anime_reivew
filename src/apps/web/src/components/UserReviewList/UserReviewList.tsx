@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Review } from "../../types";
+import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
 
 type UserReviewListProps = {
     showAll?: boolean;
@@ -20,6 +22,7 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
 
     // State to track of shown number of Reviews between 3,6
     const [visibleReviewCard, setVisibleReviewCard] = useState<number>(reviewNumber);
+    const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
     // Reviews
     const toggleVisibleReviews = () => {
@@ -39,12 +42,20 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
     // testUserReviewCards 부분을 나중엔 reviews 로 대체
     const testUserReviewCards = new Array(6).fill(review);
 
+    // Popup Related Methods to open and close
+    const openReviewPopup = (review: Review) => {
+        setSelectedReview(review);
+    };
+    const closeReviewPopup = () => {
+        setSelectedReview(null);
+    };
+
     return (
         <UserReviewListWrapper>
             <UserCardListWrapper $expanded={visibleReviewCard === 6}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
                 {testUserReviewCards.slice(0, visibleReviewCard).map((review, i) => (
-                    <UserReviewCard review={review} key={i} />
+                    <UserReviewCard review={review} key={i} onClick={() => openReviewPopup(review)} />
                 ))} 
             </UserCardListWrapper>
             <ExtendButtonWrapper>
@@ -53,6 +64,15 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
                     <ChevronDown onClick={toggleVisibleReviews} size={32} color="white"/> :
                      <ChevronUp onClick={toggleVisibleReviews} size={32} color="white"/>)}
             </ExtendButtonWrapper>
+
+            {/* Modal: Show ReviewPopup When Clicked */}
+            {selectedReview && (
+                <ReviewPopupOverlay onClick={closeReviewPopup}>
+                    <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
+                        <ReviewPopup mode="Read" review={selectedReview} />
+                    </ReviewPopupContent>
+                </ReviewPopupOverlay>
+            )}
         </UserReviewListWrapper>
     );
 };
@@ -80,3 +100,21 @@ const ExtendButtonWrapper = styled.div`
     align-items: center;
     justify-content: center;
 `
+
+
+const ReviewPopupOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+`;
+
+const ReviewPopupContent = styled.div`
+    position: relative;
+`;

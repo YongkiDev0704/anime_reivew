@@ -7,3 +7,12 @@ export type Anime = {
   posterUrls: string[];
   backdropUrls: string[];
 };
+
+
+export type Review = {
+  username: string,
+  ratingScore: number,
+  reviewComment: string,
+  userIcon?: string,
+  date: Date;
+}
