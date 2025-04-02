@@ -1,6 +1,6 @@
 import styled, { ThemeProvider } from "styled-components";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Review } from "../../types";
@@ -42,6 +42,20 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
     const closeReviewPopup = () => {
         setSelectedReview(null);
     };
+    
+    // Close the Modal when ESC is Pressed
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                closeReviewPopup();
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [selectedReview]);
 
     return (
         <UserReviewListWrapper>
