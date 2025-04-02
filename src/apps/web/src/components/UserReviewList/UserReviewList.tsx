@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 
 import { useState } from "react";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
@@ -8,17 +8,21 @@ import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
 
 type UserReviewListProps = {
     showAll?: boolean;
-    //reviews: Review;
+    reviews: Review[];
 }
 
-export const UserReviewList = ({showAll}: UserReviewListProps) => {
+export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
 
-    if(!showAll){
-        // 이 경우엔 3,6개를 보여주는게 아니라 모든 리뷰 보여주기.
+    
+    let reviewNumber = 3;
+    const size = {
+        defaultSize: {width: "398px", height: "180px"},
+        viewAllSize: {width: "534px", height: "180px"}
     }
 
-    let reviewNumber = 3;
-    // 나중엔 reviewNumber 를 reviewLength 가 3보다 작을경우나 6보다 작을경우 처리
+    if(showAll){
+        reviewNumber = reviews.length;
+    }
 
     // State to track of shown number of Reviews between 3,6
     const [visibleReviewCard, setVisibleReviewCard] = useState<number>(reviewNumber);
@@ -31,16 +35,6 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
         );
     };
 
-        const review = {
-            username: "Username",
-            ratingScore: 7.28,
-            reviewComment: "Comment",
-            date: new Date()
-        }
-
-    // testUserReviewCards 부분을 나중엔 reviews 로 대체
-    const testUserReviewCards = new Array(6).fill(review);
-
     // Popup Related Methods to open and close
     const openReviewPopup = (review: Review) => {
         setSelectedReview(review);
@@ -51,18 +45,27 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
 
     return (
         <UserReviewListWrapper>
-            <UserCardListWrapper $expanded={visibleReviewCard === 6}>
+            <UserReviewHead>
+                Review
+            </UserReviewHead>
+            <UserCardListWrapper $expanded={visibleReviewCard <= 6} $viewAll={showAll ?? false}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
-                {testUserReviewCards.slice(0, visibleReviewCard).map((review, i) => (
-                    <UserReviewCard review={review} key={i} onClick={() => openReviewPopup(review)} />
-                ))} 
+                <ThemeProvider theme={{size: showAll? size.viewAllSize : size.defaultSize}} >
+                    {reviews.slice(0, visibleReviewCard).map((review, i) => (
+                        <UserReviewCard review={review} key={i} onClick={() => openReviewPopup(review)} />
+                    ))} 
+                </ThemeProvider>
             </UserCardListWrapper>
-            <ExtendButtonWrapper>
-                {/* Show either Up or Down button depends on the number of Review Shown */}
-                {(visibleReviewCard === 3 ? 
-                    <ChevronDown onClick={toggleVisibleReviews} size={32} color="white"/> :
-                     <ChevronUp onClick={toggleVisibleReviews} size={32} color="white"/>)}
-            </ExtendButtonWrapper>
+
+            {/* Render if This isn't viewAll Page */}
+            {!showAll && (
+                    <ExtendButtonWrapper>
+                        {/* Show either Up or Down button depends on the number of Review Shown */}
+                        {(visibleReviewCard === 3 ? 
+                            <ChevronDown onClick={toggleVisibleReviews} size={32} color="white"/> :
+                            <ChevronUp onClick={toggleVisibleReviews} size={32} color="white"/>)}
+                    </ExtendButtonWrapper>
+            )}
 
             {/* Modal: Show ReviewPopup When Clicked */}
             {selectedReview && (
@@ -80,16 +83,23 @@ const UserReviewListWrapper = styled.section`
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    margin: 0 60px;
 `;
 
-const UserCardListWrapper = styled.div< {$expanded: boolean} >`
+const UserReviewHead = styled.h2`
+    color: var(--main-text);
+    font-size: 32px;
+`
+
+const UserCardListWrapper = styled.div< {$expanded: boolean; $viewAll: boolean} >`
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    margin: 0 60px;
-    gap: 15px;
+    justify-content: ${({ $viewAll }) => ($viewAll ? "center" : "none")};
+    gap: ${({ $viewAll }) => ($viewAll ? "20px" : "15px")};
     overflow: hidden;
-    max-height: ${({ $expanded }) => ($expanded ? "450px" : "225px")};
+    max-height: ${({ $viewAll, $expanded }) => 
+        $viewAll ? "none" : ($expanded ? "450px" : "225px")};
     transition: max-height 0.5s ease-in-out;
 `
 

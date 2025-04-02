@@ -46,8 +46,8 @@ const UserReviewCardWrapper = styled.section`
     display: flex;
     flex-direction: column;
     background-color: var(--box-background);
-    width: 398px;
-    height: 180px;
+    width: ${(props) => props.theme.size.width};
+    height: ${(props) => props.theme.size.height};
     border-radius: 25px;
     padding: 16px;
     font-size: 14px;
