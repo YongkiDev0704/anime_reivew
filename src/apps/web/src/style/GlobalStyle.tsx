@@ -91,4 +91,8 @@ export const GlobalStyle = createGlobalStyle`
     background-color: black;
   }
 
+  p {
+    margin: 0;
+    padding: 0;
+  }
 `;
