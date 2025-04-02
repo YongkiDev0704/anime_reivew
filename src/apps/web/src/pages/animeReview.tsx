@@ -4,6 +4,7 @@ import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 import { AnimeList } from "../components/AnimeList/AnimeList";
+import { ReviewPopup } from "../components/ReviewPopup/ReviewPopup";
 
 // Anime 객체를 받아와서 사용?
 // 일일이 정의 X?
@@ -17,6 +18,13 @@ type AnimeReviewProps = {
     // animePlayDate: Date;
 }
 
+const review = {
+    username: "Anonymous",
+    ratingScore: 5.81,
+    reviewComment: "This was Amazing Anime",
+    date: new Date()
+}
+
 export const AnimeReview = ({}: AnimeReviewProps) => {
     return (
         <AnimeReviewWrapper>
@@ -25,6 +33,7 @@ export const AnimeReview = ({}: AnimeReviewProps) => {
             <UserReviewList />
             <AnimeList listType="Related Content"/>
             <AnimeList listType="Something New"/>
+            <ReviewPopup mode="Read" review={review} />
         </AnimeReviewWrapper>
     );
 };

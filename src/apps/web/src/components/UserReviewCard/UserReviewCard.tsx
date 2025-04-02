@@ -1,34 +1,48 @@
 import styled from "styled-components";
 import userIconDefault from "../../assets/icons/user.svg";
 
-// type UserReviewCardProps = {
-//     userName: string;
-//     userComment: string;
-//     userIcon?: string;
-//     commentDate: Date;
-//     userRating: number;
-// } 
+// 나중엔 type.def에 넣어야함
+type Review = {
+    username: string,
+    ratingScore: number,
+    reviewComment: string,
+    userIcon?: string,
+    date: Date;
+}
 
+// Receive Review Object and use data that's inside
+type UserReviewCardProps = {
+    review: Review;
+} 
 
-export const UserReviewCard = () => {
+export const UserReviewCard = ({review}: UserReviewCardProps) => {
+
+    const formattedDate = `${review.date.getFullYear()}.${(review.date.getMonth() + 1).toString().padStart(2, "0")}.${review.date.getDate().toString().padStart(2, "0")}`;
+
 
     return (
         <UserReviewCardWrapper>
             <UserReviewInfoWrapper>
                 <UserReviewIdenWrapper>
-                    {/* <ReviewUserIcon src={userIcon || userIconDefault} alt="User Icon" /> */}
-                    <UserReviewIcon src={userIconDefault} alt="User Icon" />
-                    <p>UserName</p>
+                    <UserReviewIcon src={review.userIcon? review.userIcon : userIconDefault} alt="User Icon" />
+                    <UserReviewNameDate>
+                        <UserReviewInfoText>
+                            {review.username}
+                        </UserReviewInfoText>
+                        <UserReviewInfoText>
+                            {formattedDate}
+                        </UserReviewInfoText>
+                    </UserReviewNameDate>
                 </UserReviewIdenWrapper>
                 <UserReviewRatingBox>
                     <UserRatingScore>
-                        7.28
+                        {review.ratingScore}
                     </UserRatingScore>
                 </UserReviewRatingBox>
             </UserReviewInfoWrapper>
             <UserReviewBorder />
             <UserReviewText>
-                Conmment
+                {review.reviewComment}
             </UserReviewText>
         </UserReviewCardWrapper>
     );
@@ -65,6 +79,11 @@ const UserReviewIcon = styled.img`
     margin-right: 8px;
 `;
 
+const UserReviewNameDate = styled.div`
+    display: flex;
+    flex-flow: column wrap;
+`;
+
 const UserReviewRatingBox = styled.div`
     background-color: var(--box-container);
     width: 51px;
@@ -88,6 +107,10 @@ const UserReviewBorder = styled.div`
     height: 0;
     margin: 7px 1px;
     border-radius: 50px;
+`;
+
+const UserReviewInfoText = styled.p`
+    color: var(--main-text);
 `;
 
 const UserReviewText = styled.p`

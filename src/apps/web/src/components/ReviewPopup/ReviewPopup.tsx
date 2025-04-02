@@ -9,9 +9,11 @@ import { Button } from "../Button";
 // 대충 Prop Input은 Mode, 이미 작성되어있는경우는 작성되어있는 글의 정보 (글,Rating 등등) 정도?
 
 type Review = {
-    username: String,
+    username: string,
     ratingScore: number,
-    reviewContext: String;
+    reviewComment: string,
+    userIcon?: string,
+    date: Date;
 }
 
 type ReviewPopupProps = {
@@ -26,7 +28,10 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
     // set attributes if It's Read Mode
     const username = isReadMode ? review?.username ?? "Unknown User" : "Anonymous";
     const ratingScore = isReadMode ? review?.ratingScore ?? "0" : "0";
-    const reviewText = isReadMode ? review?.reviewContext ?? "Unknown Review" : "";
+    const reviewText = isReadMode ? review?.reviewComment ?? "Unknown Review" : "";
+    const dateInput = (isReadMode ? review?.date?? new Date() : new Date());
+    const formattedDate = `${dateInput.getFullYear()}.${(dateInput.getMonth() + 1).toString().padStart(2, "0")}.${dateInput.getDate().toString().padStart(2, "0")}`;
+
 
     return(
         <ReviewPopupWrapper>
@@ -36,9 +41,14 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
             <ReviewPopupTop>
                 <ReviewPopupUser>
                     <ReviewUserIcon src={defaultUserIcon}/>
-                    <ReviewUserName>
-                        {username}
-                    </ReviewUserName>
+                    <ReviewPopupUserWrapper>
+                        <ReviewPopupInfoText>
+                            {username}
+                        </ReviewPopupInfoText>
+                        <ReviewPopupInfoText>
+                            {formattedDate}
+                        </ReviewPopupInfoText>
+                    </ReviewPopupUserWrapper>
                 </ReviewPopupUser>
                 <ReviewPopupRatingWrapper>
                     <ReviewPopupRatingScore>
@@ -47,7 +57,7 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
                     <ReviewPopupRating src={ratingSushi} />
                 </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
-            <ReviewPopupTextBox placeholder="Write a review">
+            <ReviewPopupTextBox placeholder="Write a review" readOnly={isReadMode}>
                 {reviewText}
             </ReviewPopupTextBox>
             <ReviewPopupBottom>
@@ -85,9 +95,16 @@ const ReviewUserIcon = styled.img`
     width: 50px;
     height: 50px;
 `
-const ReviewUserName = styled.p`
-    color: var(--main-text);
+
+const ReviewPopupUserWrapper = styled.div`
+    display: flex;
+    flex-flow: column wrap;
     margin-left: 12px;
+`;
+
+
+const ReviewPopupInfoText = styled.p`
+    color: var(--main-text);
 `;
 
 const ReviewPopupRatingWrapper = styled.div`

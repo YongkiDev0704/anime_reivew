@@ -28,16 +28,23 @@ export const UserReviewList = ({showAll}: UserReviewListProps) => {
         );
     };
 
+    
+        const review = {
+            username: "Username",
+            ratingScore: 7.28,
+            reviewComment: "Comment",
+            date: new Date()
+        }
 
     // testUserReviewCards 부분을 나중엔 reviews 로 대체
-    const testUserReviewCards = new Array(6).fill(0);
+    const testUserReviewCards = new Array(6).fill(review);
 
     return (
         <UserReviewListWrapper>
             <UserCardListWrapper $expanded={visibleReviewCard === 6}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
-                {testUserReviewCards.slice(0, visibleReviewCard).map((_, i) => (
-                    <UserReviewCard key={i} />
+                {testUserReviewCards.slice(0, visibleReviewCard).map((review, i) => (
+                    <UserReviewCard review={review} key={i} />
                 ))} 
             </UserCardListWrapper>
             <ExtendButtonWrapper>
