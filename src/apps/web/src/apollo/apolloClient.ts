@@ -7,4 +7,11 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export default apolloClient;
+const anilistClient = new ApolloClient({
+  link: new HttpLink({
+    uri: 'https://graphql.anilist.co',
+  }),
+  cache: new InMemoryCache(),
+});
+
+export { apolloClient, anilistClient };
