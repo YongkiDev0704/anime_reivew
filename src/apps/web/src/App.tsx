@@ -1,23 +1,26 @@
-import styled from "styled-components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { GlobalStyle } from "./style/GlobalStyle";
-import { AnimeList } from "./components/AnimeList/AnimeList";
-import { AnimeReview } from "./components/AnimeReview/AnimeReview";
+import { LandingPage } from "./pages/landingPage";
+import { AnimeReview } from "./pages/animeReview";
+import { Layout } from "./components/Layout";
+import { Error } from "./pages/Error";
+import { ViewAllReview } from "./pages/viewAllReview";
 
 export const App = () => {
-  
   return (
-    <ProviderWrap>
+    <>
       <GlobalStyle />
-      <AnimeList listType="Trending"/>
-      <AnimeReview username="Anonymous"/>
-    </ProviderWrap>
-  )
+      <BrowserRouter >
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<LandingPage />} />
+            <Route path="*" element={<Error />} />
+            <Route path="/review" element={<AnimeReview />} />
+            <Route path="/review/viewall" element={<ViewAllReview />} />
+          </Route>
+         </Routes>
+      </BrowserRouter>
+    </>
+  );
 };
-
-const ProviderWrap = styled.div`
-  background-color: #1E1E1E;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;

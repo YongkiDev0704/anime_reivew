@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import ratingStar from "../../assets/icons/rating-star.svg";
+
+import rating from "../../assets/icons/rating.svg";
 
 // Typedef of AnimeCard's Props
 type AnimeCardProps = {
@@ -19,13 +20,12 @@ export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardPr
         </AnimePhotoWrapper>
         <AnimeName>{animeName}</AnimeName>
         <AnimeRatingWrapper>
-            <RatingStar src={ratingStar} alt="Small star Icon for Review Score"/>
+            <RatingStar src={rating} alt="Small star Icon for Review Score"/>
             {animeRating}
         </AnimeRatingWrapper>
     </AnimeCardWrapper>
   );
 };
-
 
 // Styles
 const AnimeCardWrapper = styled.div`
@@ -34,29 +34,27 @@ const AnimeCardWrapper = styled.div`
     position: relative;
     justify-content: center;
     align-item: center;
-    margin: 10px 5px;
-`
+`;
 
 const AnimePhoto = styled.img`
-    width: 215px;
-    height: 300px;
+    width: 200px;
+    height: 279px;
     border-radius: 10px;
     object-fit: cover;
     transition: all 0.3 ease;
-`
+`;
 
 const AnimeName = styled.h3`
-    max-width: 215px;
+    max-width: 200px;
     font-size: 16px;
     font-weight: bold;
     color: #FFFFFF;
     margin: 0;
     margin-top: 8px;
 
-    // prevent overflow of text
     word-wrap: break-word;
     word-break; break-word;
-`
+`;
 
 const AnimeRatingWrapper = styled.p`
     font-size: 16px;
@@ -65,12 +63,12 @@ const AnimeRatingWrapper = styled.p`
     display: flex;
     align-items: center;
     color: #FFFFFF;
-`
+`;
 const RatingStar = styled.img`
     width: 16px;
     height: 16px;
     margin-right: 4px;
-`
+`;
 
 const ReviewButton = styled.button`
     position: absolute;
@@ -87,7 +85,7 @@ const ReviewButton = styled.button`
     // Hide button before hover
     visibility: hidden;
     opacity: 0;
-`
+`;
 
 const AnimePhotoWrapper = styled.div`
     display: flex;
@@ -104,4 +102,4 @@ const AnimePhotoWrapper = styled.div`
         opacity: 1;
         visibility: visible;
     }
-`
+`;
