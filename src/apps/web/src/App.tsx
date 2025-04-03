@@ -1,26 +1,19 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 
+import { AnimationCardThird } from "./components/AnimationCard";
 import { GlobalStyle } from "./style/GlobalStyle";
-import { LandingPage } from "./pages/landingPage";
-import { AnimeReview } from "./pages/animeReview";
-import { Layout } from "./components/Layout";
-import { Error } from "./pages/Error";
-import { ViewAllReview } from "./pages/viewAllReview";
 
 export const App = () => {
+  
   return (
-    <>
+    <ProviderWrap>
       <GlobalStyle />
-      <BrowserRouter >
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<LandingPage />} />
-            <Route path="*" element={<Error />} />
-            <Route path="/review" element={<AnimeReview />} />
-            <Route path="/review/viewall" element={<ViewAllReview />} />
-          </Route>
-         </Routes>
-      </BrowserRouter>
-    </>
-  );
+      <AnimationCardThird name="hehe" rating={4.0}/>
+    </ProviderWrap>
+  )
 };
+
+const ProviderWrap = styled.div`
+  display: flex;
+  width: 100%;
+`;
