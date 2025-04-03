@@ -5,10 +5,10 @@ import ratingSushi from "../../assets/icons/rating.svg";
 import { Button } from "../Button";
 import { Review } from "../../types";
 
-// 3가지 mode 로 실행 Read / Write / Edit
-// 경우에 따라 다른식으로 component 구성을 살짝 바꾸는 형식으로 만들기 ㄱㄱ
-// 대충 Prop Input은 Mode, 이미 작성되어있는경우는 작성되어있는 글의 정보 (글,Rating 등등) 정도?
 
+// 3 Different Mode for [Read / Write / Edit]
+// Render a component in slightly different way for each mode
+// Review Data recieved from Prop
 type ReviewPopupProps = {
     mode: "Read" | "Write" | "Edit",
     review?: Review;
@@ -28,9 +28,6 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
 
     return(
         <ReviewPopupWrapper>
-            {/* Icon / UserName /// Rating Score */}
-            {/* Text Box Area */}
-            {/* Submit Button */}
             <ReviewPopupTop>
                 <ReviewPopupUser>
                     <ReviewUserIcon src={defaultUserIcon}/>
