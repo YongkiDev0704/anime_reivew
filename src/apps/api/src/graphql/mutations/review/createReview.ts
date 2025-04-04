@@ -9,7 +9,10 @@ export const createReview: Resolver<
       AniReview,
       "username" |
       "review_rating" |
-      "review_comment" 
+      "review_comment" |
+      "review_password" |
+      "anilist_id" |
+      "anime_name"
     >;
   }, {
     success: boolean;

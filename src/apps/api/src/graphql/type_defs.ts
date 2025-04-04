@@ -52,7 +52,13 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
   type getReviewByUsernameResult {
     success: Boolean!
     error: String
-    data: Review
+    data: [Review!]!
+  }
+
+  type getReviewsByAnilistId {
+    success: Boolean!
+    error: String
+    data: [Review!]!
   }
 
   type Mutation {
@@ -68,6 +74,10 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
   }
 
   type Query {
-    getReviewByUsername(username: String!): getReviewByUsernameResult!
+    getReviewsByUsername(username: String!): getReviewsByUsernameResult!
+  }
+    
+  type Query {
+    getReviewByAnilistId(anilist_id: number!): getReviewsByAnilistId!
   }
 `;
