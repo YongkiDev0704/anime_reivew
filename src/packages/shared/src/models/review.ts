@@ -18,12 +18,12 @@ export class AniReview extends BaseEntity {
   public review_comment!: string;
 
   // password to edit or delete the review
-  public review_password?: number;
+  public review_password?: string;
 
   // id from anilist api
   public anilist_id!: number;
 
   // name of the anime that user is writing review for
   public anime_name!: string;
-  
+
 };

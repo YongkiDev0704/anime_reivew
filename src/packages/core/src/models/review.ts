@@ -23,6 +23,17 @@ export class Review extends AniReview {
 
   @prop({ required: true })
   declare public review_comment: string;
+
+  // Possibly need update later?
+  @prop({ required: false, default: "101010" })
+  declare public review_password: string;
+
+  @prop({ required: true })
+  declare public anilist_id: number;
+
+  @prop({ required: true })
+  declare public anime_name: string;
+  
 };
 
 export const ReviewModel: ReturnModelType<typeof Review> = 
