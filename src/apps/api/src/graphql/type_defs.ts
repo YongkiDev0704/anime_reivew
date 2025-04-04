@@ -19,6 +19,9 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     username: String
     review_rating: Float!
     review_comment: String!
+    review_password: String
+    anilist_id: Int!
+    anime_name: String!
   }
 
   input CreateUserInput {
@@ -36,6 +39,9 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     username: String
     review_rating: Float!
     review_comment: String!
+    review_password: String
+    anilist_id: Int!
+    anime_name: String!
   }
 
   type CreateReviewResult {
@@ -49,13 +55,13 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     data: User
   }
 
-  type getReviewByUsernameResult {
+  type getRevieswByUsernameResult {
     success: Boolean!
     error: String
     data: [Review!]!
   }
 
-  type getReviewsByAnilistId {
+  type getReviewsByAnilistIdResult {
     success: Boolean!
     error: String
     data: [Review!]!
@@ -74,10 +80,10 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
   }
 
   type Query {
-    getReviewsByUsername(username: String!): getReviewsByUsernameResult!
+    getReviewsByUsername(username: String!): getRevieswByUsernameResult!
   }
     
   type Query {
-    getReviewByAnilistId(anilist_id: number!): getReviewsByAnilistId!
+    getReviewsByAnilistId(anilist_id: Int!): getReviewsByAnilistIdResult!
   }
 `;
