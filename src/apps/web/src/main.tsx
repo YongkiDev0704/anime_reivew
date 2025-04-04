@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/client'
 
 import { App } from './App.tsx'
 import { MAX_WIDTH } from './style/GlobalStyle.tsx';
+import { apolloClient, anilistClient } from './apollo/apolloClient.ts'
 import { client } from './apollo/apolloClient.ts'
 
 const Wrapper = styled.div`
