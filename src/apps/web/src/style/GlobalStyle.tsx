@@ -9,55 +9,16 @@ import Inter24Regular from "../assets/fonts/Inter/Inter_24pt-Regular.ttf"
 export const MAX_WIDTH = 1440;
 
 export const GlobalStyle = createGlobalStyle`
-  :root {
-    --main-background: #141414;
-    --main-text: #FFFFFF;
-    --accent-color: #00F5D4;
-    --box-background: #333333;
-    --box-container: #585858;
-    --popup-border: #D9D9D9;
-    --footer-background: #111111;
-  }
-
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url(${RobotoRegular}) format('truetype');
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Roboto';
-    src: url(${RobotoBold}) format('truetype');
-    font-weight: 700;
-    font-style: normal;
+:root {
+  --main-background: #141414;
+  --main-text: #FFFFFF;
+  --accent-color: #00F5D4;
+  --box-background: #333333;
+  --box-container: #585858;
+  --popup-border: #D9D9D9;
+  --footer-background: #111111;
   }
   
-  @font-face {
-    font-family: 'Inter';
-    src: url(${Inter18Bold}) format('truetype');
-    font-weight: 700;
-    font-size: 18px;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    src: url(${Inter24Bold}) format('truetype');
-    font-weight: 700;
-    font-size: 24px;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    src: url(${Inter24Regular}) format('truetype');
-    font-weight: 400;
-    font-size: 24px;
-    font-style: normal;
-  }
-
   html, body {
     padding: 0;
     width: 100%;
@@ -96,4 +57,50 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+
+  @font-face {
+    font-family: 'Roboto';
+    src: url(${RobotoRegular}) format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+
+  }
+
+  @font-face {
+    font-family: 'Roboto';
+    src: url(${RobotoBold}) format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
+    src: url(${Inter18Bold}) format('truetype');
+    font-weight: 700;
+    font-size: 18px;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url(${Inter24Bold}) format('truetype');
+    font-weight: 700;
+    font-size: 24px;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url(${Inter24Regular}) format('truetype');
+    font-weight: 400;
+    font-size: 24px;
+    font-style: normal;
+    font-display: swap;
+  }
+
 `;
+

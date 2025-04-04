@@ -1,34 +1,89 @@
+// LandingPage.tsx
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useQuery } from "@apollo/client";
 
 import { HeroSlide } from "../components/HeroSlide";
-import { useLandingAnimes } from "../hooks/useLandingAnime";
 import { AnimeList } from "../components/AnimeList/AnimeList";
+import { useLandingAnimes } from "../hooks/useLandingAnime";
+import { SkeletonHeroSlide } from "../components/SkeletonHeroSlide";
+import { SkeletonAnimeList } from "../components/SkeletonAnimeList";
+import {
+  GET_TRENDING_ANIME,
+  GET_LATEST_ANIME,
+  GET_RECOMMENDED_ANIME,
+} from "../graphql/queries";
 
 export const LandingPage = () => {
-  const { animes, loading, error } = useLandingAnimes();
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const formatAnime = (anime: any) => ({
+    animeName: anime.title.romaji,
+    animePhotoURL: anime.coverImage.large,
+    animeRating: anime.averageScore / 10,
+  });
+
+  const { animes, loading: landingLoading, error: landingError } = useLandingAnimes();
+  
+  const { data: trendingData, loading: trendingLoading } = useQuery(GET_TRENDING_ANIME, {
+    context: { clientName: "anilist" },
+    fetchPolicy: 'cache-first',
+  });
+  const { data: latestData, loading: latestLoading } = useQuery(GET_LATEST_ANIME, {
+    context: { clientName: "anilist" },
+    fetchPolicy: 'cache-first',
+  });
+  const { data: forYouData, loading: forYouLoading } = useQuery(GET_RECOMMENDED_ANIME, {
+    context: { clientName: "anilist" },
+    fetchPolicy: 'cache-first',
+  });
+  
+  const trendingAnimes = trendingData?.Page.media.map(formatAnime) || [];
+  const latestAnimes = latestData?.Page.media.map(formatAnime) || [];
+  const forYouAnimes = forYouData?.Page.media.map(formatAnime) || [];
 
   const startTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+      setCurrent((prev) => (prev + 1) % animes.length);
     }, 10000);
   };
-  
+
   useEffect(() => {
     if (animes.length === 0) return;
-    startTimer(); 
-  
+    startTimer();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [animes.length]);
 
-  if (loading) return 
-  if (error) return <p>{error}</p>;
+  const isQueryLoading =
+    landingLoading ||
+    trendingLoading ||
+    latestLoading ||
+    forYouLoading;
+
+  if (isQueryLoading) {
+    return (
+      <LandingPageWrapper>
+        <ContentContainer>
+          <CarouselWrapper>
+            <SkeletonHeroSlide />
+          </CarouselWrapper>
+          <AnimeSection>
+            <SkeletonAnimeList listType="Trending" />
+            <SkeletonAnimeList listType="Latest Update" />
+            <SkeletonAnimeList listType="For You" />
+          </AnimeSection>
+          <BottomFill />
+        </ContentContainer>
+      </LandingPageWrapper>
+    );
+  };
+
+  if (landingError) return <p>{landingError}</p>;
 
   const slides = [
     {
@@ -56,14 +111,13 @@ export const LandingPage = () => {
 
   const handlePrev = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-    startTimer(); 
-  };
-  
-  const handleNext = () => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-    startTimer(); 
+    startTimer();
   };
 
+  const handleNext = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+    startTimer();
+  };
 
   return (
     <LandingPageWrapper>
@@ -87,7 +141,6 @@ export const LandingPage = () => {
           <ArrowButton right onClick={handleNext}>
             <ChevronRight size={40} color="white" />
           </ArrowButton>
-
           <IndicatorWrapper>
             {slides.map((_, i) => (
               <Indicator key={i} active={i === current} />
@@ -95,9 +148,9 @@ export const LandingPage = () => {
           </IndicatorWrapper>
         </CarouselWrapper>
         <AnimeSection>
-          <AnimeList listType="Trending"/>
-          <AnimeList listType="Latest update"/>
-          <AnimeList listType="For you"/>
+          <AnimeList listType="Trending" data={trendingAnimes} />
+          <AnimeList listType="Latest Update" data={latestAnimes} />
+          <AnimeList listType="For You" data={forYouAnimes} />
         </AnimeSection>
       </ContentContainer>
       <BottomFill />
@@ -117,17 +170,13 @@ const ContentContainer = styled.div`
   margin: 0 auto;
 `;
 
-
-const AnimeSection = styled.div`
-`;
+const AnimeSection = styled.div``;
 
 const CarouselWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 700px;
 `;
-
-
 
 const ArrowButton = styled.button<{ left?: boolean; right?: boolean }>`
   position: absolute;
@@ -161,5 +210,5 @@ const Indicator = styled.div<{ active: boolean }>`
 `;
 
 const BottomFill = styled.div`
-    height: 150px;
+  height: 150px;
 `;

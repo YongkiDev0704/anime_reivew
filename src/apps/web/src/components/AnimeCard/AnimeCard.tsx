@@ -2,18 +2,15 @@ import styled from "styled-components";
 
 import rating from "../../assets/icons/rating.svg";
 
-// Typedef of AnimeCard's Props
 type AnimeCardProps = {
     animeName: string;
     animePhotoURL?: string;
     animeRating: number;
   };
 
-// AnimeCard Component (Photo/Name/Rating)
 export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardProps) => {
   return (
     <AnimeCardWrapper>
-        {/* Wrapper to keep button insdie of photo area + action on hover control */}
         <AnimePhotoWrapper>
             <AnimePhoto src={animePhotoURL} alt={`Image poster of ${animeName}`}/>
             <ReviewButton>See Review</ReviewButton>
@@ -82,7 +79,6 @@ const ReviewButton = styled.button`
     outline: none;
     border: none;
 
-    // Hide button before hover
     visibility: hidden;
     opacity: 0;
 `;
