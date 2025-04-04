@@ -43,8 +43,20 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     anilist_id: Int!
     anime_name: String!
   }
-
+  
   type CreateReviewResult {
+    success: Boolean!
+    error: String
+  }
+    
+  input EditReviewInput {
+    _id: ID!
+    review_rating: Float!
+    review_comment: String!
+    review_password: String!
+  }
+
+  type EditReviewResult {
     success: Boolean!
     error: String
   }
@@ -55,13 +67,13 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     data: User
   }
 
-  type getRevieswByUsernameResult {
+  type GetRevieswByUsernameResult {
     success: Boolean!
     error: String
     data: [Review!]!
   }
 
-  type getReviewsByAnilistIdResult {
+  type GetReviewsByAnilistIdResult {
     success: Boolean!
     error: String
     data: [Review!]!
@@ -75,15 +87,19 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     createReview(data: CreateReviewInput!): CreateReviewResult!
   }
 
+  type Mutation {
+    editReview(data: EditReviewInput!): EditReviewResult!
+  }
+
   type Query {
     getUserByEmail(email: String!): GetUserByEmailResult!
   }
 
   type Query {
-    getReviewsByUsername(username: String!): getRevieswByUsernameResult!
+    getReviewsByUsername(username: String!): GetRevieswByUsernameResult!
   }
     
   type Query {
-    getReviewsByAnilistId(anilist_id: Int!): getReviewsByAnilistIdResult!
+    getReviewsByAnilistId(anilist_id: Int!): GetReviewsByAnilistIdResult!
   }
 `;
