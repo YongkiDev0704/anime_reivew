@@ -4,7 +4,7 @@ import { gql } from "@apollo/client";
 export const GET_ANIME_LIST = gql`
   query GetAnimeList($seasonYear: Int, $page: Int, $perPage: Int) {
     Page(page: $page, perPage: $perPage) {
-      media(seasonYear: $seasonYear, type: ANIME) {
+      media(seasonYear: $seasonYear, type: ANIME, isAdult: false, countryOfOrigin: JP) {
         id
         title {
           romaji
@@ -31,7 +31,7 @@ export const GET_ANIME_LIST = gql`
 export const GET_ANIME_LIST_TEST = gql`
     query {
     Page(page: 1, perPage: 10) {
-        media(seasonYear: 2024, type: ANIME) {
+        media(seasonYear: 2024, type: ANIME, isAdult: false, countryOfOrigin: JP) {
         id
         title {
             romaji
