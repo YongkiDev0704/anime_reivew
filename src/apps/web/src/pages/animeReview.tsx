@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
+import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
 
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 import { AnimeList } from "../components/AnimeList/AnimeList";
-import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
 
 export const AnimeReview = () => {
 
