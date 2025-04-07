@@ -1,39 +1,50 @@
 import styled from "styled-components";
 import ratingSushi from "../../assets/icons/rating.svg"
+import { AniListAnimeDetail } from "../../types";
 
 // Anime 객체를 받아와서 사용?
 // 일일이 정의 X?
 type ReviewBannerInfoProps = {
-    // animeName: string;
-    animeBanner: string;
-    // animeSynopsis: string;
-    // animePoster: string;
-    // animeEpisodes: number;
-    // animeSeason: number;
-    // animePlayDate: Date;
+    // animeBanner: string;
+    animeData: AniListAnimeDetail;
 }
 
-export const ReviewBanner = ({animeBanner}: ReviewBannerInfoProps) => {
+export const ReviewBanner = ({animeData}: ReviewBannerInfoProps) => {
+    
+    const getMonthAbbreviation = (month?: number | null): string => {
+        if (!month || month < 1 || month > 12) return "";
+        return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][month - 1];
+    };
+
+    const formatGenres = (genres: string[] | null | undefined): string => {
+        if (!genres || genres.length === 0) return "";
+        return genres.join(" | ");
+    };
+
+    const animeDateInfo = `${getMonthAbbreviation(animeData.startDate?.month)} ${animeData.startDate?.day}, ${animeData.startDate?.year} | ${animeData.season} ${animeData.startDate?.year}`
+
     return (
         <ReviewBannerWrapper>
-            <ReviewAnimeBanner bannerImage={animeBanner}>
+            <ReviewAnimeBanner bannerImage={animeData.bannerImage}>
                 <ReviewTitleWrapper>
                     <ReviewAnimeTitle>
-                        AnimeTitle Here
+                        {animeData.title.english? animeData.title.english : animeData.title.romaji}
                     </ReviewAnimeTitle>
                     <ReviewRating src={ratingSushi} />
+                    {/* 나중에 우리의 점수로 수정 필요요 */}
                     <ReviewAnimeRating>
                         8.63
                     </ReviewAnimeRating>
                 </ReviewTitleWrapper>
                 <ReviewAnimeInfo>
-                    Oct 4, 2024 | Fall 2024
+                    {animeDateInfo}
                 </ReviewAnimeInfo>
                 <ReviewAnimeInfo>
-                    Action | Comedy | Drama | Romance
+                    {formatGenres(animeData.genres)}
                 </ReviewAnimeInfo>
                 <ReviewAnimeInfo>
-                    12 Episodes
+                    {animeData.episodes} Episodes
                 </ReviewAnimeInfo>
             </ReviewAnimeBanner>
         </ReviewBannerWrapper>
@@ -46,7 +57,7 @@ const ReviewBannerWrapper = styled.section`
     background-color: var(--main-background);
 `;
 
-const ReviewAnimeBanner = styled.div<{bannerImage: string}>`
+const ReviewAnimeBanner = styled.div<{bannerImage: string | null}>`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

@@ -8,6 +8,7 @@ import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 import { AnimeList } from "../components/AnimeList/AnimeList";
+import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
 
 export const AnimeReview = () => {
 
@@ -20,21 +21,42 @@ export const AnimeReview = () => {
         return <p>Invalid ID</p>;
     }
 
-    const { data, loading, error } = useQuery(GET_REVIEWS_BY_ANILISTID, {
+    const {
+        data: anilistData,
+        loading: anilistLoading,
+        error: anilistError,
+      } = useQuery(GET_REVIEW_ANIME_DATA_BY_ID, {
+        variables: { id: anilist_id },
+        context: { clientName: "anilist" },
+        fetchPolicy: 'cache-first',
+      });
+      
+          //   이 부분에서 Loading Skeleton 필요
+          if (anilistLoading) return <p>Loading...</p>;
+          // API Error, maybe move user to error page?
+          if (anilistError) return <p>Error: {anilistError.message}</p>;
+
+        const animeData = anilistData.Media;
+
+    const { 
+        data: reviewsData, 
+        loading: reviewsLoading, 
+        error: reviewsError 
+    } = useQuery(GET_REVIEWS_BY_ANILISTID, {
             variables: { anilist_id }
           });
         
           //   이 부분에서 Loading Skeleton 필요
-          if (loading) return <p>Loading...</p>;
+          if (reviewsLoading) return <p>Loading...</p>;
           // API Error, maybe move user to error page?
-          if (error) return <p>Error: {error.message}</p>;
+          if (reviewsError) return <p>Error: {reviewsError.message}</p>;
         
-    const reviews = data.getReviewsByAnilistId.data;
+    const reviews = reviewsData.getReviewsByAnilistId.data;
 
     return (
         <AnimeReviewWrapper>
-            <ReviewBanner animeBanner={"https://wallpapercave.com/wp/wp8879962.jpg"}/>
-            <ReviewSynops />
+            <ReviewBanner animeData={animeData} />
+            <ReviewSynops animeData={animeData} />
             <UserReviewList reviews={reviews} />
             {/* <AnimeList listType="Related Content"/>
             <AnimeList listType="Something New"/> */}

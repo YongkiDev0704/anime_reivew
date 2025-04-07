@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 
-export const GET_REVIEW_ANIME_BY_ID = gql`
-    query GetReviewAnimeById($id: Int!) {
+export const GET_REVIEW_ANIME_DATA_BY_ID = gql`
+    query GetReviewAnimeDataById($id: Int!) {
         Media(id: $id, type: ANIME, isAdult: false, countryOfOrigin: "JP") {
         id
         title {
