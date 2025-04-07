@@ -15,9 +15,14 @@ export const getReviewsByUsername: Resolver<
   try {
     const data = await ReviewModel.find({ username }).lean();
 
+    const formattedData = data.map((review) => ({
+      ...review,
+      id: review._id.toString(),  // map _id into plain id
+    }));
+
     return {
       success: true,
-      data: data || undefined
+      data: formattedData || []
     };
     
   } catch (e: any) {
@@ -42,9 +47,14 @@ export const getReviewsByAnilistId: Resolver<
   try {
     const data = await ReviewModel.find({ anilist_id }).lean();
 
+    const formattedData = data.map((review) => ({
+      ...review,
+      id: review._id.toString(),  // map _id into plain id
+    }));
+
     return {
       success: true,
-      data: data || undefined
+      data: formattedData || []
     };
     
   } catch (e: any) {

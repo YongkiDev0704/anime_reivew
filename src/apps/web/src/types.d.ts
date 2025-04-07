@@ -10,6 +10,7 @@ export type Anime = {
 
 
 export type Review = {
+  id: number;
   username: string;
   review_rating: number;
   review_comment: string;

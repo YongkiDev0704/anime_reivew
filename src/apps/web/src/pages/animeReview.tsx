@@ -28,9 +28,10 @@ export const AnimeReview = ({}: AnimeReviewProps) => {
             variables: { anilist_id }
           });
         
+          //   이 부분에서 Loading Skeleton 필요
           if (loading) return <p>Loading...</p>;
+          // API Error, maybe move user to error page?
           if (error) return <p>Error: {error.message}</p>;
-          if (!data?.getReviewsByAnilistId?.success) return <p>No review found</p>;
         
     const reviews = data.getReviewsByAnilistId.data;
 

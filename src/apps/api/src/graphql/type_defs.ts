@@ -15,7 +15,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
   }
   
   type Review {
-    _id: ID!
+    id: ID!
     username: String
     review_rating: Float!
     review_comment: String!

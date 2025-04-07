@@ -9,7 +9,7 @@ export const GET_REVIEWS_BY_ANILISTID = gql`
     getReviewsByAnilistId(anilist_id: $anilist_id) {
       success
       data {
-        _id
+        id
         username
         review_rating
         review_comment
@@ -25,7 +25,7 @@ export const GET_REVIEWS_BY_USERNAME = gql`
     getReviewsByUsername(username: $username) {
       success
       data {
-        _id
+        id
         username
         review_rating
         review_comment
