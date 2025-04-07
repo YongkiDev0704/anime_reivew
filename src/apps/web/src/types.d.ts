@@ -11,10 +11,10 @@ export type Anime = {
 
 export type Review = {
   username: string;
-  ratingScore: number;
-  reviewComment: string;
+  review_rating: number;
+  review_comment: string;
   userIcon?: string;
-  date: Date;
+  updatedAt: number;
 }
 
 // AniList API's Animation Info type definition

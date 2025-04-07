@@ -22,6 +22,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     review_password: String
     anilist_id: Int!
     anime_name: String!
+    updatedAt: String!
   }
 
   input CreateUserInput {

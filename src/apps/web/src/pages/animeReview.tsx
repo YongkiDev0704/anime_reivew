@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+import { useQuery } from "@apollo/client";
+import { GET_REVIEWS_BY_ANILISTID } from "../apollo/reviewQuery";
+
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
@@ -19,23 +22,25 @@ type AnimeReviewProps = {
 
 export const AnimeReview = ({}: AnimeReviewProps) => {
 
-    const review = {
-        username: "Username",
-        ratingScore: 7.28,
-        reviewComment: "Comment",
-        date: new Date()
-    }
+    const anilist_id = 12345;
 
-    // testUserReviewCards 부분을 나중엔 reviews 로 대체
-    const testUserReviewCards = new Array(6).fill(review);
+    const { data, loading, error } = useQuery(GET_REVIEWS_BY_ANILISTID, {
+            variables: { anilist_id }
+          });
+        
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>Error: {error.message}</p>;
+          if (!data?.getReviewsByAnilistId?.success) return <p>No review found</p>;
+        
+    const reviews = data.getReviewsByAnilistId.data;
 
     return (
         <AnimeReviewWrapper>
             <ReviewBanner animeBanner={"https://wallpapercave.com/wp/wp8879962.jpg"}/>
             <ReviewSynops />
-            <UserReviewList reviews={testUserReviewCards} />
-            <AnimeList listType="Related Content"/>
-            <AnimeList listType="Something New"/>
+            <UserReviewList reviews={reviews} />
+            {/* <AnimeList listType="Related Content"/>
+            <AnimeList listType="Something New"/> */}
         </AnimeReviewWrapper>
     );
 };

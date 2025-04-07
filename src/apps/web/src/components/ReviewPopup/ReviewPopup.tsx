@@ -20,9 +20,9 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
 
     // set attributes if It's Read Mode
     const username = isReadMode ? review?.username ?? "Unknown User" : "Anonymous";
-    const ratingScore = isReadMode ? review?.ratingScore ?? "0" : "0";
-    const reviewText = isReadMode ? review?.reviewComment ?? "Unknown Review" : "";
-    const dateInput = (isReadMode ? review?.date?? new Date() : new Date());
+    const ratingScore = isReadMode ? review?.review_rating ?? "0" : "0";
+    const reviewText = isReadMode ? review?.review_comment ?? "Unknown Review" : "";
+    const dateInput = isReadMode && review?.updatedAt? new Date(Number(review?.updatedAt)) : new Date();
     const formattedDate = `${dateInput.getFullYear()}.${(dateInput.getMonth() + 1).toString().padStart(2, "0")}.${dateInput.getDate().toString().padStart(2, "0")}`;
 
 

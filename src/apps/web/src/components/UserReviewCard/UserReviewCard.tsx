@@ -12,7 +12,8 @@ type UserReviewCardProps = {
 
 export const UserReviewCard = ({review, onClick}: UserReviewCardProps) => {
 
-    const formattedDate = `${review.date.getFullYear()}.${(review.date.getMonth() + 1).toString().padStart(2, "0")}.${review.date.getDate().toString().padStart(2, "0")}`;
+    const date = new Date(Number(review.updatedAt));
+    const formattedDate = `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}`;
 
 
     return (
@@ -31,13 +32,13 @@ export const UserReviewCard = ({review, onClick}: UserReviewCardProps) => {
                 </UserReviewIdenWrapper>
                 <UserReviewRatingBox>
                     <UserRatingScore>
-                        {review.ratingScore}
+                        {review.review_rating}
                     </UserRatingScore>
                 </UserReviewRatingBox>
             </UserReviewInfoWrapper>
             <UserReviewBorder />
             <UserReviewText>
-                {review.reviewComment}
+                {review.review_comment}
             </UserReviewText>
         </UserReviewCardWrapper>
     );
