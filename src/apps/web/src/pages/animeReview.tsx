@@ -1,28 +1,24 @@
 import styled from "styled-components";
 
 import { useQuery } from "@apollo/client";
-import { GET_REVIEWS_BY_ANILISTID } from "../apollo/reviewQuery";
+import { useParams } from "react-router-dom";
+import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
 
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 import { AnimeList } from "../components/AnimeList/AnimeList";
 
-// Anime 객체를 받아와서 사용?
-// 일일이 정의 X?
-type AnimeReviewProps = {
-    // animeName: string;
-    // animeBanner: string;
-    // animeSynopsis: string;
-    // animePoster: string;
-    // animeEpisodes: number;
-    // animeSeason: number;
-    // animePlayDate: Date;
-}
+export const AnimeReview = () => {
 
-export const AnimeReview = ({}: AnimeReviewProps) => {
+    const {id} = useParams<{id: string}>();
 
-    const anilist_id = 12345;
+    // Parsing String into Number for API Call
+    const anilist_id = Number(id);
+    // Send user to error page maybe?
+    if (isNaN(anilist_id)) {
+        return <p>Invalid ID</p>;
+    }
 
     const { data, loading, error } = useQuery(GET_REVIEWS_BY_ANILISTID, {
             variables: { anilist_id }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { useQuery } from "@apollo/client";
-import { GET_REVIEWS_BY_ANILISTID } from "../../apollo/reviewQuery";
+import { GET_REVIEWS_BY_ANILISTID } from "../../graphql/reviewQuery";
 
 type AnimeReviewTestProps = {
     anilist_id: number;

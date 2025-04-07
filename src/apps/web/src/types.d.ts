@@ -19,7 +19,7 @@ export type Review = {
 }
 
 // AniList API's Animation Info type definition
-export type AniListInfo = {
+export type AniListAnimeDetail = {
   id: number;
   title: {
     romaji: string;
