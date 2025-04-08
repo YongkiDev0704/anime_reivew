@@ -13,6 +13,8 @@ type UserReviewListProps = {
 
 export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
 
+    // Review is Empty (undefined)
+    if(!reviews) return <p>No review found</p>;
     
     let reviewNumber = 3;
     const size = {
@@ -65,8 +67,8 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
             <UserCardListWrapper $expanded={visibleReviewCard <= 6} $viewAll={showAll ?? false}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
                 <ThemeProvider theme={{size: showAll? size.viewAllSize : size.defaultSize}} >
-                    {reviews.slice(0, visibleReviewCard).map((review, i) => (
-                        <UserReviewCard review={review} key={i} onClick={() => openReviewPopup(review)} />
+                    {reviews.slice(0, visibleReviewCard).map((review) => (
+                        <UserReviewCard review={review} key={review.id} onClick={() => openReviewPopup(review)} />
                     ))} 
                 </ThemeProvider>
             </UserCardListWrapper>

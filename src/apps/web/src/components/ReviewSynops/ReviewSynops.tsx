@@ -1,25 +1,26 @@
 import styled from "styled-components";
 import ratingSushi from "../../assets/icons/rating.svg"
+import { AniListAnimeDetail } from "../../types";
 
 type ReviewSynopsProps = {
-    // animePosterURL: string;
-    // animeSynopsis: string;
-    // animePoster: string;
+    animeData: AniListAnimeDetail;
 }
 
-export const ReviewSynops = ({}: ReviewSynopsProps) => {
+export const ReviewSynops = ({animeData}: ReviewSynopsProps) => {
+
+    const stripHtmlTags = (text: string | null | undefined): string => {
+        if (!text) return "";
+        return text.replace(/<[^>]*>/g, "").trim();
+    };
+
     return (
             <ReviewAnimeSynopsWrapper>
-                <ReviewAnimePoster src="https://i.pinimg.com/originals/4a/d3/89/4ad389052b4cf159fd601ae4dbd4ecbc.png" alt="anime_poster_test"/>
+                <ReviewAnimePoster src={animeData.coverImage.large} alt={`${animeData.title} anime poster`} />
                 <ReviewAnimeStoryWrapper>
                     <ReviewSynopTextWrapper>
                         <ReviewAnimeSynopHeader>Synopsis</ReviewAnimeSynopHeader>
                         <ReviewAnimeSynopsis>
-                            Nyan nyan nyaaaa~! Deep in the heart of Meowtopia, the legendary Catnipped Kingdom, an ancient prophecy meows of a chosen one destined to restore balance between the fluffy paws of destiny! 🐾
-
-                            Nyaaaan! Young adventurer Nyatto embarks on a perilous journey across the Whisker Woods, through the Purrfect Plains, and into the treacherous Litterbox Labyrinth! Along the way, Nyatto must gather the lost Meowgic Crystals, evade the sinister Canine Clan, and harness the power of the almighty Tuna Relic!
-
-                            Will Nyatto succeed, or will the kingdom fall into eternal woof-pression?! Only time will nyan-swer... Nyan nyan nyaaaaa! 🐱✨
+                            {stripHtmlTags(animeData.description)}
                         </ReviewAnimeSynopsis>
                     </ReviewSynopTextWrapper>
                     <ReviewRatingWrapper>

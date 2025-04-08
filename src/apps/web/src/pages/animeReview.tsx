@@ -1,41 +1,65 @@
 import styled from "styled-components";
 
+import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
+import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
+import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
+
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 import { AnimeList } from "../components/AnimeList/AnimeList";
 
-// Anime 객체를 받아와서 사용?
-// 일일이 정의 X?
-type AnimeReviewProps = {
-    // animeName: string;
-    // animeBanner: string;
-    // animeSynopsis: string;
-    // animePoster: string;
-    // animeEpisodes: number;
-    // animeSeason: number;
-    // animePlayDate: Date;
-}
+export const AnimeReview = () => {
 
-export const AnimeReview = ({}: AnimeReviewProps) => {
+    const {id} = useParams<{id: string}>();
 
-    const review = {
-        username: "Username",
-        ratingScore: 7.28,
-        reviewComment: "Comment",
-        date: new Date()
+    // Parsing String into Number for API Call
+    const anilist_id = Number(id);
+    // Send user to error page maybe?
+    if (isNaN(anilist_id)) {
+        return <p>Invalid ID</p>;
     }
 
-    // testUserReviewCards 부분을 나중엔 reviews 로 대체
-    const testUserReviewCards = new Array(6).fill(review);
+    const {
+        data: anilistData,
+        loading: anilistLoading,
+        error: anilistError,
+      } = useQuery(GET_REVIEW_ANIME_DATA_BY_ID, {
+        variables: { id: anilist_id },
+        context: { clientName: "anilist" },
+        fetchPolicy: 'cache-first',
+      });
+      
+          //   이 부분에서 Loading Skeleton 필요
+          if (anilistLoading) return <p>Loading...</p>;
+          // API Error, maybe move user to error page?
+          if (anilistError) return <p>Error: {anilistError.message}</p>;
+
+        const animeData = anilistData.Media;
+
+    const { 
+        data: reviewsData, 
+        loading: reviewsLoading, 
+        error: reviewsError 
+    } = useQuery(GET_REVIEWS_BY_ANILISTID, {
+            variables: { anilist_id }
+          });
+        
+          //   이 부분에서 Loading Skeleton 필요
+          if (reviewsLoading) return <p>Loading...</p>;
+          // API Error, maybe move user to error page?
+          if (reviewsError) return <p>Error: {reviewsError.message}</p>;
+        
+    const reviews = reviewsData.getReviewsByAnilistId.data;
 
     return (
         <AnimeReviewWrapper>
-            <ReviewBanner animeBanner={"https://wallpapercave.com/wp/wp8879962.jpg"}/>
-            <ReviewSynops />
-            <UserReviewList reviews={testUserReviewCards} />
-            <AnimeList listType="Related Content"/>
-            <AnimeList listType="Something New"/>
+            <ReviewBanner animeData={animeData} />
+            <ReviewSynops animeData={animeData} />
+            <UserReviewList reviews={reviews} />
+            {/* <AnimeList listType="Related Content"/>
+            <AnimeList listType="Something New"/> */}
         </AnimeReviewWrapper>
     );
 };

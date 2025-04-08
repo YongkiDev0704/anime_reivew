@@ -16,8 +16,8 @@ export const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<LandingPage />} />
             <Route path="*" element={<Error />} />
-            <Route path="/review" element={<AnimeReview />} />
-            <Route path="/review/viewall" element={<ViewAllReview />} />
+            <Route path="/review/:id" element={<AnimeReview />} />
+            <Route path="/review/viewall/:id" element={<ViewAllReview />} />
           </Route>
          </Routes>
       </BrowserRouter>
