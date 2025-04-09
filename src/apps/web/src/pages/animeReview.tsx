@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Query or Utils
 import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
@@ -16,6 +16,7 @@ import { AnimeList } from "../components/AnimeList/AnimeList";
 import { SkeletonReviewBanner } from "../components/SkeletonReviewBanner/SkeletonReviewBanner";
 import { SkeletonReviewSynops } from "../components/SkeletonReviewSynops/SkeletonReviewSynops";
 import { SkeletonReviewList } from "../components/SkeletonReviewList/SkeletonReviewList";
+import { SkeletonAnimeList } from "../components/SkeletonAnimeList";
 
 export const AnimeReview = () => {
 
@@ -28,6 +29,8 @@ export const AnimeReview = () => {
         return <p>Invalid ID</p>;
     }
 
+    const navigate = useNavigate();
+
     const {
         data: anilistData,
         loading: anilistLoading,
@@ -38,9 +41,11 @@ export const AnimeReview = () => {
         fetchPolicy: 'cache-first',
       });
           // API Error, maybe move user to error page?
-          if (anilistError) return <p>Error: {anilistError.message}</p>;
+          if (anilistError) {
+            navigate("/error");
+            return null;
+          }
 
-          
           const { 
               data: reviewsData, 
               loading: reviewsLoading, 
@@ -50,12 +55,19 @@ export const AnimeReview = () => {
           });
 
           // API Error, maybe move user to error page?
-          if (reviewsError) return <p>Error: {reviewsError.message}</p>;
+          if (reviewsError) {
+            navigate("/error");
+            return null;
+          }
           
           
           const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = WhatsNewAnime();
-          
-          if (whatsNewError) return <p>Error: {whatsNewError.message}</p>;
+
+          // API Error Redirect to Error page
+          if (whatsNewError) {
+            navigate("/error");
+            return null;
+          }
 
           if(anilistLoading || reviewsLoading || whatsNewLoading) {
             return (
@@ -63,7 +75,8 @@ export const AnimeReview = () => {
                     <SkeletonReviewBanner />
                     <SkeletonReviewSynops />
                     <SkeletonReviewList />
-                    {/* Add Review and AnimeList Skeleton as well */}
+                    <SkeletonAnimeList listType="Related Contents" />
+                    <SkeletonAnimeList listType="Something New" />
                 </AnimeReviewWrapper>
             )
           }
