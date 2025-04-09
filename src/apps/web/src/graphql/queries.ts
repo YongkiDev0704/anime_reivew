@@ -7,6 +7,7 @@ export const GET_TRENDING_ANIME = gql`
         id
         title {
           romaji
+          english
         }
         coverImage {
           large
@@ -24,6 +25,7 @@ export const GET_LATEST_ANIME = gql`
         id
         title {
           romaji
+          english
         }
         coverImage {
           large
@@ -43,11 +45,26 @@ export const GET_RECOMMENDED_ANIME = gql`
         id
         title {
           romaji
+          english
         }
         coverImage {
           large
         }
         averageScore
+      }
+    }
+  }
+`;
+
+export const SEARCH_ANIME = gql`
+  query SearchAnime($search: String!) {
+    Page(page: 1, perPage: 20) {
+      media(search: $search, type: ANIME, sort: SEARCH_MATCH) {
+        id
+        title {
+          romaji
+          english
+        }
       }
     }
   }

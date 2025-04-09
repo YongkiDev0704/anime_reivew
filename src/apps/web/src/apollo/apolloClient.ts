@@ -1,5 +1,4 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
-import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 const serverLink = new HttpLink({
   uri: 'http://localhost:4000/graphql', 
@@ -20,17 +19,16 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         Page: {
-          keyArgs: ["page", "perPage", "sort", "type"], 
+          keyArgs: false, 
+          merge(existing = {}, incoming) {
+            return { ...existing, ...incoming };
+          },
         },
       },
     },
   },
 });
 
-await persistCache({
-  cache,
-  storage: new LocalStorageWrapper(window.localStorage),
-})
 
 export const client = new ApolloClient({
   link: splitLink,

@@ -20,7 +20,8 @@ export const LandingPage = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   const formatAnime = (anime: any) => ({
-    animeName: anime.title.romaji,
+    animeRomajiName: anime.title.romaji,
+    animeEnglishName: anime.title.english,
     animePhotoURL: anime.coverImage.large,
     animeRating: anime.averageScore / 10,
   });
@@ -178,7 +179,9 @@ const CarouselWrapper = styled.div`
   height: 700px;
 `;
 
-const ArrowButton = styled.button<{ left?: boolean; right?: boolean }>`
+const ArrowButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !["left", "right"].includes(prop), 
+})<{ left?: boolean; right?: boolean }>`
   position: absolute;
   top: 347px;
   ${(props) => (props.left ? "left: 48px;" : "right: 48px;")}
@@ -201,7 +204,9 @@ const IndicatorWrapper = styled.div`
   z-index: 5;
 `;
 
-const Indicator = styled.div<{ active: boolean }>`
+const Indicator = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "active", 
+})<{ active: boolean }>`
   width: 60px;
   height: 10px;
   background-color: ${(props) => (props.active ? "#00F5D4" : "transparent")};

@@ -12,7 +12,6 @@ type Props = {
   positionY?: string;
 };
 
-
 export const HeroSlide = ({ logo, image, active, contentRating, genres, positionX = "center", positionY = "center" }: Props) => {
   return (
     <HeroSlideWrapper active={active}>
@@ -40,7 +39,9 @@ export const HeroSlide = ({ logo, image, active, contentRating, genres, position
   );
 };
 
-const HeroSlideWrapper = styled.div<{ active: boolean }>`
+const HeroSlideWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "active"
+})<{ active: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -54,7 +55,9 @@ const HeroSlideWrapper = styled.div<{ active: boolean }>`
 `;
 
 
-const LeftFill = styled.div<{ active: boolean}>`
+const LeftFill = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "active"
+})<{ active: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -63,7 +66,9 @@ const LeftFill = styled.div<{ active: boolean}>`
   background-color: black;
 `;
 
-const Content = styled.div<{ logoUrl: string; }>`
+const Content = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "logoUrl"
+})<{ logoUrl: string; }>`
   left: 162px;
   top: 146px;
   position: absolute;
@@ -104,7 +109,9 @@ const ButtonWrapper = styled.div`
   z-index: 100;
 `;
 
-const ImageContainer = styled.div<{
+const ImageContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["imageUrl", "active", "positionX", "positionY"].includes(prop)
+})<{
   imageUrl: string;
   active: boolean;
   positionX?: string;
