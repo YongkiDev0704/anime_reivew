@@ -3,10 +3,10 @@ import styled from "styled-components";
 import rating from "../../assets/icons/rating.svg";
 
 type AnimeCardProps = {
-    animeName: string;
+    animeName?: string;
     animePhotoURL?: string;
-    animeRating: number;
-  };
+    animeRating?: number | null;
+};
 
 export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardProps) => {
   return (
@@ -17,7 +17,9 @@ export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardPr
         </AnimePhotoWrapper>
         <AnimeName>{animeName}</AnimeName>
         <AnimeRatingWrapper>
-            <RatingStar src={rating} alt="Small star Icon for Review Score"/>
+            {typeof animeRating === "number" && (
+                <RatingStar src={rating} alt="Small star Icon for Review Score"/>
+            )}
             {animeRating}
         </AnimeRatingWrapper>
     </AnimeCardWrapper>

@@ -1,15 +1,15 @@
-import { useLocation, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Icon from "../../assets/icons/logo.svg";
 import Notification from "../../assets/icons/notifications.svg";
-import Search from "../../assets/icons/search.svg";
 import User from "../../assets/icons/user.svg";
+import { Search } from "../../Search";
 
 export const GNB = () => {
-  const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
+  const location = useParams();
+  const [scrolled, setScrolled] = useState<boolean>(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,7 +33,7 @@ export const GNB = () => {
           <NavItem to="/about" $active={location.pathname === "/about"}>About</NavItem>
         </NavItemWrapper>
         <UserActionsWrapper>
-          <img src={Search} alt="Search" />
+          <Search />
           <img src={Notification} alt="Notification" />
           <img src={User} alt="User" />
         </UserActionsWrapper>
@@ -91,8 +91,9 @@ const NavItem = styled(Link)<{ $active: boolean }>`
   }
 `;
 
-
 const UserActionsWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 20px;
+  position: relative;
 `;

@@ -2,8 +2,11 @@ import styled from "styled-components";
 
 import Icon from "../../assets/icons/logo.svg";
 import { Copyright, Mail, Phone } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 
 export const Footer = () => {
+  const location = useParams<string>();
+
   return (
     <FooterWrapper>
       <UpperSection>
@@ -12,9 +15,10 @@ export const Footer = () => {
             <Name>Anigiri</Name>
         </Branding>
         <FooterNav>
-          <Tag> Home </Tag>
-          <Tag> Category </Tag>
-          <Tag> About </Tag>
+
+          <NavItem to="/" $active={location.pathname === "/"}>Home</NavItem>
+          <NavItem to="/category" $active={location.pathname === "/category"}>Category</NavItem>
+          <NavItem to="/about" $active={location.pathname === "/about"}>About</NavItem>
         </FooterNav>
         <Section>
           <Tag style={{ color: "var(--accent-color)" }}> <strong>Contributors</strong> </Tag>
@@ -66,6 +70,13 @@ const Branding = styled.div`
   color: white;
   text-decoration: none;
   gap: 8px;
+`;
+
+const NavItem = styled(Link)<{ $active: boolean }>`
+  font-size: 20px;
+  margin: 0;
+  color: white;
+  text-decoration: none;
 `;
 
 const Name = styled.p`

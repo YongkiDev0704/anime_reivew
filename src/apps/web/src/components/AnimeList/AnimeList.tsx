@@ -6,7 +6,8 @@ import { AnimeCard } from "../AnimeCard/AnimeCard";
 type AnimeListProps = {
   listType: string;
   data: {
-    animeName: string;
+    animeRomajiName: string;
+    animeEnglishName: string;
     animePhotoURL: string;
     animeRating: number;
   }[];
@@ -56,15 +57,22 @@ export const AnimeList = ({ listType, data }: AnimeListProps) => {
             const cardRight = cardLeft + CARD_WIDTH;
 
             const isPartiallyVisible =
-              cardLeft <= 0.25 * CARD_WIDTH - 100||
+              cardLeft <= 0.25 * CARD_WIDTH - 100 ||
               cardRight >= SLIDER_WIDTH - 0.25 * CARD_WIDTH;
+
+            const hideInfo = isPartiallyVisible &&
+              (cardLeft < 0 || cardRight > SLIDER_WIDTH);
 
             return (
               <CardContainer key={i} dimmed={isPartiallyVisible}>
                 <AnimeCard
-                  animeName={anime.animeName}
+                  animeName={
+                    hideInfo
+                      ? ""
+                      : anime.animeEnglishName || anime.animeRomajiName
+                  }
                   animePhotoURL={anime.animePhotoURL}
-                  animeRating={anime.animeRating}
+                  animeRating={hideInfo ? null : anime.animeRating}
                 />
               </CardContainer>
             );
@@ -116,6 +124,7 @@ const CardContainer = styled.div.withConfig({
   opacity: ${(props) => (props.dimmed ? 0.4 : 1)};
   transform: ${(props) => (props.dimmed ? "scale(0.96)" : "scale(1)")};
   transition: all 0.3s ease-in-out;
+  height: 400px;
 `;
 
 const ArrowButton = styled.button.withConfig({

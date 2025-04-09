@@ -14,7 +14,6 @@ export const useLandingAnimes = () => {
         if (!res.ok) throw new Error("Fetch failed");
 
         const data: Anime[] = await res.json();
-        console.log(data);
         setAnimes(data);
       } catch (err) {
         setError("❌ Failed to load anime data");

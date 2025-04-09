@@ -1,17 +1,6 @@
 // components/SkeletonAnimeList.tsx
 import styled, { keyframes, css } from "styled-components";
 
-const shimmer = keyframes`
-  0% { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-`;
-
-const shimmerStyle = css`
-  background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%);
-  background-size: 800px 100%;
-  animation: ${shimmer} 1.5s infinite;
-`;
-
 const CARD_WIDTH = 200;
 const CARD_GAP = 10;
 const VISIBLE_CARDS = 6;
@@ -33,6 +22,17 @@ export const SkeletonAnimeList = ({ listType }: { listType: string }) => {
     </SliderWrapper>
   );
 };
+
+const shimmer = keyframes`
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+`;
+
+const shimmerStyle = css`
+  background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%);
+  background-size: 800px 100%;
+  animation: ${shimmer} 1.5s infinite;
+`;
 
 const SliderWrapper = styled.div`
   position: relative;
