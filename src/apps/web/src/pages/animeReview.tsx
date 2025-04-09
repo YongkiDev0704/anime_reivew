@@ -2,9 +2,13 @@ import styled from "styled-components";
 
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
+
+// Query or Utils
 import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
 import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
+import { WhatsNewAnime } from "../utils/whatsNewList";
 
+// Components
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
@@ -53,13 +57,24 @@ export const AnimeReview = () => {
         
     const reviews = reviewsData.getReviewsByAnilistId.data;
 
+    const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = WhatsNewAnime();
+
+    if (whatsNewLoading) return <p>Loading...</p>;
+    if (whatsNewError) return <p>Error: {whatsNewError.message}</p>;
+
+    const formatAnime = (anime: any) => ({
+        animeName: anime.title.english? anime.title.english : anime.title.romaji,
+        animePhotoURL: anime.coverImage.large,
+        animeRating: anime.averageScore / 10,
+      });
+
     return (
         <AnimeReviewWrapper>
             <ReviewBanner animeData={animeData} />
             <ReviewSynops animeData={animeData} />
             <UserReviewList reviews={reviews} />
-            {/* <AnimeList listType="Related Content"/>
-            <AnimeList listType="Something New"/> */}
+            {/* <AnimeList listType="Related Content"/> */}
+            <AnimeList listType="Something New" data={whatsNewList.map(formatAnime)}/>
         </AnimeReviewWrapper>
     );
 };

@@ -3,16 +3,16 @@ import { useQuery } from "@apollo/client";
 import { GET_WHATS_NEW_ANIME } from "../graphql/anilistQuery";
 
 
-export const useSeasonalAnime = () => {
+export const WhatsNewAnime = () => {
   const now = new Date();
   const currentYear = now.getFullYear();
   const month = now.getMonth() + 1;
 
   // Find current season based on a today's date
   const getSeason = (month: number): "WINTER" | "SPRING" | "SUMMER" | "FALL" => {
-    if (month <= 3) return "WINTER";
-    if (month <= 6) return "SPRING";
-    if (month <= 9) return "SUMMER";
+    if (month <= 2) return "WINTER";
+    if (month <= 5) return "SPRING";
+    if (month <= 8) return "SUMMER";
     return "FALL";
   };
 
@@ -27,11 +27,14 @@ export const useSeasonalAnime = () => {
       page,
       perPage: 10,
     },
+    context: { clientName: "anilist" },
+    fetchPolicy: 'cache-first',
   });
 
   const mediaList = data?.Page?.media ?? [];
   // Randomly pick 4 Animes for What's New from the selected page
-  const randomFour = mediaList.sort(() => Math.random() - 0.5).slice(0, 4);
+  const randomFour = [...mediaList].sort(() => Math.random() - 0.5).slice(0, 4);
 
-  return { animeList: randomFour, loading, error };
+
+  return { randomFour, loading, error };
 };

@@ -52,19 +52,10 @@ export const GET_WHATS_NEW_ANIME = gql`
           romaji
           english
         }
-        description
-        episodes
-        startDate {
-          year
-          month
-          day
-        }
-        season
         genres
         coverImage {
           large
         }
-        bannerImage
         averageScore
       }
     }
