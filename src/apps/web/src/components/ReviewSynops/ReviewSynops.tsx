@@ -38,6 +38,7 @@ export const ReviewSynops = ({animeData}: ReviewSynopsProps) => {
 const ReviewAnimeSynopsWrapper = styled.div`
     display: flex;
     margin: 40px 60px;
+    z-index: 1;
 `;
 
 const ReviewAnimePoster = styled.img`

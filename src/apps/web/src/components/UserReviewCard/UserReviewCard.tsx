@@ -54,6 +54,7 @@ const UserReviewCardWrapper = styled.section`
     padding: 16px;
     font-size: 14px;
     color: var(--main-text);
+    cursor: pointer;
 `;
 
 const UserReviewInfoWrapper = styled.div`

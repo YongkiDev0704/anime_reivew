@@ -74,12 +74,10 @@ const ReviewAnimeBanner = styled.div<{bannerImage: string | null}>`
     bottom: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
   }
 
   > * {
     position: relative;
-    z-index: 2;
   }
 `;
 
