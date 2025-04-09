@@ -69,9 +69,6 @@ export const AnimeReview = () => {
         return null;
     }
     
-    const animeData = anilistData.Media;
-    const reviews = reviewsData.getReviewsByAnilistId.data;
-    
     
     if(anilistLoading || reviewsLoading || whatsNewLoading) {
         return (
@@ -84,6 +81,9 @@ export const AnimeReview = () => {
             </AnimeReviewWrapper>   
         )
     }        
+    
+    const animeData = anilistData.Media;
+    const reviews = reviewsData.getReviewsByAnilistId.data;
     
     const formatAnime = (anime: any) => ({
         animeName: anime.title.english? anime.title.english : anime.title.romaji,
