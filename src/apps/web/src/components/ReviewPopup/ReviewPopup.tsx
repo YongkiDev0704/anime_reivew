@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import defaultUserIcon from "../../assets/icons/user.svg";
-import ratingSushi from "../../assets/icons/rating.svg";
 
 import { Button } from "../Button";
 import { Review } from "../../types";
 import { ReviewScore } from "../ReviewScore/ReviewScore";
+import { useState } from "react";
 
 
 // 3 Different Mode for [Read / Write / Edit]
@@ -17,14 +17,24 @@ type ReviewPopupProps = {
 
 export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
 
+    
     const isReadMode = mode === "Read";
-
+    const isEditMode = mode === "Edit"
+    
     // set attributes if It's Read Mode
-    const username = isReadMode ? review?.username ?? "Unknown User" : "Anonymous";
-    const ratingScore = isReadMode ? review?.review_rating ?? "0" : "0";
-    const reviewText = isReadMode ? review?.review_comment ?? "Unknown Review" : "";
-    const dateInput = isReadMode && review?.updatedAt? new Date(Number(review?.updatedAt)) : new Date();
+    const username = isReadMode || isEditMode ? review?.username ?? "Unknown User" : "Anonymous";
+    const ratingScore = isReadMode || isEditMode ? review?.review_rating ?? "" : "";
+    const reviewText = isReadMode || isEditMode ? review?.review_comment ?? "Unknown Review" : "";
+    const dateInput = isReadMode || isEditMode && review?.updatedAt? new Date(Number(review?.updatedAt)) : new Date();
     const formattedDate = `${dateInput.getFullYear()}.${(dateInput.getMonth() + 1).toString().padStart(2, "0")}.${dateInput.getDate().toString().padStart(2, "0")}`;
+    
+    const [currentScore, setCurrentScore] = useState(ratingScore);
+
+    const [password, setPassword] = useState("");
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+      };
 
 
     return(
@@ -42,21 +52,26 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
                     </ReviewPopupUserWrapper>
                 </ReviewPopupUser>
                 <ReviewPopupRatingWrapper>
-                    <ReviewScore />
-                    {/* <ReviewPopupRatingScore>
-                        {ratingScore}
-                    </ReviewPopupRatingScore>
-                    <ReviewPopupRating src={ratingSushi} /> */}
+                    <ReviewScore 
+                        score = { currentScore }
+                        readOnly={isReadMode}
+                        onChange={(value) => {
+                            if (mode === "Write" || mode === "Edit") {
+                              setCurrentScore(value);
+                            }
+                        }}
+                    />
                 </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
             <ReviewPopupTextBox placeholder="Write a review" readOnly={isReadMode}>
                 {reviewText}
             </ReviewPopupTextBox>
-            <ReviewPopupBottom>
-                {!isReadMode && (
+            {!isReadMode && (
+                <ReviewPopupBottom>
+                    <ReviewPasswordInput placeholder="Enter a Password" type="password" value={password} onChange={handlePasswordChange}/>
                     <Button label="Submit" variant="third" />
-                )}
-            </ReviewPopupBottom>
+                </ReviewPopupBottom>
+            )}
         </ReviewPopupWrapper>
     );
 };
@@ -103,17 +118,6 @@ const ReviewPopupRatingWrapper = styled.div`
     display: flex;
 `;
 
-const ReviewPopupRatingScore = styled.p`
-    font-color: var(--main-text);
-    margin-right: 5px;
-`;
-
-const ReviewPopupRating = styled.img`
-    width: 40px;
-    height: 40px;
-    margin: 0 10px;
-`;
-
 const ReviewPopupTextBox = styled.textarea`
     width: 785px;
     height: 428px;
@@ -138,4 +142,19 @@ const ReviewPopupBottom = styled.div`
     align-items: center;
     justify-content: flex-end;
     margin: 0 10px;
+    gap: 12px;
+`;
+
+const ReviewPasswordInput = styled.input`
+    width: 220px;
+    height: 36px;
+    background-color: var(--box-background);
+    border-radius: 15px;
+    color: var(--main-text);
+    // font-color: var(--box-container);
+    border: none;
+    outline: none;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0 8px;
 `;

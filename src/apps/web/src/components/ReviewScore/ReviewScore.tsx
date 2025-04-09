@@ -1,11 +1,17 @@
 import styled from "styled-components";
 import { useState } from "react";
 import ratingOutLine from "../../assets/icons/rating_outline.svg";
-import ratingSushi from "../../assets/icons/rating.svg";  // 색이 채워진 버전
+import ratingSushi from "../../assets/icons/rating.svg";
 
-export const ReviewScore = () => {
+type ReviewScoreProps = {
+    score: string;
+    readOnly?: boolean;
+    onChange?: (value: string) => void;
+  }
+
+export const ReviewScore = ({ score, readOnly, onChange }: ReviewScoreProps) => {
     
-    const [inputScore, setInputScore] = useState<string>("");
+    const [inputScore, setInputScore] = useState<string>(score);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = event.target.value;
@@ -15,6 +21,7 @@ export const ReviewScore = () => {
             value = "10"; // 10을 초과하면 10으로 설정
           }
           setInputScore(value);
+          onChange?.(value);
         }
       };
 
@@ -28,6 +35,7 @@ export const ReviewScore = () => {
         value={inputScore}
         onChange={handleInputChange}
         placeholder="0.00"
+        readOnly={readOnly}
       />
       <ScoreIconWrapper>
         <img src={ratingOutLine} alt="Rating Outline" width="40" height="40" />

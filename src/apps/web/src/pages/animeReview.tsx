@@ -83,5 +83,6 @@ const AnimeReviewWrapper = styled.section`
     display: flex;
     flex-direction: column;
     background-color: var(--main-background);
-    padding-bottom: 100px;
+    padding-bottom: 70px;
+    margin-bottom: 70px;
 `;
