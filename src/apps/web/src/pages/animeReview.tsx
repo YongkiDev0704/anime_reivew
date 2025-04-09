@@ -13,6 +13,9 @@ import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 import { AnimeList } from "../components/AnimeList/AnimeList";
+import { SkeletonReviewBanner } from "../components/SkeletonReviewBanner/SkeletonReviewBanner";
+import { SkeletonReviewSynops } from "../components/SkeletonReviewSynops/SkeletonReviewSynops";
+import { SkeletonReviewList } from "../components/SkeletonReviewList/SkeletonReviewList";
 
 export const AnimeReview = () => {
 
@@ -34,33 +37,39 @@ export const AnimeReview = () => {
         context: { clientName: "anilist" },
         fetchPolicy: 'cache-first',
       });
-      
-          //   이 부분에서 Loading Skeleton 필요
-          if (anilistLoading) return <p>Loading...</p>;
           // API Error, maybe move user to error page?
           if (anilistError) return <p>Error: {anilistError.message}</p>;
 
-        const animeData = anilistData.Media;
-
-    const { 
-        data: reviewsData, 
-        loading: reviewsLoading, 
+          
+          const { 
+              data: reviewsData, 
+              loading: reviewsLoading, 
         error: reviewsError 
     } = useQuery(GET_REVIEWS_BY_ANILISTID, {
             variables: { anilist_id: 12345 }
           });
-        
-          //   이 부분에서 Loading Skeleton 필요
-          if (reviewsLoading) return <p>Loading...</p>;
+
           // API Error, maybe move user to error page?
           if (reviewsError) return <p>Error: {reviewsError.message}</p>;
-        
-    const reviews = reviewsData.getReviewsByAnilistId.data;
+          
+          
+          const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = WhatsNewAnime();
+          
+          if (whatsNewError) return <p>Error: {whatsNewError.message}</p>;
 
-    const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = WhatsNewAnime();
-
-    if (whatsNewLoading) return <p>Loading...</p>;
-    if (whatsNewError) return <p>Error: {whatsNewError.message}</p>;
+          if(anilistLoading || reviewsLoading || whatsNewLoading) {
+            return (
+                <AnimeReviewWrapper>
+                    <SkeletonReviewBanner />
+                    <SkeletonReviewSynops />
+                    <SkeletonReviewList />
+                    {/* Add Review and AnimeList Skeleton as well */}
+                </AnimeReviewWrapper>
+            )
+          }
+          
+          const animeData = anilistData.Media;
+          const reviews = reviewsData.getReviewsByAnilistId.data;
 
     const formatAnime = (anime: any) => ({
         animeName: anime.title.english? anime.title.english : anime.title.romaji,
