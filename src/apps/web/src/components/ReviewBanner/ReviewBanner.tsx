@@ -29,7 +29,6 @@ export const ReviewBanner = ({animeData}: ReviewBannerInfoProps) => {
                         {animeData.title.english? animeData.title.english : animeData.title.romaji}
                     </ReviewAnimeTitle>
                     <ReviewRating src={ratingSushi} />
-                    {/* 나중에 우리의 점수로 수정 필요요 */}
                     <ReviewAnimeRating>
                         {animeData.averageScore? animeData.averageScore / 10 : "No Scores Yet"}
                     </ReviewAnimeRating>
