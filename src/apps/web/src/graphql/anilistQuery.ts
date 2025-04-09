@@ -14,6 +14,7 @@ export const GET_REVIEW_ANIME_DATA_BY_ID = gql`
             romaji
             english
         }
+        averageScore
         description
         episodes
         startDate {

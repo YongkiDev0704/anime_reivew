@@ -26,7 +26,7 @@ export const ReviewSynops = ({animeData}: ReviewSynopsProps) => {
                     <ReviewRatingWrapper>
                         <ReviewRating src={ratingSushi} />
                         <ReviewRatingScore>
-                            7.18
+                            {animeData.averageScore? animeData.averageScore / 10 : "No Scores Yet"}
                         </ReviewRatingScore>
                     </ReviewRatingWrapper>
                 </ReviewAnimeStoryWrapper>

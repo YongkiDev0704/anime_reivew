@@ -31,7 +31,7 @@ export const ReviewBanner = ({animeData}: ReviewBannerInfoProps) => {
                     <ReviewRating src={ratingSushi} />
                     {/* 나중에 우리의 점수로 수정 필요요 */}
                     <ReviewAnimeRating>
-                        8.63
+                        {animeData.averageScore? animeData.averageScore / 10 : "No Scores Yet"}
                     </ReviewAnimeRating>
                 </ReviewTitleWrapper>
                 <ReviewAnimeInfo>

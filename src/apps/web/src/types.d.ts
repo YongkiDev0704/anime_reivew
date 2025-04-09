@@ -25,6 +25,7 @@ export type AniListAnimeDetail = {
     romaji: string;
     english: string | null;
   };
+  averageScore: number | null;
   description: string | null;
       episodes: number | null;
       startDate: {
