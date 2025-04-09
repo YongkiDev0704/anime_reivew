@@ -4,6 +4,7 @@ import ratingSushi from "../../assets/icons/rating.svg";
 
 import { Button } from "../Button";
 import { Review } from "../../types";
+import { ReviewScore } from "../ReviewScore/ReviewScore";
 
 
 // 3 Different Mode for [Read / Write / Edit]
@@ -41,10 +42,11 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
                     </ReviewPopupUserWrapper>
                 </ReviewPopupUser>
                 <ReviewPopupRatingWrapper>
-                    <ReviewPopupRatingScore>
+                    <ReviewScore />
+                    {/* <ReviewPopupRatingScore>
                         {ratingScore}
                     </ReviewPopupRatingScore>
-                    <ReviewPopupRating src={ratingSushi} />
+                    <ReviewPopupRating src={ratingSushi} /> */}
                 </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
             <ReviewPopupTextBox placeholder="Write a review" readOnly={isReadMode}>

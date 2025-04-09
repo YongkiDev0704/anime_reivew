@@ -47,7 +47,7 @@ export const AnimeReview = () => {
         loading: reviewsLoading, 
         error: reviewsError 
     } = useQuery(GET_REVIEWS_BY_ANILISTID, {
-            variables: { anilist_id }
+            variables: { anilist_id: 12345 }
           });
         
           //   이 부분에서 Loading Skeleton 필요
