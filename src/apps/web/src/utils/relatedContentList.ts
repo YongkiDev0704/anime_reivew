@@ -1,30 +1,25 @@
-
+import { useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_RELATED_CONTENT_ANIME } from "../graphql/anilistQuery";
 
-type RedlatedContentAnimeProb = {
-    genre: string;
-}
-
-export const RelatedContentAnime = ({ genre }: RedlatedContentAnimeProb) => {
-
-  // Pick 1 page within Top 6 Best Score Page
-  const page = Math.floor(Math.random() * 6) + 1;
-
+export const useRelatedContentAnime = (genre: string) => {
+  // 이 페이지 랜덤 값은 최초 1회만 고정되도록 useMemo로 감싸줌! ****
+  const page = useMemo(() => Math.floor(Math.random() * 6) + 1, []);
+  
   const { data, loading, error } = useQuery(GET_RELATED_CONTENT_ANIME, {
     variables: {
       genre,
       page,
       perPage: 6,
     },
-    context: { clientName: "anilist" },
-    fetchPolicy: 'cache-first',
+    context: { clientName: "anilist" }
   });
-
+  
   const mediaList = data?.Page?.media ?? [];
-  // Randomly pick 4 Animes for What's New from the selected page
-  const randomFive = [...mediaList].sort(() => Math.random() - 0.5).slice(0, 5);
 
+  const randomFive = useMemo(() => {
+    return [...mediaList].sort(() => Math.random() - 0.5).slice(0, 5);
+  }, [mediaList]);
 
   return { randomFive, loading, error };
 };

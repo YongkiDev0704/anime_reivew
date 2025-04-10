@@ -31,15 +31,16 @@ export const GET_REVIEW_ANIME_DATA_BY_ID = gql`
         }
     } 
 `
+
 export const GET_RELATED_CONTENT_ANIME = gql`
   query getAnimeByGenre($genre: String!, $page: Int!, $perPage: Int!) {
     Page(page: $page, perPage: $perPage) {
       media(
       genre: $genre
-      sort: SCORE_DESC
       type: ANIME
       isAdult: false
       countryOfOrigin: "JP"
+      sort: SCORE_DESC
       ) {
         id
         title {
