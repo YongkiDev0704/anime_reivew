@@ -10,7 +10,7 @@ export class AniReview extends BaseEntity {
   /**
    * rating score given by user posting review
    */
-  public review_rating!: number;
+  public review_rating!: string;
 
   /**
    * animation review that are written by user

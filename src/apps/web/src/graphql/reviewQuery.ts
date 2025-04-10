@@ -35,3 +35,47 @@ export const GET_REVIEWS_BY_USERNAME = gql`
     }
   }
 `;
+
+export const WRITE_NEW_USER_REVIEW = gql`
+  mutation WriteNewUserReview(
+      $username: String!,
+      $review_rating: Int!,
+      $review_comment: String,
+      $review_password: String,
+      $anilist_id: Int!,
+      $anime_name: String!
+  ) {
+    createReview(
+      data: {
+        username: $username,
+        review_rating: $review_rating,
+        review_comment: $review_comment,
+        review_password: $review_password,
+        anilist_id: $anilist_id,
+        anime_name: $anime_name
+    }) {
+        success
+        error
+      }
+  }
+`;
+
+export const EDIT_USER_REVIEW = gql`
+  mutation EditUserReview(
+    $id: ID!
+    $review_rating: String!
+    $review_comment: String!
+    $review_password: String!
+  ) {
+    editReview(
+    data: {
+      _id: $id,
+      review_rating: $review_rating,
+      review_comment: $review_comment,
+      review_password: $review_password,
+    }) {
+        success
+        error  
+    }  
+  }
+`;
