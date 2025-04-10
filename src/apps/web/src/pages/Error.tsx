@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "../components/Button";
 import ErrorIcon from "../assets/icons/ErrorImg.svg";
+import { useEffect } from "react";
 
 export const Error = () => {
   const navigate = useNavigate();
@@ -10,6 +11,11 @@ export const Error = () => {
   const handleGoHome = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = ErrorIcon;
+  }, []);  
 
   return (
     <Wrapper>

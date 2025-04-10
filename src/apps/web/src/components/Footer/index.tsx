@@ -24,7 +24,7 @@ export const Footer = () => {
           <Tag style={{ color: "var(--accent-color)" }}> <strong>Contributors</strong> </Tag>
           <Tag> DongHyeon Lee </Tag>
           <Tag> YongKi Kim </Tag>
-          <Tag> Jongseok We </Tag>
+          <Tag as="a" href="https://www.jongseok.art/" target="_blank"> Jongseok We </Tag>
         </Section>
         <Section>
           <Tag style={{ color: "var(--accent-color)" }}>
@@ -98,6 +98,7 @@ const Tag = styled.p`
   font-size: 20px;
   margin: 0;
   color: white;
+  text-decoration: none;
 `;
 
 const TagWithIcon = styled.div`

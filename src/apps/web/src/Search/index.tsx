@@ -10,6 +10,7 @@ export const Search = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [filteredResults, setFilteredResults] = useState<any[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const searchRef = useRef<HTMLDivElement>(null);
 
   const { searchAnime, results } = useSearchAnime();
@@ -26,6 +27,7 @@ export const Search = () => {
     const value = e.target.value;
     setKeyword(value);
     handleSearch(value);
+    setSelectedIndex(-1); 
   };
 
   useEffect(() => {
@@ -35,28 +37,47 @@ export const Search = () => {
       }
       return;
     }
-  
+
     const fuse = new Fuse(results, {
       keys: ["title.english", "title.romaji"],
       threshold: 0.3,
     });
-  
+
     const refined = fuse.search(keyword).map((r) => r.item).slice(0, 10);
     if (JSON.stringify(refined) !== JSON.stringify(filteredResults)) {
       setFilteredResults(refined);
     }
   }, [results, keyword, filteredResults]);
-  
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setShowSearch(false);
+        setKeyword("");
+        setFilteredResults([]);
+        setSelectedIndex(-1);
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (filteredResults.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      setSelectedIndex((prev) => (prev + 1) % filteredResults.length);
+    } else if (e.key === "ArrowUp") {
+      setSelectedIndex((prev) => (prev <= 0 ? filteredResults.length - 1 : prev - 1));
+    } else if (e.key === "Enter" && selectedIndex >= 0) {
+      const selectedAnime = filteredResults[selectedIndex];
+      console.log("Selected Anime:", selectedAnime);
+      setShowSearch(false);
+      setKeyword("");
+      setFilteredResults([]);
+      setSelectedIndex(-1);
+    }
+  };
 
   return (
     <SearchWrapper ref={searchRef}>
@@ -69,11 +90,22 @@ export const Search = () => {
         data-visible={showSearch}
         value={keyword}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
       />
       {showSearch && filteredResults.length > 0 && (
         <SearchResults>
-          {filteredResults.map((anime) => (
-            <li key={anime.id}>
+          {filteredResults.map((anime, i) => (
+            <li
+              key={anime.id}
+              className={i === selectedIndex ? "selected" : ""}
+              onClick={() => {
+                console.log("Clicked Anime:", anime);
+                setShowSearch(false);
+                setKeyword("");
+                setFilteredResults([]);
+                setSelectedIndex(-1);
+              }}
+            >
               {anime.title.english || anime.title.romaji}
             </li>
           ))}
@@ -136,6 +168,11 @@ const SearchResults = styled.ul`
     border-radius: 4px;
     transition: background 0.2s;
     cursor: pointer;
+
+    &.selected {
+      background-color: #00f5d4;
+      color: black;
+    }
 
     &:hover {
       background-color: #333;
