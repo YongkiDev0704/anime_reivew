@@ -87,3 +87,54 @@ export const GET_WHATS_NEW_ANIME = gql`
     }
   }
 `;
+
+export const GET_RELATED_ANIME = gql`
+  query GetRelatedAnime($genres: [String], $excludeId: Int) {
+    Page(perPage: 5) {
+      media(
+        genre_in: $genres
+        id_not: $excludeId
+        type: ANIME
+        sort: [SCORE_DESC, START_DATE_DESC]
+        startDate_greater: 20200101
+      ) {
+        id
+        title {
+          romaji
+        }
+        coverImage {
+          large
+        }
+        averageScore
+        genres
+      }
+    }
+  }
+`;
+
+export const GET_NEW_ANIME = gql`
+  query GetRecentHighRatedAnime {
+    Page(perPage: 5) {
+      media(
+        type: ANIME
+        sort: [SCORE_DESC, START_DATE_DESC]
+        startDate_greater: 20240101
+      ) {
+        id
+        title {
+          romaji
+        }
+        coverImage {
+          large
+        }
+        averageScore
+        startDate {
+          year
+          month
+          day
+        }
+      }
+    }
+  }
+`;
+

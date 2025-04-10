@@ -1,16 +1,14 @@
 import styled from "styled-components";
-
 import { useQuery } from "@apollo/client";
-import { useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-// Query or Utils
 import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
-import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
-import { useRelatedContentAnime } from "../utils/relatedContentList";
 import { useWhatsNewAnime } from "../utils/whatsNewList";
+import {
+  GET_REVIEW_ANIME_DATA_BY_ID,
+  GET_RELATED_ANIME
+} from "../graphql/anilistQuery";
 
-// Components
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { ReviewSynops } from "../components/ReviewSynops/ReviewSynops";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
@@ -22,14 +20,20 @@ import { SkeletonReviewSynops } from "../components/SkeletonReviewSynops/Skeleto
 import { SkeletonReviewList } from "../components/SkeletonReviewList/SkeletonReviewList";
 import { SkeletonAnimeList } from "../components/SkeletonAnimeList";
 
+type AnilistMedia = {
+  title: {
+    romaji: string;
+  };
+  coverImage: {
+    large: string;
+  };
+  averageScore: number;
+};
+
 export const AnimeReview = () => {
-
-    const {id} = useParams<{id: string}>();
-
-    // Parsing String into Number for API Call
-    const anilist_id = Number(id);
-
-    const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  // Parsing String into Number for API Call
+  const anilist_id = Number(id);
 
     const {
         data: anilistData,
@@ -58,15 +62,9 @@ export const AnimeReview = () => {
     
     if(anilistLoading) return renderSkeleton();
 
-    useEffect(() => {
-        if (anilistError) {
-          navigate("/error");
-        }
-    }, [anilistError, navigate]);
-
     // API Error, maybe move user to error page?
     if (anilistError) {
-        return null;
+        return <p> {anilistError.message} </p>;
     }
 
     const animeData = anilistData.Media;
@@ -83,27 +81,41 @@ export const AnimeReview = () => {
     // API Error, maybe move user to error page?
     if (reviewsError) { return <p>{reviewsError.message}</p>;  }
 
-    const randomGenre = useMemo(() => {
-        if (!animeData?.genres?.length) return null;
-        return animeData.genres[Math.floor(Math.random() * animeData.genres.length)];
-      }, [animeData.genres]);
+    // const randomGenre = useMemo(() => {
+    //     if (!animeData?.genres?.length) return null;
+    //     return animeData.genres[Math.floor(Math.random() * animeData.genres.length)];
+    //   }, [animeData.genres]);
 
-    const { randomFive: relatedContList, loading: relatedContLoading, error: relatedContError } = useRelatedContentAnime(randomGenre);
-    const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = useWhatsNewAnime();
+    // const { randomFive: relatedContList, loading: relatedContLoading, error: relatedContError } = useRelatedContentAnime(randomGenre);
     
+    const {
+        data: relatedData,
+        loading: relatedLoading,
+        error: relatedError,
+      } = useQuery(GET_RELATED_ANIME, {
+        variables: {
+          genres: animeData.genres,
+          excludeId: animeData.id,
+        },
+        context: { clientName: "anilist" },
+    });
+    
+    const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = useWhatsNewAnime();
 
-    if (relatedContError) {
-        return <p>{relatedContError.message}</p>;
-    }
-
+    // if (relatedContError) {
+    //     return <p>{relatedContError.message}</p>;
+    // }
+    if (relatedError) return <p>Error loading related anime: {relatedError.message}</p>;
+    
     // API Error Redirect to Error page
     if (whatsNewError) {
         return <p>{whatsNewError.message}</p>;
     }
     
     
-    if( reviewsLoading || relatedContLoading || whatsNewLoading ) return renderSkeleton();
+    if( reviewsLoading || relatedLoading || whatsNewLoading ) return renderSkeleton();
     
+    const relatedAnimes = relatedData?.Page?.media || [];
     const reviews = reviewsData.getReviewsByAnilistId?.data ?? [];
     
     const formatAnime = (anime: any) => ({
@@ -117,16 +129,22 @@ export const AnimeReview = () => {
             <ReviewBanner animeData={animeData} />
             <ReviewSynops animeData={animeData} />
             <UserReviewList reviews={reviews} />
-            <AnimeList listType="Related Content" data={relatedContList.map(formatAnime)}/>
+            <AnimeList
+                listType="Related Content"
+                data={relatedAnimes.map((anime: AnilistMedia) => ({
+                    animeName: anime.title.romaji,
+                    animePhotoURL: anime.coverImage.large,
+                    animeRating: anime.averageScore,
+                }))}
+            />
             <AnimeList listType="Something New" data={whatsNewList.map(formatAnime)}/>
         </AnimeReviewWrapper>
     );
 };
 
 const AnimeReviewWrapper = styled.section`
-display: flex;
-flex-direction: column;
-background-color: var(--main-background);
-padding-bottom: 70px;
-margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-background);
+  padding-bottom: 100px;
 `;
