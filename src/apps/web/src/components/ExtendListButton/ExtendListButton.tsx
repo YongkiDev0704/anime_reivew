@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 type ExtendListButtonProps = {
@@ -8,12 +10,18 @@ type ExtendListButtonProps = {
 
 export const ExtendListButton = ({ visibleItems, toggleExtend, onToggle }: ExtendListButtonProps) => {
         return (
-            <div onClick={onToggle}>
+            <ExtendListButtonWrapper onClick={onToggle}>
                 {visibleItems === toggleExtend ? (
                     <ChevronDown size={32} color="white" />
                 ) : (
                     <ChevronUp size={32} color="white" />
                 )}
-            </div>
+            </ExtendListButtonWrapper>
         );
 };
+
+const ExtendListButtonWrapper = styled.div`
+    display: grid;
+    place-items: center;
+    margin: 20px;
+`

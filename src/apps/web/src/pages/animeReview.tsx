@@ -52,7 +52,8 @@ export const AnimeReview = () => {
         loading: reviewsLoading, 
         error: reviewsError 
     } = useQuery(GET_REVIEWS_BY_ANILISTID, {
-        variables: { anilist_id: 12345 }
+        variables: { anilist_id: 12345 },
+        fetchPolicy: 'network-only'
     });
     
     // API Error, maybe move user to error page?

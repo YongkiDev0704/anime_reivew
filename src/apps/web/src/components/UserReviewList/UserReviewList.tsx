@@ -1,8 +1,9 @@
 import styled, { ThemeProvider } from "styled-components";
+import pencilIcon from "../../assets/icons/pencil.svg";
 
 import { useEffect, useState } from "react";
-import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { Review } from "../../types";
+import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
 import { ExtendListButton } from "../ExtendListButton/ExtendListButton";
 
@@ -17,9 +18,20 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
     if (!reviews || reviews.length === 0) {
         return (
             <UserReviewListWrapper>
-                <UserReviewHead>Reviews</UserReviewHead>
-                <p>There are No Reviews yet!</p>
-                {/* Ask for Review (ReviewCard) */}
+                <UserReviewTopWrapper>
+                    <UserReviewHead>
+                        Review
+                    </UserReviewHead>
+                    <UserReviewButtonContainer>
+                        <UserReviewWrite><img src={pencilIcon} width={32} height={32}/>Write a Review</UserReviewWrite>
+                        <UserReviewViewAll>View All</UserReviewViewAll>
+                    </UserReviewButtonContainer>
+                </UserReviewTopWrapper>
+                <EmptyUserReviewContainer>
+                    <EmptyUserReviewMessage>
+                        Be the first to write a review
+                    </EmptyUserReviewMessage>
+                </EmptyUserReviewContainer>
             </UserReviewListWrapper>
         );
     }
@@ -60,7 +72,15 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
     if (reviews.length <= 3) {
         return (
             <UserReviewListWrapper>
-                <UserReviewHead>Review</UserReviewHead>
+                <UserReviewTopWrapper>
+                    <UserReviewHead>
+                        Review
+                    </UserReviewHead>
+                    <UserReviewButtonContainer>
+                        <UserReviewWrite><img src={pencilIcon} width={32} height={32}/>Write a Review</UserReviewWrite>
+                        <UserReviewViewAll>View All</UserReviewViewAll>
+                    </UserReviewButtonContainer>
+                </UserReviewTopWrapper>
                 <UserCardListWrapper $expanded={false} $viewAll={showAll ?? false}>
                     <ThemeProvider theme={{ size: showAll ? size.viewAllSize : size.defaultSize }}>
                         {reviews.map((review) => (
@@ -100,9 +120,15 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
 
     return (
         <UserReviewListWrapper>
-            <UserReviewHead>
-                Review
-            </UserReviewHead>
+            <UserReviewTopWrapper>
+                <UserReviewHead>
+                    Review
+                </UserReviewHead>
+                <UserReviewButtonContainer>
+                        <UserReviewWrite><img src={pencilIcon} width={32} height={32}/>Write a Review</UserReviewWrite>
+                        <UserReviewViewAll>View All</UserReviewViewAll>
+                </UserReviewButtonContainer>
+            </UserReviewTopWrapper>
             <UserCardListWrapper $expanded={visibleReviewCard <= 6} $viewAll={showAll ?? false}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
                 <ThemeProvider theme={{size: showAll? size.viewAllSize : size.defaultSize}} >
@@ -137,9 +163,54 @@ const UserReviewListWrapper = styled.section`
     z-index: 1;
 `;
 
+const UserReviewTopWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+`;
+
+const UserReviewButtonContainer = styled.div`
+    display: flex;
+    gap: 20px;
+    align-items: center;
+`;
+
+const UserReviewWrite = styled.button`
+    width: 170px;
+    height: 40px;
+    border: none;
+    border-radius: 16px;
+    outline: none;
+    background-color: var(--accent-color);
+    font-weight: normal;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding-left: 10px;
+`;
+
+const UserReviewViewAll = styled.h3`
+    color: var(--main-text);
+    cursor: pointer;
+`;
+
 const UserReviewHead = styled.h2`
     color: var(--main-text);
     font-size: 32px;
+`
+
+const EmptyUserReviewContainer = styled.div`
+    height: 215px;
+    width: 100%;
+    display: grid;
+    place-items: center;
+`
+const EmptyUserReviewMessage = styled.h2`
+    color: var(--box-container);
+    font-size: 48px;
 `
 
 const UserCardListWrapper = styled.div< {$expanded: boolean; $viewAll: boolean} >`
