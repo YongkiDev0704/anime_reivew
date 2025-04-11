@@ -30,7 +30,13 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
     
     const [currentScore, setCurrentScore] = useState(ratingScore);
 
+    const [reviewComment, setReviewComment] = useState(reviewText);
+
     const [password, setPassword] = useState("");
+
+    const handleReviewCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setReviewComment(event.target.value);
+      };
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
@@ -63,9 +69,11 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
                     />
                 </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
-            <ReviewPopupTextBox placeholder="Write a review" readOnly={isReadMode}>
-                {reviewText}
-            </ReviewPopupTextBox>
+            <ReviewPopupTextBox 
+                placeholder="Write a review" 
+                readOnly={isReadMode}
+                value={reviewComment}
+                onChange={handleReviewCommentChange} />
             {!isReadMode && (
                 <ReviewPopupBottom>
                     <ReviewPasswordInput placeholder="Enter a Password" type="password" value={password} onChange={handlePasswordChange}/>
