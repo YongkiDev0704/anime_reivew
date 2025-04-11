@@ -77,7 +77,8 @@ export const AnimeReview = () => {
   const reviews = reviewsData?.getReviewsByAnilistId?.data ?? [];
 
   const formatAnime = (anime: any) => ({
-    animeName: anime.title.english ? anime.title.english : anime.title.romaji,
+    animeRomajiName: anime.title.romaji,
+    animeEnglishName: anime.title.english,
     animePhotoURL: anime.coverImage.large,
     animeRating: anime.averageScore / 10,
   });
@@ -93,7 +94,10 @@ export const AnimeReview = () => {
         listType="Related Content"
         data={relatedAnimes.map(formatAnime)}
       />
-      <AnimeList listType="Something New" data={whatsNewList.map(formatAnime)} />
+      <AnimeList 
+        listType="Something New"
+        data={whatsNewList.map(formatAnime)} 
+      />
     </AnimeReviewWrapper>
   );
 };
