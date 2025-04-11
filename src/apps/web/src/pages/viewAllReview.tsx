@@ -1,43 +1,86 @@
 import styled from "styled-components";
+import { useQuery } from "@apollo/client";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
+import { GET_REVIEW_ANIME_DATA_BY_ID } from "../graphql/anilistQuery";
 
 import { ReviewBanner } from "../components/ReviewBanner/ReviewBanner";
 import { UserReviewList } from "../components/UserReviewList/UserReviewList";
 
-// Anime 객체를 받아와서 사용?
-// 일일이 정의 X?
-type ViewALLReviewProps = {
-    // animeName: string;
-    // animeBanner: string;
-    // animeSynopsis: string;
-    // animePoster: string;
-    // animeEpisodes: number;
-    // animeSeason: number;
-    // animePlayDate: Date;
-}
+// Skeletons
+import { SkeletonReviewBanner } from "../components/SkeletonReviewBanner/SkeletonReviewBanner";
+import { SkeletonReviewList } from "../components/SkeletonReviewList/SkeletonReviewList";
 
-export const ViewAllReview = ({}: ViewALLReviewProps) => {
+export const ViewAllReview = () => {
 
-    const review = {
-        username: "Username",
-        ratingScore: 7.28,
-        reviewComment: "Comment",
-        date: new Date()
+    const { id } = useParams<{ id: string }>();
+    const anilist_id = Number(id);
+    const navigate = useNavigate();
+
+    // Run All GraphQL Hooks at TOP ** TOGETHER **
+    const { data: anilistData, loading: anilistLoading, error: anilistError } = useQuery(
+        GET_REVIEW_ANIME_DATA_BY_ID,
+        {
+        variables: { id: anilist_id },
+        context: { clientName: "anilist" },
+        fetchPolicy: "cache-first",
+        skip: isNaN(anilist_id),
+        }
+    );
+
+    const { data: reviewsData, loading: reviewsLoading, error: reviewsError } = useQuery(
+        GET_REVIEWS_BY_ANILISTID,
+        {
+        variables: { anilist_id },
+        fetchPolicy: "network-only",
+        }
+    );
+
+    if (isNaN(anilist_id)) {
+        navigate("/error");
+        return null;
     }
+    
+    // if Data is Loading Show Skeleton
+    if (anilistLoading || reviewsLoading ) return renderSkeleton();
+    
+    // API Request Errors
+    if (anilistError) return <p>{anilistError.message}</p>;
+    if (reviewsError) return <p>{reviewsError.message}</p>;
 
-    // testUserReviewCards 부분을 나중엔 reviews 로 대체
-    const testUserReviewCards = new Array(11).fill(review);
+    const animeData = anilistData?.Media;
+    const reviews = reviewsData?.getReviewsByAnilistId?.data ?? [];
+
+    const animeName = animeData.title.english ? animeData.title.english : animeData.title.romaji;
 
     return (
         <ViewAllReviewWrapper>
-            <ReviewBanner animeBanner={"https://wallpapercave.com/wp/wp8879962.jpg"}/>
-            <UserReviewList showAll={true} reviews={testUserReviewCards} />
+            <ReviewBanner animeData={animeData} />
+            <ExtraMargin />
+            <UserReviewList showAll={true} reviews={reviews} animeName={animeName} />
         </ViewAllReviewWrapper>
     );
 };
+
+const renderSkeleton = () => {
+  return (
+    <ViewAllReviewWrapper>
+      <SkeletonReviewBanner />
+      <SkeletonReviewList />
+    </ViewAllReviewWrapper>
+  );
+};
+
 
 const ViewAllReviewWrapper = styled.section`
     display: flex;
     flex-direction: column;
     background-color: var(--main-background);
     padding-bottom: 100px;
+    margin-bottom: 100px;
 `;
+
+const ExtraMargin = styled.div`
+    margin: 20px;
+`
