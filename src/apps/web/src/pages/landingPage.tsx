@@ -20,6 +20,7 @@ export const LandingPage = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   const formatAnime = (anime: any) => ({
+    animeId: anime.id,
     animeRomajiName: anime.title.romaji,
     animeEnglishName: anime.title.english,
     animePhotoURL: anime.coverImage.large,

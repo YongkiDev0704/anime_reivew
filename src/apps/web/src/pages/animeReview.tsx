@@ -30,13 +30,6 @@ export const AnimeReview = () => {
         context: { clientName: "anilist" },
         fetchPolicy: 'cache-first',
       });
-      
-          //   이 부분에서 Loading Skeleton 필요
-          if (anilistLoading) return <p>Loading...</p>;
-          // API Error, maybe move user to error page?
-          if (anilistError) return <p>Error: {anilistError.message}</p>;
-
-        const animeData = anilistData.Media;
 
     const { 
         data: reviewsData, 
@@ -44,8 +37,15 @@ export const AnimeReview = () => {
         error: reviewsError 
     } = useQuery(GET_REVIEWS_BY_ANILISTID, {
             variables: { anilist_id }
-          });
+        });
         
+      
+          //   이 부분에서 Loading Skeleton 필요
+          if (anilistLoading) return <p>Loading...</p>;
+          // API Error, maybe move user to error page?
+          if (anilistError) return <p>Error: {anilistError.message}</p>;
+
+        const animeData = anilistData.Media;
           //   이 부분에서 Loading Skeleton 필요
           if (reviewsLoading) return <p>Loading...</p>;
           // API Error, maybe move user to error page?

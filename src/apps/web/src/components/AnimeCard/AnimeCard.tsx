@@ -3,15 +3,17 @@ import styled from "styled-components";
 import rating from "../../assets/icons/rating.svg";
 
 type AnimeCardProps = {
+    id: string;
     animeName?: string;
     animePhotoURL?: string;
     animeRating?: number | null;
+    onClick?: (id: string) => void;
 };
 
-export const AnimeCard = ({ animeName, animePhotoURL, animeRating }: AnimeCardProps) => {
+export const AnimeCard = ({ id, animeName, animePhotoURL, animeRating, onClick }: AnimeCardProps) => {
   return (
     <AnimeCardWrapper>
-        <AnimePhotoWrapper>
+        <AnimePhotoWrapper onClick={() => onClick?.(id)}>
             <AnimePhoto src={animePhotoURL} alt={`Image poster of ${animeName}`}/>
             <ReviewButton>See Review</ReviewButton>
         </AnimePhotoWrapper>

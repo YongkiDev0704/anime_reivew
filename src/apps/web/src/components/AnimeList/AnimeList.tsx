@@ -1,11 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 import { AnimeCard } from "../AnimeCard/AnimeCard";
 
 type AnimeListProps = {
   listType: string;
   data: {
+    animeId: string;
     animeRomajiName: string;
     animeEnglishName: string;
     animePhotoURL: string;
@@ -21,6 +24,7 @@ const RIGHT_OFFSET = 80;
 const SLIDER_WIDTH = 1440;
 
 export const AnimeList = ({ listType, data }: AnimeListProps) => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const maxIndex = data.length - VISIBLE_CARDS;
 
@@ -32,6 +36,10 @@ export const AnimeList = ({ listType, data }: AnimeListProps) => {
     if (currentIndex < maxIndex) setCurrentIndex(currentIndex + 1);
   };
 
+  const handleCardClick = (id: string) => {
+    navigate(`/review/${id}`);
+  };
+  
   const totalTranslateX = (CARD_WIDTH + CARD_GAP) * currentIndex;
 
   return (
@@ -66,6 +74,7 @@ export const AnimeList = ({ listType, data }: AnimeListProps) => {
             return (
               <CardContainer key={i} dimmed={isPartiallyVisible}>
                 <AnimeCard
+                  id={anime.animeId}
                   animeName={
                     hideInfo
                       ? ""
@@ -73,6 +82,7 @@ export const AnimeList = ({ listType, data }: AnimeListProps) => {
                   }
                   animePhotoURL={anime.animePhotoURL}
                   animeRating={hideInfo ? null : anime.animeRating}
+                  onClick={handleCardClick}
                 />
               </CardContainer>
             );
