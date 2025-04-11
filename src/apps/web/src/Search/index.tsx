@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { debounce } from "lodash";
 import Fuse from "fuse.js";
+import { useNavigate } from "react-router-dom";
 
 import { useSearchAnime } from "../hooks/useSearchAnime";
 import SearchIconSVG from "../assets/icons/search.svg";
@@ -12,6 +13,7 @@ export const Search = () => {
   const [filteredResults, setFilteredResults] = useState<any[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const searchRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const { searchAnime, results } = useSearchAnime();
 
@@ -71,7 +73,7 @@ export const Search = () => {
       setSelectedIndex((prev) => (prev <= 0 ? filteredResults.length - 1 : prev - 1));
     } else if (e.key === "Enter" && selectedIndex >= 0) {
       const selectedAnime = filteredResults[selectedIndex];
-      console.log("Selected Anime:", selectedAnime);
+      navigate(`/review/${selectedAnime.id}`); 
       setShowSearch(false);
       setKeyword("");
       setFilteredResults([]);
@@ -99,7 +101,7 @@ export const Search = () => {
               key={anime.id}
               className={i === selectedIndex ? "selected" : ""}
               onClick={() => {
-                console.log("Clicked Anime:", anime);
+                navigate(`/review/${anime.id}`); 
                 setShowSearch(false);
                 setKeyword("");
                 setFilteredResults([]);

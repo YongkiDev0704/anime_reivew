@@ -77,6 +77,7 @@ export const AnimeReview = () => {
   const reviews = reviewsData?.getReviewsByAnilistId?.data ?? [];
 
   const formatAnime = (anime: any) => ({
+    animeId: anime.id.toString(),
     animeRomajiName: anime.title.romaji,
     animeEnglishName: anime.title.english,
     animePhotoURL: anime.coverImage.large,
