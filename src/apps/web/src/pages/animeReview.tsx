@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
 import { useWhatsNewAnime } from "../utils/whatsNewList";
@@ -18,21 +18,12 @@ import { AnimeList } from "../components/AnimeList/AnimeList";
 import { SkeletonReviewBanner } from "../components/SkeletonReviewBanner/SkeletonReviewBanner";
 import { SkeletonReviewSynops } from "../components/SkeletonReviewSynops/SkeletonReviewSynops";
 import { SkeletonReviewList } from "../components/SkeletonReviewList/SkeletonReviewList";
-import { SkeletonAnimeList } from "../components/SkeletonAnimeList";
-
-type AnilistMedia = {
-  title: {
-    romaji: string;
-  };
-  coverImage: {
-    large: string;
-  };
-  averageScore: number;
-};
+import { SkeletonAnimeList } from "../components/SkeletonAnimeList";    
 
 export const AnimeReview = () => {
   const { id } = useParams<{ id: string }>();
   const anilist_id = Number(id);
+  const navigate = useNavigate();
 
   // Run All GraphQL Hooks at TOP ** TOGETHER **
   const { data: anilistData, loading: anilistLoading, error: anilistError } = useQuery(
@@ -68,7 +59,10 @@ export const AnimeReview = () => {
 
   const { randomFour: whatsNewList, loading: whatsNewLoading, error: whatsNewError } = useWhatsNewAnime();
 
-  if (isNaN(anilist_id)) return <p>Invalid ID</p>;
+  if (isNaN(anilist_id)) {
+    navigate("/error");
+    return null;
+  }
   
   // if Data is Loading Show Skeleton
   if (anilistLoading || reviewsLoading || relatedLoading || whatsNewLoading) return renderSkeleton();
@@ -87,19 +81,17 @@ export const AnimeReview = () => {
     animePhotoURL: anime.coverImage.large,
     animeRating: anime.averageScore / 10,
   });
+  
+  const animeName = animeData.title.english ? animeData.title.english : animeData.title.romaji;
 
   return (
     <AnimeReviewWrapper>
       <ReviewBanner animeData={animeData} />
       <ReviewSynops animeData={animeData} />
-      <UserReviewList reviews={reviews} />
+      <UserReviewList reviews={reviews} animeName={animeName}/>
       <AnimeList
         listType="Related Content"
-        data={relatedAnimes.map((anime: AnilistMedia) => ({
-          animeName: anime.title.romaji,
-          animePhotoURL: anime.coverImage.large,
-          animeRating: anime.averageScore,
-        }))}
+        data={relatedAnimes.map(formatAnime)}
       />
       <AnimeList listType="Something New" data={whatsNewList.map(formatAnime)} />
     </AnimeReviewWrapper>

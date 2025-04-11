@@ -1,25 +1,39 @@
 import styled from "styled-components";
 import defaultUserIcon from "../../assets/icons/user.svg";
 
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { EDIT_USER_REVIEW, WRITE_NEW_USER_REVIEW } from "../../graphql/reviewQuery";
+// Components
 import { Button } from "../Button";
 import { Review } from "../../types";
 import { ReviewScore } from "../ReviewScore/ReviewScore";
-import { useState } from "react";
-
+import { useParams } from "react-router-dom";
 
 // 3 Different Mode for [Read / Write / Edit]
-// Render a component in slightly different way for each mode
 // Review Data recieved from Prop
 type ReviewPopupProps = {
     mode: "Read" | "Write" | "Edit",
-    review?: Review;
+    review?: Review | null;
+    animeName: String;
+    closePopup: () => void;
 }
 
-export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
+export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupProps) => {
 
+    const { id } = useParams<{ id: string }>();
+    const anilist_id = Number(id);
     
     const isReadMode = mode === "Read";
-    const isEditMode = mode === "Edit"
+    const isEditMode = mode === "Edit";
+    const isWriteMode = mode === "Write";
+
+    const [writeReview] = useMutation(WRITE_NEW_USER_REVIEW, {
+        refetchQueries: ['GetReviewsByAnilistId'],
+    });
+    const [editReview] = useMutation(EDIT_USER_REVIEW, {
+        refetchQueries: ['GetReviewsByAnilistId'],
+    });
     
     // set attributes if It's Read Mode
     const username = isReadMode || isEditMode ? review?.username ?? "Unknown User" : "Anonymous";
@@ -29,9 +43,7 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
     const formattedDate = `${dateInput.getFullYear()}.${(dateInput.getMonth() + 1).toString().padStart(2, "0")}.${dateInput.getDate().toString().padStart(2, "0")}`;
     
     const [currentScore, setCurrentScore] = useState(ratingScore);
-
     const [reviewComment, setReviewComment] = useState(reviewText);
-
     const [password, setPassword] = useState("");
 
     const handleReviewCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -42,6 +54,48 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
         setPassword(event.target.value);
       };
 
+    const handleSubmit = async () => {
+        if (!currentScore || !reviewComment || !password) {
+            alert("Please fill in all empty fields.");
+            return;
+        }
+
+        try {
+            if (isWriteMode) {
+              const response = await writeReview({
+                variables: {
+                  username: username,
+                  review_rating: currentScore,
+                  review_comment: reviewComment,
+                  review_password: password,
+                  anilist_id: anilist_id,
+                  anime_name: animeName,
+                }
+              });
+              if (response.data.createReview.success) {
+                closePopup();
+              } else {
+                alert("Failed to Write a review: " + response.data.createReview.error);
+              }
+            } else if (isEditMode) {
+              const response = await editReview({
+                variables: {
+                  id: review?.id,
+                  review_rating: currentScore.toString(),
+                  review_comment: reviewComment,
+                  review_password: password,
+                }
+              });
+              if (response.data.editReview.success) {
+                closePopup();
+              } else {
+                alert("Failed To Edit a review: " + response.data.editReview.error);
+              }
+            }
+          } catch (err) {
+            console.error("Error:", err);
+          }
+    };
 
     return(
         <ReviewPopupWrapper>
@@ -76,8 +130,11 @@ export const ReviewPopup = ({mode, review}: ReviewPopupProps) => {
                 onChange={handleReviewCommentChange} />
             {!isReadMode && (
                 <ReviewPopupBottom>
-                    <ReviewPasswordInput placeholder="Enter a Password" type="password" value={password} onChange={handlePasswordChange}/>
-                    <Button label="Submit" variant="third" />
+                    <ReviewPasswordInput 
+                        placeholder="Enter a Password" 
+                        type="password" 
+                        value={password} onChange={handlePasswordChange}/>
+                    <Button label={isWriteMode? "Submit" : "Edit"} variant="third" onClick={handleSubmit} />
                 </ReviewPopupBottom>
             )}
         </ReviewPopupWrapper>

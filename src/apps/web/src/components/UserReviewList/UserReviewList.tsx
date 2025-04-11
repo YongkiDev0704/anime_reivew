@@ -10,48 +10,36 @@ import { ExtendListButton } from "../ExtendListButton/ExtendListButton";
 type UserReviewListProps = {
     showAll?: boolean;
     reviews: Review[];
+    animeName: String;
 }
 
-export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
+type SelectedReviewProps = {
+    review: Review | null;
+    mode: "Read" | "Write" | "Edit";
+    animeName: String;
+  } | null;
 
-    // Review is Empty (undefined)
-    if (!reviews || reviews.length === 0) {
-        return (
-            <UserReviewListWrapper>
-                <UserReviewTopWrapper>
-                    <UserReviewHead>
-                        Review
-                    </UserReviewHead>
-                    <UserReviewButtonContainer>
-                        <UserReviewWrite><img src={pencilIcon} width={32} height={32}/>Write a Review</UserReviewWrite>
-                        <UserReviewViewAll>View All</UserReviewViewAll>
-                    </UserReviewButtonContainer>
-                </UserReviewTopWrapper>
-                <EmptyUserReviewContainer>
-                    <EmptyUserReviewMessage>
-                        Be the first to write a review
-                    </EmptyUserReviewMessage>
-                </EmptyUserReviewContainer>
-            </UserReviewListWrapper>
-        );
-    }
-    
+export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProps) => {
+
+
     const size = {
         defaultSize: {width: "398px", height: "180px"},
         viewAllSize: {width: "534px", height: "180px"}
     }
     
     // State to track of Clicked or Selected Review to Show a Modal
-    const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+    const [selectedReview, setSelectedReview] = useState<SelectedReviewProps>(null);
     
-        // Popup Related Methods to open and close
+        // Popup Related Methods to open and close Tracks the mode
         const openReviewPopup = (review: Review) => {
-            console.log("Review clicked:", review);
-            setSelectedReview(review);
-        };
-        const closeReviewPopup = () => {
+            setSelectedReview({ review, mode: "Read", animeName });
+          };
+          const openWritePopup = () => {
+            setSelectedReview({ review: null, mode: "Write", animeName });
+          };
+          const closeReviewPopup = () => {
             setSelectedReview(null);
-        };
+          };
         
         // Close the Modal when ESC is Pressed
         useEffect(() => {
@@ -66,6 +54,42 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
                 document.removeEventListener("keydown", handleKeyDown);
             };
         }, [selectedReview]);
+
+    // Review is Empty (undefined)
+    if (!reviews || reviews.length === 0) {
+        return (
+            <UserReviewListWrapper>
+                <UserReviewTopWrapper>
+                    <UserReviewHead>
+                        Review
+                    </UserReviewHead>
+                    <UserReviewButtonContainer>
+                        <UserReviewWrite onClick={openWritePopup}>
+                            <img src={pencilIcon} width={32} height={32}/>Write a Review
+                        </UserReviewWrite>
+                        <UserReviewViewAll>View All</UserReviewViewAll>
+                    </UserReviewButtonContainer>
+                </UserReviewTopWrapper>
+                <EmptyUserReviewContainer>
+                    <EmptyUserReviewMessage>
+                        Be the first to write a review
+                    </EmptyUserReviewMessage>
+                </EmptyUserReviewContainer>
+                
+                {selectedReview && (
+                    <ReviewPopupOverlay onClick={closeReviewPopup}>
+                        <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
+                            <ReviewPopup 
+                                    mode={selectedReview.mode} 
+                                    review={selectedReview.review} 
+                                    animeName={animeName} 
+                                    closePopup={closeReviewPopup}/>
+                        </ReviewPopupContent>
+                    </ReviewPopupOverlay>
+                )}
+            </UserReviewListWrapper>
+        );
+    }
     
     // If we have less or only 3 Reviews show.
     // We don't need to Show Chevron Button (ExtendListButton)
@@ -77,7 +101,9 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
                         Review
                     </UserReviewHead>
                     <UserReviewButtonContainer>
-                        <UserReviewWrite><img src={pencilIcon} width={32} height={32}/>Write a Review</UserReviewWrite>
+                        <UserReviewWrite onClick={openWritePopup}>
+                            <img src={pencilIcon} width={32} height={32}/>Write a Review
+                        </UserReviewWrite>
                         <UserReviewViewAll>View All</UserReviewViewAll>
                     </UserReviewButtonContainer>
                 </UserReviewTopWrapper>
@@ -93,7 +119,11 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
                 {selectedReview && (
                     <ReviewPopupOverlay onClick={closeReviewPopup}>
                         <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
-                            <ReviewPopup mode="Read" review={selectedReview} />
+                            <ReviewPopup 
+                                mode={selectedReview.mode} 
+                                review={selectedReview.review}
+                                animeName={animeName} 
+                                closePopup={closeReviewPopup}/>
                         </ReviewPopupContent>
                     </ReviewPopupOverlay>
                 )}
@@ -125,8 +155,10 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
                     Review
                 </UserReviewHead>
                 <UserReviewButtonContainer>
-                        <UserReviewWrite><img src={pencilIcon} width={32} height={32}/>Write a Review</UserReviewWrite>
-                        <UserReviewViewAll>View All</UserReviewViewAll>
+                    <UserReviewWrite onClick={openWritePopup}>
+                        <img src={pencilIcon} width={32} height={32}/>Write a Review
+                    </UserReviewWrite>
+                    <UserReviewViewAll>View All</UserReviewViewAll>
                 </UserReviewButtonContainer>
             </UserReviewTopWrapper>
             <UserCardListWrapper $expanded={visibleReviewCard <= 6} $viewAll={showAll ?? false}>
@@ -147,7 +179,11 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
             {selectedReview && (
                 <ReviewPopupOverlay onClick={closeReviewPopup}>
                     <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
-                        <ReviewPopup mode="Read" review={selectedReview} />
+                        <ReviewPopup 
+                                mode={selectedReview.mode} 
+                                review={selectedReview.review} 
+                                animeName={animeName} 
+                                closePopup={closeReviewPopup}/>
                     </ReviewPopupContent>
                 </ReviewPopupOverlay>
             )}

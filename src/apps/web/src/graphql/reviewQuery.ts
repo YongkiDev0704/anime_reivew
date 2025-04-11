@@ -39,8 +39,8 @@ export const GET_REVIEWS_BY_USERNAME = gql`
 export const WRITE_NEW_USER_REVIEW = gql`
   mutation WriteNewUserReview(
       $username: String!,
-      $review_rating: Int!,
-      $review_comment: String,
+      $review_rating: String!,
+      $review_comment: String!,
       $review_password: String,
       $anilist_id: Int!,
       $anime_name: String!
