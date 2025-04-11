@@ -99,7 +99,8 @@ const UserRatingScore = styled.p`
 `;
 
 const UserReviewBorder = styled.div`
-    border: 1px solid var(--main-text);
+    // border: 1px solid var(--main-text);
+    border: none;
     width: 100%;
     height: 0;
     margin: 7px 1px;
@@ -113,4 +114,5 @@ const UserReviewInfoText = styled.p`
 const UserReviewText = styled.p`
     color: var(--main-text);
     marigin: 0 3px;
+    margin-left: 35px;
 `;
