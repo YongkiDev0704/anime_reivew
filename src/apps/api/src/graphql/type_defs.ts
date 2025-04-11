@@ -17,7 +17,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
   type Review {
     id: ID!
     username: String
-    review_rating: Float!
+    review_rating: String!
     review_comment: String!
     review_password: String
     anilist_id: Int!
@@ -38,7 +38,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
 
   input CreateReviewInput {
     username: String
-    review_rating: Float!
+    review_rating: String!
     review_comment: String!
     review_password: String
     anilist_id: Int!
@@ -52,7 +52,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     
   input EditReviewInput {
     _id: ID!
-    review_rating: Float!
+    review_rating: String!
     review_comment: String!
     review_password: String!
   }

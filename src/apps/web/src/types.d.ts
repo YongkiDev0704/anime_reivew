@@ -12,7 +12,7 @@ export type Anime = {
 export type Review = {
   id: number;
   username: string;
-  review_rating: number;
+  review_rating: string;
   review_comment: string;
   userIcon?: string;
   updatedAt: number;
@@ -25,6 +25,7 @@ export type AniListAnimeDetail = {
     romaji: string;
     english: string | null;
   };
+  averageScore: number | null;
   description: string | null;
       episodes: number | null;
       startDate: {

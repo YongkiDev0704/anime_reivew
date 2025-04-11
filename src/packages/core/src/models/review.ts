@@ -19,7 +19,7 @@ export class Review extends AniReview {
   declare public username?: string;
 
   @prop({ required: true })
-  declare public review_rating: number;
+  declare public review_rating: string;
 
   @prop({ required: true })
   declare public review_comment: string;

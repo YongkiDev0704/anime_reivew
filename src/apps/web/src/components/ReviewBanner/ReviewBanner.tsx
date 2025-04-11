@@ -2,10 +2,7 @@ import styled from "styled-components";
 import ratingSushi from "../../assets/icons/rating.svg"
 import { AniListAnimeDetail } from "../../types";
 
-// Anime 객체를 받아와서 사용?
-// 일일이 정의 X?
 type ReviewBannerInfoProps = {
-    // animeBanner: string;
     animeData: AniListAnimeDetail;
 }
 
@@ -32,9 +29,8 @@ export const ReviewBanner = ({animeData}: ReviewBannerInfoProps) => {
                         {animeData.title.english? animeData.title.english : animeData.title.romaji}
                     </ReviewAnimeTitle>
                     <ReviewRating src={ratingSushi} />
-                    {/* 나중에 우리의 점수로 수정 필요요 */}
                     <ReviewAnimeRating>
-                        8.63
+                        {animeData.averageScore? animeData.averageScore / 10 : "No Scores Yet"}
                     </ReviewAnimeRating>
                 </ReviewTitleWrapper>
                 <ReviewAnimeInfo>
@@ -68,6 +64,20 @@ const ReviewAnimeBanner = styled.div<{bannerImage: string | null}>`
     background-size: cover;
     background-position: center;
     padding-bottom: 48px;
+    
+    &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  > * {
+    position: relative;
+  }
 `;
 
 const ReviewAnimeTitle = styled.h2`

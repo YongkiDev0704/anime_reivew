@@ -1,69 +1,166 @@
 import styled, { ThemeProvider } from "styled-components";
+import pencilIcon from "../../assets/icons/pencil.svg";
 
 import { useEffect, useState } from "react";
-import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { Review } from "../../types";
+import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
+import { ExtendListButton } from "../ExtendListButton/ExtendListButton";
 
 type UserReviewListProps = {
     showAll?: boolean;
     reviews: Review[];
+    animeName: String;
 }
 
-export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
+type SelectedReviewProps = {
+    review: Review | null;
+    mode: "Read" | "Write" | "Edit";
+    animeName: String;
+  } | null;
 
-    // Review is Empty (undefined)
-    if(!reviews) return <p>No review found</p>;
-    
-    let reviewNumber = 3;
+export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProps) => {
+
+
     const size = {
         defaultSize: {width: "398px", height: "180px"},
         viewAllSize: {width: "534px", height: "180px"}
     }
+    
+    // State to track of Clicked or Selected Review to Show a Modal
+    const [selectedReview, setSelectedReview] = useState<SelectedReviewProps>(null);
+    
+        // Popup Related Methods to open and close Tracks the mode
+        const openReviewPopup = (review: Review) => {
+            setSelectedReview({ review, mode: "Read", animeName });
+          };
+          const openWritePopup = () => {
+            setSelectedReview({ review: null, mode: "Write", animeName });
+          };
+          const closeReviewPopup = () => {
+            setSelectedReview(null);
+          };
+        
+        // Close the Modal when ESC is Pressed
+        useEffect(() => {
+            const handleKeyDown = (event: KeyboardEvent) => {
+                if (event.key === "Escape") {
+                    closeReviewPopup();
+                }
+            };
+    
+            document.addEventListener("keydown", handleKeyDown);
+            return () => {
+                document.removeEventListener("keydown", handleKeyDown);
+            };
+        }, [selectedReview]);
 
+    // Review is Empty (undefined)
+    if (!reviews || reviews.length === 0) {
+        return (
+            <UserReviewListWrapper>
+                <UserReviewTopWrapper>
+                    <UserReviewHead>
+                        Review
+                    </UserReviewHead>
+                    <UserReviewButtonContainer>
+                        <UserReviewWrite onClick={openWritePopup}>
+                            <img src={pencilIcon} width={32} height={32}/>Write a Review
+                        </UserReviewWrite>
+                        <UserReviewViewAll>View All</UserReviewViewAll>
+                    </UserReviewButtonContainer>
+                </UserReviewTopWrapper>
+                <EmptyUserReviewContainer>
+                    <EmptyUserReviewMessage>
+                        Be the first to write a review
+                    </EmptyUserReviewMessage>
+                </EmptyUserReviewContainer>
+                
+                {selectedReview && (
+                    <ReviewPopupOverlay onClick={closeReviewPopup}>
+                        <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
+                            <ReviewPopup 
+                                    mode={selectedReview.mode} 
+                                    review={selectedReview.review} 
+                                    animeName={animeName} 
+                                    closePopup={closeReviewPopup}/>
+                        </ReviewPopupContent>
+                    </ReviewPopupOverlay>
+                )}
+            </UserReviewListWrapper>
+        );
+    }
+    
+    // If we have less or only 3 Reviews show.
+    // We don't need to Show Chevron Button (ExtendListButton)
+    if (reviews.length <= 3) {
+        return (
+            <UserReviewListWrapper>
+                <UserReviewTopWrapper>
+                    <UserReviewHead>
+                        Review
+                    </UserReviewHead>
+                    <UserReviewButtonContainer>
+                        <UserReviewWrite onClick={openWritePopup}>
+                            <img src={pencilIcon} width={32} height={32}/>Write a Review
+                        </UserReviewWrite>
+                        <UserReviewViewAll>View All</UserReviewViewAll>
+                    </UserReviewButtonContainer>
+                </UserReviewTopWrapper>
+                <UserCardListWrapper $expanded={false} $viewAll={showAll ?? false}>
+                    <ThemeProvider theme={{ size: showAll ? size.viewAllSize : size.defaultSize }}>
+                        {reviews.map((review) => (
+                            <UserReviewCard review={review} key={review.id} onClick={() => openReviewPopup(review)} />
+                        ))}
+                    </ThemeProvider>
+                </UserCardListWrapper>
+
+                {/* Modal: Show ReviewPopup When Clicked */}
+                {selectedReview && (
+                    <ReviewPopupOverlay onClick={closeReviewPopup}>
+                        <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
+                            <ReviewPopup 
+                                mode={selectedReview.mode} 
+                                review={selectedReview.review}
+                                animeName={animeName} 
+                                closePopup={closeReviewPopup}/>
+                        </ReviewPopupContent>
+                    </ReviewPopupOverlay>
+                )}
+            </UserReviewListWrapper>
+        );
+    }
+
+    let visibleReviewNumber = 3; // This is the Number we limit the number of Reviews to Show in Single Row
+
+    // If this is Show All Page, Every Review will be visible
     if(showAll){
-        reviewNumber = reviews.length;
+        visibleReviewNumber = reviews.length;
     }
 
     // State to track of shown number of Reviews between 3,6
-    const [visibleReviewCard, setVisibleReviewCard] = useState<number>(reviewNumber);
-    const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+    const [visibleReviewCard, setVisibleReviewCard] = useState<number>(visibleReviewNumber);
 
-    // Reviews
+    // Number of Visible Reviews in current State
     const toggleVisibleReviews = () => {
         setVisibleReviewCard((prevReviewNumber) => 
             prevReviewNumber === 3 ? 6 : 3
         );
     };
 
-    // Popup Related Methods to open and close
-    const openReviewPopup = (review: Review) => {
-        setSelectedReview(review);
-    };
-    const closeReviewPopup = () => {
-        setSelectedReview(null);
-    };
-    
-    // Close the Modal when ESC is Pressed
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                closeReviewPopup();
-            }
-        };
-
-        document.addEventListener("keydown", handleKeyDown);
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [selectedReview]);
-
     return (
         <UserReviewListWrapper>
-            <UserReviewHead>
-                Review
-            </UserReviewHead>
+            <UserReviewTopWrapper>
+                <UserReviewHead>
+                    Review
+                </UserReviewHead>
+                <UserReviewButtonContainer>
+                    <UserReviewWrite onClick={openWritePopup}>
+                        <img src={pencilIcon} width={32} height={32}/>Write a Review
+                    </UserReviewWrite>
+                    <UserReviewViewAll>View All</UserReviewViewAll>
+                </UserReviewButtonContainer>
+            </UserReviewTopWrapper>
             <UserCardListWrapper $expanded={visibleReviewCard <= 6} $viewAll={showAll ?? false}>
                 {/* Slice the Reviews into either 3,6 (most case) and show */}
                 <ThemeProvider theme={{size: showAll? size.viewAllSize : size.defaultSize}} >
@@ -73,21 +170,20 @@ export const UserReviewList = ({showAll, reviews}: UserReviewListProps) => {
                 </ThemeProvider>
             </UserCardListWrapper>
 
-            {/* Render if This isn't viewAll Page */}
+            {/* Render a Extend Button if This isn't viewAll Page */}
             {!showAll && (
-                    <ExtendButtonWrapper>
-                        {/* Show either Up or Down button depends on the number of Review Shown */}
-                        {(visibleReviewCard === 3 ? 
-                            <ChevronDown onClick={toggleVisibleReviews} size={32} color="white"/> :
-                            <ChevronUp onClick={toggleVisibleReviews} size={32} color="white"/>)}
-                    </ExtendButtonWrapper>
+                    <ExtendListButton visibleItems={visibleReviewCard} toggleExtend={3} onToggle={toggleVisibleReviews}/>
             )}
 
             {/* Modal: Show ReviewPopup When Clicked */}
             {selectedReview && (
                 <ReviewPopupOverlay onClick={closeReviewPopup}>
                     <ReviewPopupContent onClick={(e) => e.stopPropagation()}>
-                        <ReviewPopup mode="Read" review={selectedReview} />
+                        <ReviewPopup 
+                                mode={selectedReview.mode} 
+                                review={selectedReview.review} 
+                                animeName={animeName} 
+                                closePopup={closeReviewPopup}/>
                     </ReviewPopupContent>
                 </ReviewPopupOverlay>
             )}
@@ -100,11 +196,57 @@ const UserReviewListWrapper = styled.section`
     flex-wrap: wrap;
     flex-direction: column;
     margin: 0 60px;
+    z-index: 1;
+`;
+
+const UserReviewTopWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+`;
+
+const UserReviewButtonContainer = styled.div`
+    display: flex;
+    gap: 20px;
+    align-items: center;
+`;
+
+const UserReviewWrite = styled.button`
+    width: 170px;
+    height: 40px;
+    border: none;
+    border-radius: 16px;
+    outline: none;
+    background-color: var(--accent-color);
+    font-weight: normal;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding-left: 10px;
+`;
+
+const UserReviewViewAll = styled.h3`
+    color: var(--main-text);
+    cursor: pointer;
 `;
 
 const UserReviewHead = styled.h2`
     color: var(--main-text);
     font-size: 32px;
+`
+
+const EmptyUserReviewContainer = styled.div`
+    height: 215px;
+    width: 100%;
+    display: grid;
+    place-items: center;
+`
+const EmptyUserReviewMessage = styled.h2`
+    color: var(--box-container);
+    font-size: 48px;
 `
 
 const UserCardListWrapper = styled.div< {$expanded: boolean; $viewAll: boolean} >`
@@ -119,13 +261,6 @@ const UserCardListWrapper = styled.div< {$expanded: boolean; $viewAll: boolean} 
     transition: max-height 0.5s ease-in-out;
 `
 
-const ExtendButtonWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
-`
 // Outer area of Modal
 const ReviewPopupOverlay = styled.div`
     position: fixed;
