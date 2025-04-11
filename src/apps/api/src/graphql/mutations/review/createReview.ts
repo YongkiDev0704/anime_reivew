@@ -1,3 +1,5 @@
+import argon2 from "argon2";
+
 import { ReviewModel } from "@pnani/core";
 import { AniReview } from "@pnani/shared";
 
@@ -19,6 +21,12 @@ export const createReview: Resolver<
     error?: string;
   }
 > = async (_, { data }) => {
+
+  if(data.review_password) {
+    const hashedP = await argon2.hash(data.review_password);
+    data.review_password = hashedP;
+  }
+
   try {
     const review = await ReviewModel.create(data);
 
