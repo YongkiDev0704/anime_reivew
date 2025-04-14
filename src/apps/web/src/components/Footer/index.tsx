@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Icon from "../../assets/icons/logo.svg";
-import { Copyright, Mail, Phone } from "lucide-react";
+import { Copyright, Github, Mail, } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
 export const Footer = () => {
@@ -34,21 +34,22 @@ export const Footer = () => {
             <Mail />
             anigiri@example.com 
           </TagWithIcon>
-          <TagWithIcon>
-            <Phone /> 
-            +1 123 - 456 - 7890 
+          <TagWithIcon as="a" href="https://github.com/YongkiDev0704/anime_reivew/tree/main" target="_blank">
+            <Github /> 
+            Anigiri
           </TagWithIcon>
         </Section>
       </UpperSection>
       <LowerSection>
         <Copyright />
-        <Tag style={{ fontSize: "16px" }}> 2025 Project Anigiri | Data Provided by anilist, TMDB </Tag>
+        <Tag style={{ fontSize: "16px" }}> 2025 Project Anigiri | Data Provided by AniList, TMDB </Tag>
       </LowerSection>
     </FooterWrapper>
   )
 };
 
 const FooterWrapper = styled.div`
+  margin-top: 100px;
   height: 366px;
   display: flex;
   flex-direction: column;
@@ -105,7 +106,8 @@ const TagWithIcon = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-
+  text-decoration: none;
+  color: white;
 `;
 
 const Section = styled.div`

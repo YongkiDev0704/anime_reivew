@@ -6,22 +6,25 @@ import { Review } from "../../types";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
 import { ExtendListButton } from "../ExtendListButton/ExtendListButton";
+import { useNavigate} from "react-router-dom";
 
 type UserReviewListProps = {
     showAll?: boolean;
+    viewAllButton?: boolean;
     reviews: Review[];
     animeName: String;
+    animeId: number;
 }
 
 type SelectedReviewProps = {
     review: Review | null;
     mode: "Read" | "Write" | "Edit";
     animeName: String;
+    animeId: number;
   } | null;
 
-export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProps) => {
-
-
+export const UserReviewList = ({ showAll, reviews, animeName, animeId, viewAllButton = true }: UserReviewListProps) => {
+    const navigate = useNavigate();
     const size = {
         defaultSize: {width: "398px", height: "180px"},
         viewAllSize: {width: "534px", height: "180px"}
@@ -30,30 +33,35 @@ export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProp
     // State to track of Clicked or Selected Review to Show a Modal
     const [selectedReview, setSelectedReview] = useState<SelectedReviewProps>(null);
     
-        // Popup Related Methods to open and close Tracks the mode
-        const openReviewPopup = (review: Review) => {
-            setSelectedReview({ review, mode: "Read", animeName });
-          };
-          const openWritePopup = () => {
-            setSelectedReview({ review: null, mode: "Write", animeName });
-          };
-          const closeReviewPopup = () => {
-            setSelectedReview(null);
-          };
-        
-        // Close the Modal when ESC is Pressed
-        useEffect(() => {
-            const handleKeyDown = (event: KeyboardEvent) => {
-                if (event.key === "Escape") {
-                    closeReviewPopup();
-                }
-            };
+    let visibleReviewNumber = 3; // This is the Number we limit the number of Reviews to Show in Single Row
+
+    // State to track of shown number of Reviews between 3,6
+    const [visibleReviewCard, setVisibleReviewCard] = useState<number>(visibleReviewNumber);
     
-            document.addEventListener("keydown", handleKeyDown);
-            return () => {
-                document.removeEventListener("keydown", handleKeyDown);
-            };
-        }, [selectedReview]);
+    // Popup Related Methods to open and close Tracks the mode
+    const openReviewPopup = (review: Review) => {
+        setSelectedReview({ review, mode: "Read", animeName, animeId });
+        };
+        const openWritePopup = () => {
+        setSelectedReview({ review: null, mode: "Write", animeName, animeId });
+        };
+        const closeReviewPopup = () => {
+        setSelectedReview(null);
+        };
+    
+    // Close the Modal when ESC is Pressed
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                closeReviewPopup();
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [selectedReview]);
 
     // Review is Empty (undefined)
     if (!reviews || reviews.length === 0) {
@@ -67,7 +75,11 @@ export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProp
                         <UserReviewWrite onClick={openWritePopup}>
                             <img src={pencilIcon} width={32} height={32}/>Write a Review
                         </UserReviewWrite>
-                        <UserReviewViewAll>View All</UserReviewViewAll>
+                        {viewAllButton !== false && (
+                            <UserReviewViewAll onClick={() => navigate(`/review/${animeId}/viewall`)}>
+                                View All
+                            </UserReviewViewAll>
+                        )}
                     </UserReviewButtonContainer>
                 </UserReviewTopWrapper>
                 <EmptyUserReviewContainer>
@@ -104,7 +116,11 @@ export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProp
                         <UserReviewWrite onClick={openWritePopup}>
                             <img src={pencilIcon} width={32} height={32}/>Write a Review
                         </UserReviewWrite>
-                        <UserReviewViewAll>View All</UserReviewViewAll>
+                        {viewAllButton !== false && (
+                            <UserReviewViewAll onClick={() => navigate(`/review/${animeId}/viewall`)}>
+                                View All
+                            </UserReviewViewAll>
+                        )}
                     </UserReviewButtonContainer>
                 </UserReviewTopWrapper>
                 <UserCardListWrapper $expanded={false} $viewAll={showAll ?? false}>
@@ -125,21 +141,11 @@ export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProp
                                 animeName={animeName} 
                                 closePopup={closeReviewPopup}/>
                         </ReviewPopupContent>
-                    </ReviewPopupOverlay>
+                </ReviewPopupOverlay>
                 )}
             </UserReviewListWrapper>
         );
     }
-
-    let visibleReviewNumber = 3; // This is the Number we limit the number of Reviews to Show in Single Row
-
-    // If this is Show All Page, Every Review will be visible
-    if(showAll){
-        visibleReviewNumber = reviews.length;
-    }
-
-    // State to track of shown number of Reviews between 3,6
-    const [visibleReviewCard, setVisibleReviewCard] = useState<number>(visibleReviewNumber);
 
     // Number of Visible Reviews in current State
     const toggleVisibleReviews = () => {
@@ -147,6 +153,11 @@ export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProp
             prevReviewNumber === 3 ? 6 : 3
         );
     };
+
+    // If this is Show All Page, Every Review will be visible
+    if(showAll){
+        visibleReviewNumber = reviews.length;
+    }
 
     return (
         <UserReviewListWrapper>
@@ -158,7 +169,11 @@ export const UserReviewList = ({showAll, reviews, animeName}: UserReviewListProp
                     <UserReviewWrite onClick={openWritePopup}>
                         <img src={pencilIcon} width={32} height={32}/>Write a Review
                     </UserReviewWrite>
-                    <UserReviewViewAll>View All</UserReviewViewAll>
+                    {viewAllButton !== false && (
+                        <UserReviewViewAll onClick={() => navigate(`/review/${animeId}/viewall`)}>
+                            View All
+                        </UserReviewViewAll>
+                    )}
                 </UserReviewButtonContainer>
             </UserReviewTopWrapper>
             <UserCardListWrapper $expanded={visibleReviewCard <= 6} $viewAll={showAll ?? false}>

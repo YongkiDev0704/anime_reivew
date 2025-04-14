@@ -6,18 +6,23 @@ import { AnimeReview } from "./pages/animeReview";
 import { Layout } from "./components/Layout";
 import { Error } from "./pages/Error";
 import { ViewAllReview } from "./pages/viewAllReview";
+import { ScrollToTop } from "./components/ScrollToTop";
+import { ReviewLayout } from "./components/ReviewLayout";
 
 export const App = () => {
   return (
     <>
       <GlobalStyle />
       <BrowserRouter >
+      <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<LandingPage />} />
             <Route path="*" element={<Error />} />
-            <Route path="/review/:id" element={<AnimeReview />} />
-            <Route path="/review/viewall/:id" element={<ViewAllReview />} />
+            <Route path="review/:id" element={<ReviewLayout />}>
+              <Route index element={<AnimeReview />} />
+              <Route path="viewall" element={<ViewAllReview />} />
+            </Route>
           </Route>
          </Routes>
       </BrowserRouter>

@@ -68,6 +68,7 @@ const ReviewAnimeBanner = styled.div<{bannerImage: string | null}>`
     &::before {
     content: "";
     position: absolute;
+    height: 478px;
     top: 0;
     right: 0;
     bottom: 0;

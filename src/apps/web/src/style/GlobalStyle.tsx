@@ -36,10 +36,6 @@ export const GlobalStyle = createGlobalStyle`
     display: none;
   }
 
-  p {
-    margin: 0;
-  }
-
   body::-webkit-scrollbar {
     display: none;   
   }
@@ -56,6 +52,13 @@ export const GlobalStyle = createGlobalStyle`
   p {
     margin: 0;
     padding: 0;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: none;
   }
 
   @font-face {
