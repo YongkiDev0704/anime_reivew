@@ -9,6 +9,7 @@ import { Button } from "../Button";
 import { Review } from "../../types";
 import { ReviewScore } from "../ReviewScore/ReviewScore";
 import { useParams } from "react-router-dom";
+import { ReviewDropDown } from "../ReviewDropDown/ReviewDropDown";
 
 // 3 Different Mode for [Read / Write / Edit]
 // Review Data recieved from Prop
@@ -23,10 +24,15 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
 
     const { id } = useParams<{ id: string }>();
     const anilist_id = Number(id);
+
+    type ActionMode = "None" | "Edit" | "Delete";
+    const [actionMode, setActionMode] = useState<ActionMode>("None");
     
     const isReadMode = mode === "Read";
     const isEditMode = mode === "Edit";
     const isWriteMode = mode === "Write";
+
+    const isReadOnly = mode === "Read" && actionMode === "None";
 
     const [writeReview] = useMutation(WRITE_NEW_USER_REVIEW, {
         refetchQueries: ['GetReviewsByAnilistId'],
@@ -77,7 +83,7 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
               } else {
                 alert("Failed to Write a review: " + response.data.createReview.error);
               }
-            } else if (isEditMode) {
+            } else if (actionMode === "Edit" && review && currentScore && reviewComment) {
               const response = await editReview({
                 variables: {
                   id: review?.id,
@@ -91,7 +97,20 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
               } else {
                 alert("Failed To Edit a review: " + response.data.editReview.error);
               }
-            }
+            } else if (actionMode === "Delete" && review) {
+                // // Delete 뮤테이션 작업해야하는 부분
+                // const response = await deleteReview({
+                //   variables: {
+                //     id: review.id,
+                //     review_password: password,
+                //   },
+                // });
+                // if (response.data.deleteReview.success) {
+                //   closePopup();
+                // } else {
+                //   alert("Failed to delete review: " + response.data.deleteReview.error);
+                // }
+              }
           } catch (err) {
             console.error("Error:", err);
           }
@@ -114,7 +133,7 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
                 <ReviewPopupRatingWrapper>
                     <ReviewScore 
                         score = { currentScore }
-                        readOnly={isReadMode}
+                        readOnly={isReadOnly}
                         onChange={(value) => {
                             if (mode === "Write" || mode === "Edit") {
                               setCurrentScore(value);
@@ -125,18 +144,43 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
             </ReviewPopupTop>
             <ReviewPopupTextBox 
                 placeholder="Write a review" 
-                readOnly={isReadMode}
+                readOnly={isReadOnly}
                 value={reviewComment}
                 onChange={handleReviewCommentChange} />
-            {!isReadMode && (
-                <ReviewPopupBottom>
-                    <ReviewPasswordInput 
-                        placeholder="Enter a Password" 
-                        type="password" 
-                        value={password} onChange={handlePasswordChange}/>
-                    <Button label={isWriteMode? "Submit" : "Edit"} variant="third" onClick={handleSubmit} />
-                </ReviewPopupBottom>
-            )}
+            <ReviewPopupBottom>
+                {(isWriteMode && actionMode === "None") && (
+                    <Button 
+                    label = "Post a Review"
+                    variant="third"
+                    onClick={handleSubmit}
+                    />
+                )}
+                {(actionMode !== "None") && (
+                    <>
+                        <ReviewPasswordInput
+                        placeholder="Enter a Password"
+                        type="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        />
+                        <Button
+                        label={actionMode === "Edit" ? "Edit" : "Delete"}
+                        variant="third"
+                        onClick={handleSubmit}
+                        />
+                    </>
+                )}
+                { isReadMode && (
+                    <ReviewDropDown
+                    onEdit={() => {
+                        setActionMode("Edit");
+                    }}
+                    onDelete={() => {
+                        setActionMode("Delete");
+                    }}
+                    />
+                )}
+            </ReviewPopupBottom>
         </ReviewPopupWrapper>
     );
 };
