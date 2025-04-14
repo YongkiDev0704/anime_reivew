@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
+import { useParams, useOutletContext } from "react-router-dom";
 
 import { GET_REVIEWS_BY_ANILISTID } from "../graphql/reviewQuery";
 import { useWhatsNewAnime } from "../utils/whatsNewList";
