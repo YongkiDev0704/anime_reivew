@@ -79,7 +79,6 @@ export const LandingPage = () => {
             <SkeletonAnimeList listType="Latest Update" />
             <SkeletonAnimeList listType="For You" />
           </AnimeSection>
-          <BottomFill />
         </ContentContainer>
       </LandingPageWrapper>
     );
@@ -155,7 +154,6 @@ export const LandingPage = () => {
           <AnimeList listType="For You" data={forYouAnimes} />
         </AnimeSection>
       </ContentContainer>
-      <BottomFill />
     </LandingPageWrapper>
   );
 };
@@ -213,8 +211,4 @@ const Indicator = styled.div.withConfig({
   background-color: ${(props) => (props.active ? "#00F5D4" : "transparent")};
   border: 2px solid #00F5D4;
   transition: background-color 0.3s;
-`;
-
-const BottomFill = styled.div`
-  height: 150px;
 `;

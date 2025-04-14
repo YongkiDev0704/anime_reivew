@@ -96,6 +96,9 @@ const UserRatingScore = styled.p`
     color: var(--main-text);
     font-family: inter;
     font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const UserReviewBorder = styled.div`
