@@ -25,22 +25,26 @@ export const ReviewDropDown = ({onEdit, onDelete}: ReviewDropDownProps) => {
     }, []);
 
     return (
-        <ReviewDropDownBox ref={menuRef}>
+        <ReviewDropDownBox ref={menuRef} active={open}>
             <MenuButton onClick={() => setOpen((prev) => !prev)} src={dotMenu} />
                 {open && (
                     <Dropdown>
-                    <MenuItem onClick={() => { setOpen(false); onEdit(); }}>Edit</MenuItem>
-                    <MenuItem onClick={() => { setOpen(false); onDelete(); }}>Delete</MenuItem>
+                        <MenuItem onClick={() => { setOpen(false); onEdit(); }}>Edit</MenuItem>
+                        <MenuItem onClick={() => { setOpen(false); onDelete(); }}>Delete</MenuItem>
                     </Dropdown>
                 )}
         </ReviewDropDownBox>
     );
 }
 
-const ReviewDropDownBox = styled.div`
-    background-color: var(--footer-background);
+const ReviewDropDownBox = styled.div<{ active: boolean }>`
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${({ active }) => active ? 'var(--box-background)' : 'transparent'};
+    border-radius: 10px;
+    padding: 5px;
 `;
 
 const MenuButton = styled.img`
@@ -57,7 +61,7 @@ const Dropdown = styled.div`
     margin-top: 4px;
     background: white;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
     z-index: 100;
 `;

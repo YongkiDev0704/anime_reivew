@@ -229,7 +229,7 @@ const ReviewPopupRatingWrapper = styled.div`
 
 const ReviewPopupTextBox = styled.textarea`
     width: 90%;
-    height: 60%;
+    height: 62.5%;
     background-color: var(--box-container);
     border-radius: 25px;
     border: 2px solid var(--popup-border);
