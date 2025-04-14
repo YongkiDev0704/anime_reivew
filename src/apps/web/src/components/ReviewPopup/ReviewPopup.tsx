@@ -188,8 +188,8 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
 const ReviewPopupWrapper = styled.section`
     display: flex;
     flex-flow: column wrap;
-    width: 860px;
-    height: 620px;
+    width: 720px;
+    height: 500px;
     background-color: var(--box-container);
     padding: 20px 20px;
     border-radius: 25px;
@@ -228,8 +228,8 @@ const ReviewPopupRatingWrapper = styled.div`
 `;
 
 const ReviewPopupTextBox = styled.textarea`
-    width: 785px;
-    height: 428px;
+    width: 90%;
+    height: 60%;
     background-color: var(--box-container);
     border-radius: 25px;
     border: 2px solid var(--popup-border);
@@ -255,7 +255,7 @@ const ReviewPopupBottom = styled.div`
 `;
 
 const ReviewPasswordInput = styled.input`
-    width: 220px;
+    width: 200px;
     height: 36px;
     background-color: var(--box-background);
     border-radius: 15px;

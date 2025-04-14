@@ -51,21 +51,25 @@ const MenuButton = styled.img`
 `;
 
 const Dropdown = styled.div`
-  position: absolute;
-  right: 0;
-  top: 100%;
-  margin-top: 4px;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
-  z-index: 100;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 4px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
 `;
 
 const MenuItem = styled.div`
-  padding: 8px 12px;
-  cursor: pointer;
-  &:hover {
-    background: #f0f0f0;
-  }
+    display: flex;
+    justify-content: center;
+    width: 70px;
+    height: 20px;
+    padding: 8px 12px;
+    cursor: pointer;
+    &:hover {
+        background: #f0f0f0;
+    }
 `;
