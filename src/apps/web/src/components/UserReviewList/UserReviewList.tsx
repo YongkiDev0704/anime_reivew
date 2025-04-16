@@ -1,7 +1,7 @@
 import styled, { ThemeProvider } from "styled-components";
 import pencilIcon from "../../assets/icons/pencil.svg";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Review } from "../../types";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
