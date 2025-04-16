@@ -89,6 +89,7 @@ export const LandingPage = () => {
   const slides = [
     {
       ...animes[0],
+      animeId: 112151,
       image: animes[0].posterUrls[5] || animes[0].posterUrls[0],
       logo: animes[0].logoUrl,
       positionX: "0%",
@@ -96,6 +97,7 @@ export const LandingPage = () => {
     },
     {
       ...animes[1],
+      animeId: 154587,
       image: animes[1].posterUrls[4] || animes[1].posterUrls[0],
       logo: animes[1].logoUrl,
       positionX: "center",
@@ -103,6 +105,7 @@ export const LandingPage = () => {
     },
     {
       ...animes[2],
+      animeId: 151807,
       image: animes[2].backdropUrls[0],
       logo: animes[2].logoUrl,
       positionX: "10%",
@@ -126,7 +129,7 @@ export const LandingPage = () => {
         <CarouselWrapper>
           {slides.map((anime, i) => (
             <HeroSlide
-              key={anime.title}
+              key={anime.animeId}
               logo={anime.logo}
               image={anime.image}
               contentRating={anime.contentRating}
@@ -134,6 +137,7 @@ export const LandingPage = () => {
               active={i === current}
               positionX={anime.positionX}
               positionY={anime.positionY}
+              animeId={anime.animeId}
             />
           ))}
           <ArrowButton left onClick={handlePrev}>
@@ -162,6 +166,7 @@ const LandingPageWrapper = styled.div`
   position: relative;
   width: 100%;
   min-height: 100vh;
+  background-color: #141414;
 `;
 
 const ContentContainer = styled.div`
@@ -182,7 +187,7 @@ const ArrowButton = styled.button.withConfig({
   shouldForwardProp: (prop) => !["left", "right"].includes(prop), 
 })<{ left?: boolean; right?: boolean }>`
   position: absolute;
-  top: 347px;
+  top: 380px;
   ${(props) => (props.left ? "left: 48px;" : "right: 48px;")}
   transform: translateY(-50%);
   z-index: 10;
@@ -200,7 +205,7 @@ const IndicatorWrapper = styled.div`
   display: flex;
   gap: 8px;
   transform: translateX(-50%);
-  z-index: 5;
+  z-index: 20;
 `;
 
 const Indicator = styled.div.withConfig({

@@ -8,6 +8,7 @@ import { Error } from "./pages/Error";
 import { ViewAllReview } from "./pages/viewAllReview";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ReviewLayout } from "./components/ReviewLayout";
+import { LimitExceedPopUp } from "./components/LimitExceedPopUp";
 
 export const App = () => {
   return (
@@ -15,6 +16,7 @@ export const App = () => {
       <GlobalStyle />
       <BrowserRouter >
       <ScrollToTop />
+      <LimitExceedPopUp />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<LandingPage />} />

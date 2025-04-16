@@ -1,7 +1,25 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
+import { onError } from "@apollo/client/link/error";
+
+const errorLink = onError(({ networkError }) => {
+  console.log("[Apollo error]", networkError);
+
+  const isTooManyRequest =
+    networkError &&
+    typeof (networkError as any).statusCode === "number" &&
+    [429, 403, 404].includes((networkError as any).statusCode);
+
+  const isFailedToFetch = networkError?.message === "Failed to fetch";
+
+  if (isTooManyRequest || isFailedToFetch) {
+    window.dispatchEvent(new Event("anilistRateLimitExceeded"));
+  }
+});
+
+
 
 const serverLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql', 
+  uri: 'http://localhost:4000/graphql',
 });
 
 const anilistLink = new HttpLink({
@@ -14,12 +32,14 @@ const splitLink = ApolloLink.split(
   serverLink
 );
 
+const combinedLink = ApolloLink.from([errorLink, splitLink]);
+
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
         Page: {
-          keyArgs: false, 
+          keyArgs: false,
           merge(existing = {}, incoming) {
             return { ...existing, ...incoming };
           },
@@ -29,8 +49,7 @@ const cache = new InMemoryCache({
   },
 });
 
-
 export const client = new ApolloClient({
-  link: splitLink,
+  link: combinedLink,
   cache,
 });

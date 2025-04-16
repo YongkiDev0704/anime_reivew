@@ -214,7 +214,7 @@ const ReviewPasswordInput = styled.input`
     width: 220px;
     height: 36px;
     background-color: var(--box-background);
-    border-radius: 15px;
+    border-radius: 7px;
     color: var(--main-text);
     // font-color: var(--box-container);
     border: none;

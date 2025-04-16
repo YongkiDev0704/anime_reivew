@@ -30,6 +30,13 @@ export const AnimeReview = () => {
     {
       variables: { anilist_id },
       fetchPolicy: "network-only",
+      onError: (error) => {
+        const code = (error.networkError as { statusCode?: number })?.statusCode;
+        if (typeof code === "number" && [429, 403, 404].includes(code)) {
+          window.dispatchEvent(new Event("anilistLimitExceeded"));
+        }
+      }
+      
     }
   );
 
