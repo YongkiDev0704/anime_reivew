@@ -7,9 +7,10 @@ type ReviewScoreProps = {
     score: string;
     readOnly?: boolean;
     onChange?: (value: string) => void;
+    error?: boolean;
   }
 
-export const ReviewScore = ({ score, readOnly, onChange }: ReviewScoreProps) => {
+export const ReviewScore = ({ score, readOnly, onChange, error }: ReviewScoreProps) => {
     
     const [inputScore, setInputScore] = useState<string>(score);
 
@@ -36,6 +37,7 @@ export const ReviewScore = ({ score, readOnly, onChange }: ReviewScoreProps) => 
         onChange={handleInputChange}
         placeholder="0.00"
         readOnly={readOnly}
+        error={error}
       />
       <ScoreIconWrapper>
         <img src={ratingOutLine} alt="Rating Outline" width="40" height="40" />
@@ -53,13 +55,13 @@ const ReviewScoreWrapper = styled.div`
   gap: 12px;
 `;
 
-const ScoreBox = styled.input`
+const ScoreBox = styled.input<{ error?: boolean }>`
   background-color: var(--popup-border);
   font-size: 16px;
   width: 70px;
   height: 30px;
   border-radius: 15px;
-  border: none;
+  border: 2px solid ${({ error }) => error ? 'red' : 'transparent'};
   outline: none;
   text-align: center;
   vertical-align: middle;

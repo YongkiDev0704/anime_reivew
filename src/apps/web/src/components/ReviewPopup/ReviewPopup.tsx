@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import defaultUserIcon from "../../assets/icons/user.svg";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { EDIT_USER_REVIEW, WRITE_NEW_USER_REVIEW } from "../../graphql/reviewQuery";
 // Components
@@ -9,6 +9,8 @@ import { Button } from "../Button";
 import { Review } from "../../types";
 import { ReviewScore } from "../ReviewScore/ReviewScore";
 import { useParams } from "react-router-dom";
+import { ReviewDropDown } from "../ReviewDropDown/ReviewDropDown";
+import { Eye, EyeOff } from "lucide-react";
 
 // 3 Different Mode for [Read / Write / Edit]
 // Review Data recieved from Prop
@@ -23,10 +25,21 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
 
     const { id } = useParams<{ id: string }>();
     const anilist_id = Number(id);
+
+    type ActionMode = "None" | "Edit" | "Delete";
+    const [actionMode, setActionMode] = useState<ActionMode>("None");
     
+    const [scoreError, setScoreError] = useState(false);
+    const [commentError, setCommentError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
+
     const isReadMode = mode === "Read";
     const isEditMode = mode === "Edit";
     const isWriteMode = mode === "Write";
+
+    const isReadOnly = mode === "Read" && actionMode === "None";
 
     const [writeReview] = useMutation(WRITE_NEW_USER_REVIEW, {
         refetchQueries: ['GetReviewsByAnilistId'],
@@ -55,10 +68,15 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
       };
 
     const handleSubmit = async () => {
-        if (!currentScore || !reviewComment || !password) {
-            alert("Please fill in all empty fields.");
-            return;
-        }
+        const isScoreEmpty = !currentScore;
+        const isCommentEmpty = !reviewComment;
+        const isPasswordEmpty = !password;
+
+        setScoreError(isScoreEmpty);
+        setCommentError(isCommentEmpty);
+        setPasswordError(isPasswordEmpty);
+
+        if (!currentScore || !reviewComment || !password) return;
 
         try {
             if (isWriteMode) {
@@ -77,7 +95,7 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
               } else {
                 alert("Failed to Write a review: " + response.data.createReview.error);
               }
-            } else if (isEditMode) {
+            } else if (actionMode === "Edit" && review && currentScore && reviewComment) {
               const response = await editReview({
                 variables: {
                   id: review?.id,
@@ -91,11 +109,44 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
               } else {
                 alert("Failed To Edit a review: " + response.data.editReview.error);
               }
-            }
+            } else if (actionMode === "Delete" && review) {
+                // // Delete 뮤테이션 작업해야하는 부분
+                // const response = await deleteReview({
+                //   variables: {
+                //     id: review.id,
+                //     review_password: password,
+                //   },
+                // });
+                // if (response.data.deleteReview.success) {
+                //   closePopup();
+                // } else {
+                //   alert("Failed to delete review: " + response.data.deleteReview.error);
+                // }
+              }
           } catch (err) {
             console.error("Error:", err);
           }
     };
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.key === "Enter") {
+            const activeElement = document.activeElement;
+      
+            // In TextArea, it should be next line. Not submit.
+            if (activeElement?.tagName !== "TEXTAREA") {
+              event.preventDefault();
+              handleSubmit();
+            }
+          }
+        };
+      
+        document.addEventListener("keydown", handleKeyDown);
+      
+        return () => {
+          document.removeEventListener("keydown", handleKeyDown);
+        };
+      }, [handleSubmit, currentScore, reviewComment, password]);
 
     return(
         <ReviewPopupWrapper>
@@ -114,29 +165,77 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
                 <ReviewPopupRatingWrapper>
                     <ReviewScore 
                         score = { currentScore }
-                        readOnly={isReadMode}
+                        readOnly={isReadOnly}
                         onChange={(value) => {
                             if (mode === "Write" || mode === "Edit") {
                               setCurrentScore(value);
                             }
                         }}
+                        error={scoreError}
                     />
                 </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
             <ReviewPopupTextBox 
                 placeholder="Write a review" 
-                readOnly={isReadMode}
+                readOnly={isReadOnly}
                 value={reviewComment}
-                onChange={handleReviewCommentChange} />
-            {!isReadMode && (
-                <ReviewPopupBottom>
-                    <ReviewPasswordInput 
-                        placeholder="Enter a Password" 
-                        type="password" 
-                        value={password} onChange={handlePasswordChange}/>
-                    <Button label={isWriteMode? "Submit" : "Edit"} variant="third" onClick={handleSubmit} />
-                </ReviewPopupBottom>
-            )}
+                onChange={handleReviewCommentChange}
+                error={commentError}/>
+            <ReviewPopupBottom>
+                {(isWriteMode && actionMode === "None") && (
+                    <>
+                        {(passwordError || scoreError || commentError) && (
+                            <ErrorInputMessage>Please fill in all required fields</ErrorInputMessage>
+                        )}
+                        <PasswordWrapper>
+                            <ReviewPasswordInput
+                                placeholder="Enter a Password"
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={handlePasswordChange}
+                                error={passwordError}
+                            />
+                            <TogglePasswordButton onClick={() => setShowPassword((prev) => !prev)}>
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </TogglePasswordButton>
+                        </PasswordWrapper>
+                        <Button 
+                        label = "Post a Review"
+                        variant="third"
+                        onClick={handleSubmit}
+                        />
+                    </>
+                )}
+                {(actionMode !== "None") && (
+                    <>
+                        {passwordError && (
+                            <ErrorInputMessage>Please fill in all required fields</ErrorInputMessage>
+                        )}
+                        <ReviewPasswordInput
+                        placeholder="Enter a Password"
+                        type={showPassword? "text" : "password"}
+                        value={password}
+                        onChange={handlePasswordChange}
+                        error={passwordError}
+                        />
+                        <Button
+                        label={actionMode === "Edit" ? "Edit" : "Delete"}
+                        variant="third"
+                        onClick={handleSubmit}
+                        />
+                    </>
+                )}
+                { isReadMode && (
+                    <ReviewDropDown
+                    onEdit={() => {
+                        setActionMode("Edit");
+                    }}
+                    onDelete={() => {
+                        setActionMode("Delete");
+                    }}
+                    />
+                )}
+            </ReviewPopupBottom>
         </ReviewPopupWrapper>
     );
 };
@@ -144,8 +243,8 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
 const ReviewPopupWrapper = styled.section`
     display: flex;
     flex-flow: column wrap;
-    width: 860px;
-    height: 620px;
+    width: 720px;
+    height: 500px;
     background-color: var(--box-container);
     padding: 20px 20px;
     border-radius: 25px;
@@ -183,12 +282,12 @@ const ReviewPopupRatingWrapper = styled.div`
     display: flex;
 `;
 
-const ReviewPopupTextBox = styled.textarea`
-    width: 785px;
-    height: 428px;
+const ReviewPopupTextBox = styled.textarea<{ error?: boolean }>`
+    width: 90%;
+    height: 62.5%;
     background-color: var(--box-container);
     border-radius: 25px;
-    border: 2px solid var(--popup-border);
+    border: 2px solid ${({ error }) => error ? 'red' : 'var(--popup-border)'};
     margin: 20px 10px;
     padding: 25px;
     color: var(--main-text);
@@ -210,16 +309,42 @@ const ReviewPopupBottom = styled.div`
     gap: 12px;
 `;
 
-const ReviewPasswordInput = styled.input`
-    width: 220px;
+const ReviewPasswordInput = styled.input<{ error?: boolean }>`
+    width: 200px;
     height: 36px;
     background-color: var(--box-background);
     border-radius: 7px;
     color: var(--main-text);
-    // font-color: var(--box-container);
-    border: none;
+    border: 2px solid ${({ error }) => error ? 'red' : 'transparent'};
     outline: none;
     text-align: center;
     vertical-align: middle;
-    padding: 0 8px;
+    padding: 0 10px;
+`;
+
+const ErrorInputMessage = styled.p`
+    color: red;
+    font-size: 16px;
+    margin-right: 8px;
+`;
+
+const PasswordWrapper = styled.div`
+  position: relative;
+  width: fit-content;
+`;
+
+const TogglePasswordButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-45%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.75;
+  }
 `;
