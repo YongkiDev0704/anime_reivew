@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { Button } from "../Button";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   image: string;
@@ -10,9 +11,12 @@ type Props = {
   genres?: string[];
   positionX?: string;
   positionY?: string;
+  animeId: number;
 };
 
-export const HeroSlide = ({ logo, image, active, contentRating, genres, positionX = "center", positionY = "center" }: Props) => {
+export const HeroSlide = ({ logo, image, active, contentRating, genres, positionX = "center", positionY = "center", animeId }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <HeroSlideWrapper active={active}>
       <LeftFill active={active}/>
@@ -30,7 +34,11 @@ export const HeroSlide = ({ logo, image, active, contentRating, genres, position
         </RatingGenreWrapper>
       )}
       <ButtonWrapper>
-        <Button variant="primary" label="See Review" />
+        {<Button 
+          variant="primary" 
+          label="See Review" 
+          onClick={() => {navigate(`/review/${animeId}`)}}
+        />}
       </ButtonWrapper>
       <ImageContainer imageUrl={image} active={active} positionX={positionX} positionY={positionY}>
         <Overlay />
@@ -52,7 +60,12 @@ const HeroSlideWrapper = styled.div.withConfig({
   opacity: ${(props) => (props.active ? 1 : 0)};
   filter: ${(props) => (props.active ? "blur(0px)" : "blur(4px)")};
   transition: opacity 1s ease-in-out, filter 1s ease-in-out;
+
+  pointer-events: ${(props) => (props.active ? "auto" : "none")};
+  z-index: ${(props) => (props.active ? 10 : 1)};
 `;
+
+
 
 
 const LeftFill = styled.div.withConfig({

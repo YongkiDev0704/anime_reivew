@@ -64,7 +64,6 @@ const renderSkeleton = () => {
 const ViewAllReviewWrapper = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   background-color: var(--main-background);
   padding-bottom: 100px;
   margin-bottom: 100px;
