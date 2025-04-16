@@ -10,6 +10,7 @@ import { Review } from "../../types";
 import { ReviewScore } from "../ReviewScore/ReviewScore";
 import { useParams } from "react-router-dom";
 import { ReviewDropDown } from "../ReviewDropDown/ReviewDropDown";
+import { Eye, EyeOff } from "lucide-react";
 
 // 3 Different Mode for [Read / Write / Edit]
 // Review Data recieved from Prop
@@ -31,6 +32,8 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
     const [scoreError, setScoreError] = useState(false);
     const [commentError, setCommentError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const isReadMode = mode === "Read";
     const isEditMode = mode === "Edit";
@@ -184,13 +187,18 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
                         {(passwordError || scoreError || commentError) && (
                             <ErrorInputMessage>Please fill in all required fields</ErrorInputMessage>
                         )}
-                        <ReviewPasswordInput
-                            placeholder="Enter a Password"
-                            type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                            error={passwordError}
-                        />
+                        <PasswordWrapper>
+                            <ReviewPasswordInput
+                                placeholder="Enter a Password"
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={handlePasswordChange}
+                                error={passwordError}
+                            />
+                            <TogglePasswordButton onClick={() => setShowPassword((prev) => !prev)}>
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </TogglePasswordButton>
+                        </PasswordWrapper>
                         <Button 
                         label = "Post a Review"
                         variant="third"
@@ -205,7 +213,7 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
                         )}
                         <ReviewPasswordInput
                         placeholder="Enter a Password"
-                        type="password"
+                        type={showPassword? "text" : "password"}
                         value={password}
                         onChange={handlePasswordChange}
                         error={passwordError}
@@ -311,11 +319,32 @@ const ReviewPasswordInput = styled.input<{ error?: boolean }>`
     outline: none;
     text-align: center;
     vertical-align: middle;
-    padding: 0 8px;
+    padding: 0 10px;
 `;
 
 const ErrorInputMessage = styled.p`
     color: red;
     font-size: 16px;
     margin-right: 8px;
+`;
+
+const PasswordWrapper = styled.div`
+  position: relative;
+  width: fit-content;
+`;
+
+const TogglePasswordButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-45%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.75;
+  }
 `;
