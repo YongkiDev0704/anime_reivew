@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import { Button } from "../components/Button";
 import ErrorIcon from "../assets/icons/ErrorImg.svg";
-import { useEffect } from "react";
 
 export const Error = () => {
   const navigate = useNavigate();

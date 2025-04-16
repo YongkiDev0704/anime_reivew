@@ -80,27 +80,26 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     data: [Review!]!
   }
 
-  type Mutation {
-    createUser(data: CreateUserInput!): CreateUserResult!
+  input DeleteReviewInput {
+    _id: ID!
+    review_password: String!
+  }
+
+  type DeleteReviewResult {
+    success: Boolean!
+    error: String
   }
 
   type Mutation {
     createReview(data: CreateReviewInput!): CreateReviewResult!
-  }
-
-  type Mutation {
+    createUser(data: CreateUserInput!): CreateUserResult!
     editReview(data: EditReviewInput!): EditReviewResult!
+    deleteReview(data: DeleteReviewInput!): DeleteReviewResult!
   }
 
   type Query {
     getUserByEmail(email: String!): GetUserByEmailResult!
-  }
-
-  type Query {
     getReviewsByUsername(username: String!): GetRevieswByUsernameResult!
-  }
-    
-  type Query {
     getReviewsByAnilistId(anilist_id: Int!): GetReviewsByAnilistIdResult!
   }
 `;

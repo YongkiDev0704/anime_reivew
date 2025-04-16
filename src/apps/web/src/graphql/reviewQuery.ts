@@ -79,3 +79,12 @@ export const EDIT_USER_REVIEW = gql`
     }  
   }
 `;
+
+export const DELETE_USER_REVIEW = gql`
+  mutation DeleteUserReview($id: ID!, $review_password: String!) {
+    deleteReview(data: { _id: $id, review_password: $review_password }) {
+      success
+      error
+    }
+  }
+`;

@@ -61,13 +61,16 @@ export const GlobalStyle = createGlobalStyle`
     box-shadow: none;
   }
 
+  input {
+    all: unset;
+  }
+
   @font-face {
     font-family: 'Roboto';
     src: url(${RobotoRegular}) format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
-
   }
 
   @font-face {
@@ -104,6 +107,5 @@ export const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-display: swap;
   }
-
 `;
 

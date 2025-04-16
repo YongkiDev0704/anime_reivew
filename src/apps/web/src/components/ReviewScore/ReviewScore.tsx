@@ -66,6 +66,7 @@ const ScoreBox = styled.input<{ error?: boolean }>`
   text-align: center;
   vertical-align: middle;
   padding: 0 8px;
+  box-sizing: border-box;
 `;
 
 const ScoreIconWrapper = styled.div`
