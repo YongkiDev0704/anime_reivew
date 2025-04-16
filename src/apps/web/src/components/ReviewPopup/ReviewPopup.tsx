@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import defaultUserIcon from "../../assets/icons/user.svg";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { EDIT_USER_REVIEW, WRITE_NEW_USER_REVIEW } from "../../graphql/reviewQuery";
 // Components
@@ -28,6 +28,10 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
     type ActionMode = "None" | "Edit" | "Delete";
     const [actionMode, setActionMode] = useState<ActionMode>("None");
     
+    const [scoreError, setScoreError] = useState(false);
+    const [commentError, setCommentError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+
     const isReadMode = mode === "Read";
     const isEditMode = mode === "Edit";
     const isWriteMode = mode === "Write";
@@ -61,10 +65,15 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
       };
 
     const handleSubmit = async () => {
-        if (!currentScore || !reviewComment || !password) {
-            alert("Please fill in all empty fields.");
-            return;
-        }
+        const isScoreEmpty = !currentScore;
+        const isCommentEmpty = !reviewComment;
+        const isPasswordEmpty = !password;
+
+        setScoreError(isScoreEmpty);
+        setCommentError(isCommentEmpty);
+        setPasswordError(isPasswordEmpty);
+
+        if (!currentScore || !reviewComment || !password) return;
 
         try {
             if (isWriteMode) {
@@ -116,6 +125,26 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
           }
     };
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.key === "Enter") {
+            const activeElement = document.activeElement;
+      
+            // In TextArea, it should be next line. Not submit.
+            if (activeElement?.tagName !== "TEXTAREA") {
+              event.preventDefault();
+              handleSubmit();
+            }
+          }
+        };
+      
+        document.addEventListener("keydown", handleKeyDown);
+      
+        return () => {
+          document.removeEventListener("keydown", handleKeyDown);
+        };
+      }, [handleSubmit, currentScore, reviewComment, password]);
+
     return(
         <ReviewPopupWrapper>
             <ReviewPopupTop>
@@ -139,6 +168,7 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
                               setCurrentScore(value);
                             }
                         }}
+                        error={scoreError}
                     />
                 </ReviewPopupRatingWrapper>
             </ReviewPopupTop>
@@ -146,22 +176,39 @@ export const ReviewPopup = ({mode, review, animeName, closePopup}: ReviewPopupPr
                 placeholder="Write a review" 
                 readOnly={isReadOnly}
                 value={reviewComment}
-                onChange={handleReviewCommentChange} />
+                onChange={handleReviewCommentChange}
+                error={commentError}/>
             <ReviewPopupBottom>
                 {(isWriteMode && actionMode === "None") && (
-                    <Button 
-                    label = "Post a Review"
-                    variant="third"
-                    onClick={handleSubmit}
-                    />
+                    <>
+                        {(passwordError || scoreError || commentError) && (
+                            <ErrorInputMessage>Please fill in all required fields</ErrorInputMessage>
+                        )}
+                        <ReviewPasswordInput
+                            placeholder="Enter a Password"
+                            type="password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            error={passwordError}
+                        />
+                        <Button 
+                        label = "Post a Review"
+                        variant="third"
+                        onClick={handleSubmit}
+                        />
+                    </>
                 )}
                 {(actionMode !== "None") && (
                     <>
+                        {passwordError && (
+                            <ErrorInputMessage>Please fill in all required fields</ErrorInputMessage>
+                        )}
                         <ReviewPasswordInput
                         placeholder="Enter a Password"
                         type="password"
                         value={password}
                         onChange={handlePasswordChange}
+                        error={passwordError}
                         />
                         <Button
                         label={actionMode === "Edit" ? "Edit" : "Delete"}
@@ -227,12 +274,12 @@ const ReviewPopupRatingWrapper = styled.div`
     display: flex;
 `;
 
-const ReviewPopupTextBox = styled.textarea`
+const ReviewPopupTextBox = styled.textarea<{ error?: boolean }>`
     width: 90%;
     height: 62.5%;
     background-color: var(--box-container);
     border-radius: 25px;
-    border: 2px solid var(--popup-border);
+    border: 2px solid ${({ error }) => error ? 'red' : 'var(--popup-border)'};
     margin: 20px 10px;
     padding: 25px;
     color: var(--main-text);
@@ -254,16 +301,21 @@ const ReviewPopupBottom = styled.div`
     gap: 12px;
 `;
 
-const ReviewPasswordInput = styled.input`
+const ReviewPasswordInput = styled.input<{ error?: boolean }>`
     width: 200px;
     height: 36px;
     background-color: var(--box-background);
     border-radius: 15px;
     color: var(--main-text);
-    // font-color: var(--box-container);
-    border: none;
+    border: 2px solid ${({ error }) => error ? 'red' : 'transparent'};
     outline: none;
     text-align: center;
     vertical-align: middle;
     padding: 0 8px;
+`;
+
+const ErrorInputMessage = styled.p`
+    color: red;
+    font-size: 16px;
+    margin-right: 8px;
 `;
