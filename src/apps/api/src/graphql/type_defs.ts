@@ -80,6 +80,17 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     data: [Review!]!
   }
 
+  type ReviewAverageResult {
+    averageRating: String!
+    totalReviews: Int!
+  }
+
+  type GetReviewAverageByAnilistIdResponse {
+    success: Boolean!
+    error: String
+    data: ReviewAverageResult
+  }
+
   type Mutation {
     createUser(data: CreateUserInput!): CreateUserResult!
   }
@@ -102,5 +113,9 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     
   type Query {
     getReviewsByAnilistId(anilist_id: Int!): GetReviewsByAnilistIdResult!
+  }
+    
+  type Query {
+    getReviewAverageByAnilistId(anilist_id: Int!): GetReviewAverageByAnilistIdResponse!
   }
 `;
