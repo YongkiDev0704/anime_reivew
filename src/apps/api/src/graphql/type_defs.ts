@@ -112,9 +112,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     getUserByEmail(email: String!): GetUserByEmailResult!
     getReviewsByUsername(username: String!): GetRevieswByUsernameResult!
     getReviewsByAnilistId(anilist_id: Int!): GetReviewsByAnilistIdResult!
-  }
-    
-  type Query {
     getReviewAverageByAnilistId(anilist_id: Int!): GetReviewAverageByAnilistIdResponse!
   }
+
 `;
