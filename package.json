@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "build:shared": "pnpm --filter @pnani/shared build",
+  "build:core": "pnpm --filter @pnani/core build",
+  "build:api": "pnpm --filter @pnani/api build",
+  "build": "pnpm build:shared && pnpm build:core && pnpm build:api"
   },
   "keywords": [],
   "author": "Yongki Kim<yongkidev0704@gmail.com>",
