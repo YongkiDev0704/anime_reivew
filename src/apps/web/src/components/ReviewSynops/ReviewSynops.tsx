@@ -10,8 +10,6 @@ type ReviewSynopsProps = {
 
 export const ReviewSynops = ({animeData, anigiriScore}: ReviewSynopsProps) => {
 
-    console.log(anigiriScore);
-
     const stripHtmlTags = (text: string | null | undefined): string => {
         if (!text) return "";
         return text.replace(/<[^>]*>/g, "").trim();
@@ -76,7 +74,7 @@ const ReviewAnimeSynopsis = styled.p`
 `;
 
 const ReviewRating = styled.img`
-    margin-right: 5px;
+    margin-right: 3px;
 `
 
 const ReviewSynopTextWrapper = styled.div`
