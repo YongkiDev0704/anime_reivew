@@ -80,6 +80,17 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     data: [Review!]!
   }
 
+  type ReviewAverageResult {
+    averageRating: String!
+    totalReviews: Int!
+  }
+
+  type GetReviewAverageByAnilistIdResponse {
+    success: Boolean!
+    error: String
+    data: ReviewAverageResult
+  }
+
   input DeleteReviewInput {
     _id: ID!
     review_password: String!
@@ -101,5 +112,7 @@ export const typeDefs: IExecutableSchemaDefinition["typeDefs"] = gql`
     getUserByEmail(email: String!): GetUserByEmailResult!
     getReviewsByUsername(username: String!): GetRevieswByUsernameResult!
     getReviewsByAnilistId(anilist_id: Int!): GetReviewsByAnilistIdResult!
+    getReviewAverageByAnilistId(anilist_id: Int!): GetReviewAverageByAnilistIdResponse!
   }
+
 `;

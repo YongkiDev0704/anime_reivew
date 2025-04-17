@@ -88,3 +88,17 @@ export const DELETE_USER_REVIEW = gql`
     }
   }
 `;
+
+
+export const GET_ANIGIRI_SCORE_AVERAGE = gql`
+  query GetAnigiriScoreAverage($anilist_id: Int!) {
+    getReviewAverageByAnilistId(anilist_id: $anilist_id) {
+      success
+      error
+      data {
+        averageRating,
+        totalReviews
+      }
+    }
+  }
+`;

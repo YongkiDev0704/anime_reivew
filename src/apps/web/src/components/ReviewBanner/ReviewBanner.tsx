@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import ratingSushi from "../../assets/icons/rating.svg"
 import { AniListAnimeDetail } from "../../types";
 
 type ReviewBannerInfoProps = {
@@ -28,10 +27,6 @@ export const ReviewBanner = ({animeData}: ReviewBannerInfoProps) => {
                     <ReviewAnimeTitle>
                         {animeData.title.english? animeData.title.english : animeData.title.romaji}
                     </ReviewAnimeTitle>
-                    <ReviewRating src={ratingSushi} />
-                    <ReviewAnimeRating>
-                        {animeData.averageScore? animeData.averageScore / 10 : "No Scores Yet"}
-                    </ReviewAnimeRating>
                 </ReviewTitleWrapper>
                 <ReviewAnimeInfo>
                     {animeDateInfo}
@@ -89,23 +84,11 @@ const ReviewAnimeTitle = styled.h2`
     margin-right: 8px;
 `;
 
-const ReviewRating = styled.img`
-    width: 40px;
-    height: 40px;
-`
-
 const ReviewTitleWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 10px 60px;
-`;
-
-const ReviewAnimeRating = styled.h3`
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--main-text);
-    margin: 0 4px;
 `;
 
 const ReviewAnimeInfo = styled.p`

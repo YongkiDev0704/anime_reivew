@@ -1,7 +1,7 @@
 import styled, { ThemeProvider } from "styled-components";
 import pencilIcon from "../../assets/icons/pencil.svg";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Review } from "../../types";
 import { UserReviewCard } from "../UserReviewCard/UserReviewCard";
 import { ReviewPopup } from "../ReviewPopup/ReviewPopup";
@@ -231,7 +231,6 @@ const UserCardListWrapper = styled.div<{ $viewAll: boolean; $expanded: boolean }
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: ${({ $viewAll }) => ($viewAll ? "center" : "none")};
   gap: ${({ $viewAll }) => ($viewAll ? "20px" : "15px")};
   overflow: hidden;
   max-height: ${({ $viewAll, $expanded }) =>
