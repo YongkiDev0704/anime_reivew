@@ -15,6 +15,7 @@ import { SkeletonReviewList } from "../components/SkeletonReviewList/SkeletonRev
 import { SkeletonAnimeList } from "../components/SkeletonAnimeList";    
 
 import type { AniListAnimeDetail } from "../types";
+import { getAnigiriScore } from "../hooks/getAnigiriScore";
 
 type OutletContextType = {
   animeData: AniListAnimeDetail;
@@ -40,6 +41,8 @@ export const AnimeReview = () => {
     }
   );
 
+  const { data: anigiriScoreData, loading: anigiriScoreLoading, error: anigiriScoreError } = getAnigiriScore({anilist_id});
+
   const { data: relatedData, loading: relatedLoading, error: relatedError } = useQuery(
     GET_RELATED_ANIME,
     {
@@ -55,6 +58,7 @@ export const AnimeReview = () => {
 
   if (
     reviewsLoading ||
+    anigiriScoreLoading ||
     relatedLoading ||
     whatsNewLoading
   ) {
@@ -62,12 +66,14 @@ export const AnimeReview = () => {
   }
 
   if (reviewsError) return <p>{reviewsError.message}</p>;
+  if (anigiriScoreError) return <p>{anigiriScoreError.message}</p>;
   if (relatedError) return <p>{relatedError.message}</p>;
   if (whatsNewError) return <p>{whatsNewError.message}</p>;
 
   const relatedAnimes = relatedData?.Page?.media || [];
   const reviews = reviewsData?.getReviewsByAnilistId?.data ?? [];
-
+  const anigiriScore = anigiriScoreData?.getReviewAverageByAnilistId?.data.averageRating || {};
+  
   const formatAnime = (anime: any) => ({
     animeId: anime.id.toString(),
     animeRomajiName: anime.title.romaji,
@@ -80,7 +86,7 @@ export const AnimeReview = () => {
 
   return (
     <AnimeReviewWrapper>
-      <ReviewSynops animeData={animeData} />
+      <ReviewSynops animeData={animeData} anigiriScore={anigiriScore} />
       <UserReviewList reviews={reviews} animeName={animeName} animeId={animeData.id}/>
       <AnimeList
         listType="Related Content"

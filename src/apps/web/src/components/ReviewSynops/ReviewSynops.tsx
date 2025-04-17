@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import ratingSushi from "../../assets/icons/rating.svg"
+import anilistIcon from "../../assets/icons/anilist.svg"
 import { AniListAnimeDetail } from "../../types";
 
 type ReviewSynopsProps = {
     animeData: AniListAnimeDetail;
+    anigiriScore: string;
 }
 
-export const ReviewSynops = ({animeData}: ReviewSynopsProps) => {
+export const ReviewSynops = ({animeData, anigiriScore}: ReviewSynopsProps) => {
+
+    console.log(anigiriScore);
 
     const stripHtmlTags = (text: string | null | undefined): string => {
         if (!text) return "";
@@ -24,7 +28,11 @@ export const ReviewSynops = ({animeData}: ReviewSynopsProps) => {
                         </ReviewAnimeSynopsis>
                     </ReviewSynopTextWrapper>
                     <ReviewRatingWrapper>
-                        <ReviewRating src={ratingSushi} />
+                        <ReviewRating src={ratingSushi} width={40} height={40}/>
+                        <ReviewRatingScore>
+                            {anigiriScore? anigiriScore : "No Scores Yet"}
+                        </ReviewRatingScore>
+                        <ReviewRating src={anilistIcon} width={30} height={30}/>
                         <ReviewRatingScore>
                             {animeData.averageScore? animeData.averageScore / 10 : "No Scores Yet"}
                         </ReviewRatingScore>
@@ -68,8 +76,7 @@ const ReviewAnimeSynopsis = styled.p`
 `;
 
 const ReviewRating = styled.img`
-    width: 40px;
-    height: 40px;
+    margin-right: 5px;
 `
 
 const ReviewSynopTextWrapper = styled.div`
@@ -89,4 +96,5 @@ const ReviewRatingScore = styled.p`
     font-weight: 700;
     color: var(--main-text);
     margin: 0;
+    margin-right: 40px;
 `
