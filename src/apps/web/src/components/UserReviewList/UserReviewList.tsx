@@ -231,7 +231,6 @@ const UserCardListWrapper = styled.div<{ $viewAll: boolean; $expanded: boolean }
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: ${({ $viewAll }) => ($viewAll ? "center" : "none")};
   gap: ${({ $viewAll }) => ($viewAll ? "20px" : "15px")};
   overflow: hidden;
   max-height: ${({ $viewAll, $expanded }) =>

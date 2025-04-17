@@ -65,6 +65,7 @@ const ViewAllReviewWrapper = styled.section`
   display: flex;
   flex-direction: column;
   background-color: var(--main-background);
+  padding: 0 84px;
   padding-bottom: 100px;
   margin-bottom: 100px;
 `;
