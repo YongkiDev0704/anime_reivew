@@ -10,7 +10,7 @@ export const useLandingAnimes = () => {
   useEffect(() => {
     const fetchAnimes = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/landing-animes");
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/landing-animes`);
         if (!res.ok) throw new Error("Fetch failed");
 
         const data: Anime[] = await res.json();
