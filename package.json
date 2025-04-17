@@ -7,7 +7,8 @@
   "build:shared": "pnpm --filter @pnani/shared build",
   "build:core": "pnpm --filter @pnani/core build",
   "build:api": "pnpm --filter @pnani/api build",
-  "build": "pnpm build:shared && pnpm build:core && pnpm build:api"
+  "build": "pnpm build:shared && pnpm build:core && pnpm build:api",
+  "start": "pnpm --filter @pnani/api start"
   },
   "keywords": [],
   "author": "Yongki Kim<yongkidev0704@gmail.com>",
