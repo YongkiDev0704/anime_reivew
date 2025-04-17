@@ -27,11 +27,12 @@ import { tmdbRouter } from "./rest/tmdb";
     cors({
       origin: [
         "http://localhost:3000",                          
-        "https://your-project-name.vercel.app",          
+        "anime-reivew-web.vercel.app",          
       ],
       credentials: true,
     })
-  );  app.use(express.json());
+  );  
+  app.use(express.json());
   
   app.use(
     "/graphql",
