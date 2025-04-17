@@ -23,8 +23,15 @@ import { tmdbRouter } from "./rest/tmdb";
 
   await server.start();
   
-  app.use(cors());
-  app.use(express.json());
+  app.use(
+    cors({
+      origin: [
+        "http://localhost:3000",                          
+        "https://your-project-name.vercel.app",          
+      ],
+      credentials: true,
+    })
+  );  app.use(express.json());
   
   app.use(
     "/graphql",

@@ -16,10 +16,8 @@ const errorLink = onError(({ networkError }) => {
   }
 });
 
-
-
 const serverLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: `${import.meta.env.VITE_SERVER_URL}/graphql`,
 });
 
 const anilistLink = new HttpLink({
