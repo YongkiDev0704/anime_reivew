@@ -27,7 +27,7 @@ import { tmdbRouter } from "./rest/tmdb";
     cors({
       origin: [
         "http://localhost:3000",                          
-        "anime-reivew-web.vercel.app",          
+        "https://anime-reivew-web.vercel.app",          
       ],
       credentials: true,
     })
