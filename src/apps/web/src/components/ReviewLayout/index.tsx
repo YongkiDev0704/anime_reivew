@@ -20,8 +20,7 @@ export const ReviewLayout = () => {
   const { data, loading, error } = useQuery(GET_REVIEW_ANIME_DATA_BY_ID, {
     variables: { id: anilist_id },
     context: { clientName: "anilist" },
-    fetchPolicy: "cache-first",
-    skip: isNaN(anilist_id),
+    fetchPolicy: "no-cache",
   });
 
   const animeData = data?.Media;
@@ -33,13 +32,18 @@ export const ReviewLayout = () => {
   }, [anilist_id, navigate]);
 
   useEffect(() => {
-    if (!animeData?.bannerImage) return;
-    const img = new Image();
-    img.src = animeData.bannerImage;
-    img.onload = () => {
+    if (animeData?.bannerImage) {
+      const img = new Image();
+      img.src = animeData.bannerImage;
+      img.onload = () => {
+        setImageLoaded(true);
+      };
+    } else if (animeData) {
       setImageLoaded(true);
-    };
-  }, [animeData?.bannerImage]);
+    }
+  }, [animeData]);
+  
+  
 
   if (loading || !imageLoaded || !animeData) {
     return (
@@ -61,6 +65,6 @@ export const ReviewLayout = () => {
     <>
       <ReviewBanner animeData={animeData} />
       <Outlet context={{ animeData: data.Media, isReady: true }} />
-      </>
+    </>
   );
 };

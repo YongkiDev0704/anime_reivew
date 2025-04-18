@@ -1,6 +1,8 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 
+const isLocal = import.meta.env.DEV;
+
 const errorLink = onError(({ networkError }) => {
   console.log("[Apollo error]", networkError);
 
@@ -16,12 +18,16 @@ const errorLink = onError(({ networkError }) => {
   }
 });
 
+
 const serverLink = new HttpLink({
-  uri: `${import.meta.env.VITE_SERVER_URL}/graphql`,
+  uri: isLocal
+    ? "http://localhost:4000/graphql" 
+    : `${import.meta.env.VITE_SERVER_URL}/graphql`, 
 });
 
 const anilistLink = new HttpLink({
   uri: 'https://graphql.anilist.co',
+  useGETForQueries: false, 
 });
 
 const splitLink = ApolloLink.split(
