@@ -6,14 +6,16 @@ type ButtonProps = {
   onClick?: () => void;
   width?: string;
   height?: string;
+  disabled?: boolean;
 };
 
-export const Button = ({ label, variant = "primary", width, height, onClick }: ButtonProps) => {
+export const Button = ({ label, variant = "primary", width, height, onClick, disabled }: ButtonProps) => {
   return <BaseButton 
     variant={variant} 
     onClick={onClick}
     width={width}
     height={height}
+    disabled={disabled}
   > 
     {label} 
   </BaseButton>
@@ -23,9 +25,10 @@ const BaseButton = styled.button<{ variant: "primary" | "secondary" | "third" | 
   border: none;
   border-radius: 20px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   color: black;
   background-color: #00F5D4;
+  opacity: ${props => props.disabled ? 0.6 : 1};
 
   ${(props) =>
     props.variant === "primary" &&

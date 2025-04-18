@@ -29,6 +29,8 @@ export const ReviewPopup = ({ mode, review, animeName, closePopup }: ReviewPopup
   const [commentError, setCommentError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const isReadMode = mode === "Read";
   const isEditMode = mode === "Edit";
@@ -76,6 +78,9 @@ export const ReviewPopup = ({ mode, review, animeName, closePopup }: ReviewPopup
     setPasswordError(isPasswordEmpty);
 
     if (isScoreEmpty || isCommentEmpty || isPasswordEmpty) return;
+
+    if (isSubmitting) return;  
+    setIsSubmitting(true);     
 
     try {
       if (isWriteMode) {
@@ -126,6 +131,8 @@ export const ReviewPopup = ({ mode, review, animeName, closePopup }: ReviewPopup
       
     } catch (err) {
       console.error("Error:", err);
+    } finally {
+      setIsSubmitting(false); 
     }
   };
 
@@ -189,7 +196,12 @@ export const ReviewPopup = ({ mode, review, animeName, closePopup }: ReviewPopup
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </TogglePasswordButton>
             </PasswordWrapper>
-            <Button label="Post a Review" variant="third" onClick={handleSubmit} />
+            <Button 
+              label={isSubmitting ? "Submitting..." : "Post a Review"} 
+              variant="third" 
+              onClick={handleSubmit}
+              disabled={isSubmitting} 
+            />
           </>
         )}
 
