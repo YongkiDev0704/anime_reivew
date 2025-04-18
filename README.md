@@ -45,7 +45,7 @@ It combines **GraphQL** and **REST** APIs, uses data from **TMDB** and **AniList
 | Frontend      | Vite, React, TypeScript, styled-components, Apollo Client |
 | Backend       | Node.js, Express, GraphQL (Apollo Server), REST |
 | Database      | MongoDB Atlas, Mongoose + Typegoose |
-| External APIs | TMDB, AniList GraphQL       |
+| External APIs | TMDB, AniList  |
 | DevOps        | Vercel (frontend), Render (backend), pnpm workspaces |
 
 ---
