@@ -28,7 +28,8 @@ import { tmdbRouter } from "./rest/tmdb";
       origin: [
         "http://localhost:3000",
         "http://localhost:5173",                          
-        "https://anime-reivew-web.vercel.app",          
+        "https://anigiri.net",          
+        "https://www.anigiri.net",
       ],
       credentials: true,
     })
