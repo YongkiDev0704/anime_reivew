@@ -53,13 +53,12 @@ It combines **GraphQL** and **REST** APIs, uses data from **TMDB** and **AniList
 ## 🗂 Project Structure
 
 The project is organized as a **pnpm monorepo** with **pnpm**, separating the frontend, backend, and shared packages:
-
-root src/ ├── apps/ │ ├── api/ # Backend application (GraphQL + REST with Express) │ 
-                      └── web/ # Frontend application (React + Vite)             
-          ├── packages/ │ ├── core/ # Core logic: database connection, configs, constants │ 
-                          └── shared/ # Shared types and utilities across apps 
-├── tsconfig.base.json # Shared TypeScript config
-
+<pre><code> 
+ root ├── src/ ├── apps/ │ ├── api/ # Backend application (GraphQL + REST with Express) │
+                           └── web/ # Frontend application (React + Vite)
+               ├── packages/ │ ├── core/ # Core logic: database connection, configs, constants │
+                               └── shared/ # Shared types and utilities across apps
+  ├── tsconfig.base.json # Shared TypeScript config </code></pre>
 
 - `apps/` contains deployable applications.
 - `packages/` contains shared logic reused by both frontend and backend.
