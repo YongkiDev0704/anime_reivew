@@ -1,0 +1,14 @@
+name: Ping Render to Prevent Cold Start
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send ping to Render server
+        run: curl -s https://anigiri.onrender.com/api/landing-animes
+
