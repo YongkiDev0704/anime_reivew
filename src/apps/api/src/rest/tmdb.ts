@@ -18,6 +18,12 @@ tmdbRouter.get("/landing-animes", async (_req, res) => {
       lastFetched = now;
     } catch (err) {
       console.error("❌ Failed to fetch from TMDB:", err);
+
+      if (cache) {
+        console.log("⚠️ Sending stale cached data due to TMDB error");
+        return res.json(cache);
+      }
+
       return res.status(500).json({ error: "TMDB fetch failed" });
     }
   } else {

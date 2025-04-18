@@ -18,6 +18,7 @@ export const fetchLandingAnimes = async (): Promise<Anime[]> => {
 
       const tvSearch = await axios.get(`${TMDB_BASE}/search/tv`, {
         params: { api_key: TMDB_API_KEY, query: title },
+        timeout: 5000, 
       });
 
       let entry = tvSearch.data.results[0];
@@ -26,6 +27,7 @@ export const fetchLandingAnimes = async (): Promise<Anime[]> => {
       if (!entry || entry.vote_average < 2) {
         const movieSearch = await axios.get(`${TMDB_BASE}/search/movie`, {
           params: { api_key: TMDB_API_KEY, query: title },
+          timeout: 5000, 
         });
         entry = movieSearch.data.results[0];
         type = "movie";
@@ -36,15 +38,20 @@ export const fetchLandingAnimes = async (): Promise<Anime[]> => {
       const [detail, imageRes, ratingRes] = await Promise.all([
         axios.get(`${TMDB_BASE}/${type}/${entry.id}`, {
           params: { api_key: TMDB_API_KEY },
+          timeout: 5000,
         }),
         axios.get(`${TMDB_BASE}/${type}/${entry.id}/images`, {
           params: { api_key: TMDB_API_KEY },
+          timeout: 5000, 
         }),
         axios.get(
           type === "tv"
             ? `${TMDB_BASE}/tv/${entry.id}/content_ratings`
             : `${TMDB_BASE}/movie/${entry.id}/release_dates`,
-          { params: { api_key: TMDB_API_KEY } }
+          { 
+            params: { api_key: TMDB_API_KEY },
+            timeout: 5000,
+          }
         ),
       ]);
 
