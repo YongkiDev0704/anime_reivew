@@ -9,7 +9,7 @@ It combines **GraphQL** and **REST** APIs, uses data from **TMDB** and **AniList
 
 ## 🚀 Live Demo
 
-- **Frontend (Vercel)**: [https://anime-reivew-web.vercel.app](https://anime-reivew-web.vercel.app)  
+- **Frontend (Vercel)**: [https://anigiri.net](https://anigiri.net)  
 - **Backend (Render)**: [https://anigiri.onrender.com](https://anigiri.onrender.com)
 
 ---
