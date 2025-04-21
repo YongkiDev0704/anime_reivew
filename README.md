@@ -71,7 +71,7 @@ The project is organized as a **pnpm monorepo** with **pnpm**, separating the fr
 - **Yongki Kim** — Full Stack Developer/Team Lead
   [yongkidev0704@gmail.com](mailto:yongkidev0704@gmail.com)
   
-- **DongHyun Lee** — Full Stack Developer
+- **Donghyeon Lee** — Full Stack Developer
   [dlelfo7@gmail.com](mailto:dlelfo7@gmail.com)
   
 - **Jongseok We** — UI/UX Engineer
